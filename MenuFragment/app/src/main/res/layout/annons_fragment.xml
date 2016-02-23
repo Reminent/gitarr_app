@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:paddingTop="10dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,6 +20,7 @@
 
             <TextView
                 android:id="@+id/annons_titel_1"
+                android:textSize="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -42,6 +44,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:paddingTop="10dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,6 +54,7 @@
                 android:id="@+id/annons_titel_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="20sp"
                 android:gravity="center"
                 android:text="Titel för din gitar"
                 android:layout_gravity="center|top"/>
@@ -73,12 +77,14 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:paddingTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/annons_layout_3">
 
             <TextView
                 android:id="@+id/annons_titel_3"
+                android:textSize="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
