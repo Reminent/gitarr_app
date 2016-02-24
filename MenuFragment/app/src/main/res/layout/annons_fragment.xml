@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:gravity="center"
-                android:text="Titel för din gitar"
+                android:text="Titel för din gitar(martin suger)"
                 android:layout_gravity="center|top"/>
 
             <ImageView
