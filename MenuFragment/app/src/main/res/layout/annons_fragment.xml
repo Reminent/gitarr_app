@@ -107,10 +107,13 @@
         </LinearLayout>
     </LinearLayout>
     <Button
+        android:id="@+id/annons_knapp_skapa_ny"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_alignParentBottom="true"
-        android:text="Skapa ny"/>
+        android:text="@string/annons_skapa_ny"
+        android:onClick="addNewOffer"
+        />
 
 </RelativeLayout>

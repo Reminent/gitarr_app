@@ -89,4 +89,9 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void addNewOffer(View view) {
+        // TODO: 2/24/2016 Add functionality to open new view
+        Log.d("Update", "addNewOffer does nothing.");
+    }
 }
