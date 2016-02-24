@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Titel för din gitar"
+                android:text="Titel"
                 android:layout_gravity="center|top"/>
 
             <ImageView
@@ -71,28 +71,7 @@
                 android:text="Beskrivning av din gitar"
                 android:gravity="center"
                 />
-            <TextView
-                android:id="@+id/annons_titel_9"
-                android:textSize="20sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Titel för din gitar"
-                android:layout_gravity="center|top"/>
-            <ImageView
-                android:id="@+id/annons_image_7"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/guitar1"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
-            <TextView
-                android:id="@+id/annons_beskrivning_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Beskrivning av din gitar"
-                android:gravity="center"
-                />
         </LinearLayout>
 
         <LinearLayout
@@ -124,34 +103,14 @@
                 android:text="Beskrivning av din gitar"
                 android:gravity="center"
                 />
-            <TextView
-                android:id="@+id/annons_titel_11"
-                android:textSize="20sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Titel för din gitar"
-                android:layout_gravity="center|top"/>
 
-            <ImageView
-                android:id="@+id/annons_image_44"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/guitar3"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-            <TextView
-                android:id="@+id/annons_beskrivning_32"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Beskrivning av din gitar"
-                android:gravity="center"
-                />
         </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:id="@+id/skapany"
             android:layout_alignParentBottom="true"
             android:text="Skapa ny"/>
     </LinearLayout>
