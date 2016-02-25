@@ -13,19 +13,14 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
     @Nullable
 
     View view;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.annons_fragment, container, false);
         Button btn = (Button)view.findViewById(R.id.skapany);
         btn.setOnClickListener(this);
-
         return view;
 
     }
-
-
-
     @Override
     public void onClick(View v) {
         Fragment fragment;
