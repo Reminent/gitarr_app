@@ -161,6 +161,11 @@
             </GridLayout>
 
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/test_textView"
+            android:text="hejsan"/>
 
     </LinearLayout>
 
@@ -175,14 +180,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:id="@+id/Ekonomi_Button_Ny_Inkommst"
             android:text="Ny inkommst"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:id="@+id/Ekonomi_Button_Ny_Utgift"
             android:text="Ny utgift"/>
 
     </LinearLayout>
-
 </RelativeLayout>
