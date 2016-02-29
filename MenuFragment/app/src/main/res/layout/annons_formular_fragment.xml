@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:background="#40404f"
+
+    android:layout_alignParentTop="true"
+    android:id="@+id/linearLayout"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+
+    <TextView
+        android:layout_width="324dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20sp"
+        android:text="FORMULÄR"
+        android:id="@+id/textView5"
+
+        android:layout_alignParentTop="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText4"
+        android:layout_marginTop="28dp"
+        android:layout_below="@+id/textView5"
+        android:layout_alignStart="@+id/textView5"
+        android:hint="@string/Titel" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText5"
+        android:layout_below="@+id/editText4"
+        android:layout_alignStart="@+id/editText4"
+        android:hint="@string/Beskrivning"
+        android:selectAllOnFocus="false" />
+
+    <ImageButton
+        android:id="@+id/kamerasymbol"
+        android:layout_width="80dp"
+        android:layout_height="79dp"
+        android:src="@drawable/kamerasymbol"
+        android:layout_gravity="right"
+        android:layout_marginStart="27dp"
+        android:layout_marginBottom="51dp"
+        android:layout_above="@+id/klar"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/VäljBild"
+        android:id="@+id/väljBild"
+        android:layout_gravity="right"
+        android:layout_above="@+id/gallerisymbol"
+        android:layout_alignStart="@+id/gallerisymbol" />
+
+    <ImageButton
+        android:id="@+id/gallerisymbol"
+        android:layout_width="75dp"
+        android:layout_height="73dp"
+        android:src="@drawable/gallerisymbol"
+        android:layout_gravity="right"
+        android:layout_alignTop="@+id/kamerasymbol"
+        android:layout_toStartOf="@+id/klar" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/klar"
+        android:text="Klar"
+
+        android:layout_alignParentBottom="true"
+
+        android:layout_alignEnd="@+id/editText5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/TaKort"
+        android:id="@+id/taKort"
+        android:layout_above="@+id/kamerasymbol"
+        android:layout_alignStart="@+id/kamerasymbol" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AVBRYT"
+        android:id="@+id/avbryt"
+        android:layout_gravity="left"
+        android:layout_alignTop="@+id/klar"
+        />
+
+
+</RelativeLayout>

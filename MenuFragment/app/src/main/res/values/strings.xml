@@ -6,6 +6,11 @@
 
     <string name="action_settings">Settings</string>
 
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Titel">Titel</string>
+    <string name="Beskrivning">Beskrivning</string>
+    <string name="VäljBild">Välj bild</string>
+    <string name="TaKort">Ta kort</string>
 </resources>
