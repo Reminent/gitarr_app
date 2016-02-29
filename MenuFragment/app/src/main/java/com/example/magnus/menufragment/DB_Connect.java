@@ -14,35 +14,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class DB_Connect extends AsyncTask<String, Void, String> {
-
-    public AsyncResponse delegate = null;
     private static final String DEBUG_TAG = "HttpExample";
-
-
-    public DB_Connect(AsyncResponse delegate){
-        this.delegate = delegate;
-    }
 
     @Override
     protected String doInBackground(String... urls) {
-
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            try {
-                return downloadUrl(urls[0]);
-            } catch (IOException e) {
-                return "Unable to retrieve web page. URL may be invalid.";
-            }
-        } else {
-            return "No network connection available.";
+        try {
+            return downloadUrl(urls[0]);
+        } catch (IOException e) {
+            return "Unable to retrieve web page. URL may be invalid.";
         }
     }
-    // onPostExecute displays the results of the AsyncTask.
     @Override
     protected void onPostExecute(String result) {
-        delegate.processFinish(result);
     }
 
     private String downloadUrl(String myurl) throws IOException {

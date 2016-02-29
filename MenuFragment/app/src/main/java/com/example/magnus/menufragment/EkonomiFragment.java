@@ -1,5 +1,8 @@
 package com.example.magnus.menufragment;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,20 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-
-public class EkonomiFragment extends android.support.v4.app.Fragment implements AsyncResponse {
-
-    DB_Connect asyncTask =new DB_Connect(new AsyncResponse(){
-
-        @Override
-        void processFinish(String output){
-            //Here you will receive the result fired from async class
-            //of onPostExecute(result) method.
-        }
-    }).execute();
+import java.io.IOException;
 
 
-    private static final String DEBUG_TAG = "HttpExample";
+public class EkonomiFragment extends android.support.v4.app.Fragment {
     private TextView textView;
 
     @Override
@@ -34,7 +27,19 @@ public class EkonomiFragment extends android.support.v4.app.Fragment implements 
             @Override
             public void onClick(View v) {
                 String stringUrl = "http://sknz.no-ip.org/api/public/json";
-                new DownloadWebpageTask().execute(stringUrl);
+
+                ConnectivityManager connMgr = (ConnectivityManager)
+                        getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                        try{
+                            EkoGet task = new EkoGet();
+                            task.execute(stringUrl);
+                        } catch(Throwable e){
+                        }
+                } else {
+                    textView.setText("No network connection available.");
+                }
             }
         });
 
@@ -42,10 +47,27 @@ public class EkonomiFragment extends android.support.v4.app.Fragment implements 
             @Override
             public void onClick(View v) {
                 String stringUrl = "http://reminent.no-ip.org/slimapi/public/json";
-                new DownloadWebpageTask().execute(stringUrl);
+                ConnectivityManager connMgr = (ConnectivityManager)
+                        getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    try{
+                        EkoGet task = new EkoGet();
+                        task.execute(stringUrl);
+                    } catch(Throwable e){
+                    }
+                } else {
+                    textView.setText("No network connection available.");
+                }
             }
         });
-
         return view;
+    }
+
+    private class EkoGet extends DB_Connect{
+        @Override
+        protected void onPostExecute(String result) {
+            textView.setText(result);
+        }
     }
 }
