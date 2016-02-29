@@ -33,6 +33,7 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
                 //int id = item.getItemId();
                 fragment = new AnnonsFormularFragment();
                 fm.replace(R.id.content, fragment);
+                fm.addToBackStack(null);
                 fm.commit();
                 //setTitle(item.getTitle());
                 //fm.addToBackStack(this); //Kan vara bra för när man ska stänga formuläret./koppla formuläret mot annonssidan.

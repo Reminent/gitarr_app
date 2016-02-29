@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -43,13 +44,24 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
             case R.id.klar:
 
                 //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
-                //Log.d("Case", "klar");
-                //int id = item.getItemId();
-                fragment = new AnnonsFragment();
-                fm.replace(R.id.content, fragment);
+
+                // get EditText by id
+                EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel);
+                // Store EditText in Variable
+                String titelStr = inputTxtTitel.getText().toString();
+                Log.d("Titelsträng", titelStr);
+
+
+                // get EditText by id
+                EditText inputTxtBeskrivning = (EditText)view.findViewById(R.id.editTextBeskrivning);
+                // Store EditText in Variable
+                String beskrivningStr = inputTxtBeskrivning.getText().toString();
+                Log.d("Beskrivningsträng", beskrivningStr);
+
+
+                getFragmentManager().popBackStack();
                 fm.commit();
-                //setTitle(item.getTitle());
-                //fm.addToBackStack(this); //Kan vara bra för när man ska stänga formuläret./koppla formuläret mot annonssidan.
+                //fm.replace(R.id.content, fragment);
 
                 break;
 
@@ -57,9 +69,15 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
                 //Log.d("Case", "avbryt");
                 //int id = item.getItemId();
-                fragment = new AnnonsFragment();
-                fm.replace(R.id.content, fragment);
+                //fragment = new AnnonsFragment();
+                //fm.replace(R.id.content, fragment);
+                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Success!");
+               // fm.addToBackStack(null);
+                //fm.remove(R.id.content);
+                getFragmentManager().popBackStack();
                 fm.commit();
+
+
 
                 break;
             case R.id.kamerasymbol:

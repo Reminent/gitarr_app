@@ -25,7 +25,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText4"
+        android:id="@+id/editTextTitel"
         android:layout_marginTop="28dp"
         android:layout_below="@+id/textView5"
         android:layout_alignStart="@+id/textView5"
@@ -34,9 +34,9 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText5"
-        android:layout_below="@+id/editText4"
-        android:layout_alignStart="@+id/editText4"
+        android:id="@+id/editTextBeskrivning"
+        android:layout_below="@+id/editTextTitel"
+        android:layout_alignStart="@+id/editTextTitel"
         android:hint="@string/Beskrivning"
         android:selectAllOnFocus="false" />
 
@@ -79,7 +79,7 @@
 
         android:layout_alignParentBottom="true"
 
-        android:layout_alignEnd="@+id/editText5" />
+        android:layout_alignEnd="@+id/editTextBeskrivning" />
 
     <TextView
         android:layout_width="wrap_content"
