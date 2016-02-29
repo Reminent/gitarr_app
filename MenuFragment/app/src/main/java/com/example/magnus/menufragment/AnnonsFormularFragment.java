@@ -1,10 +1,12 @@
 package com.example.magnus.menufragment;
 
 
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +19,10 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.annons_formular_fragment, container, false);
-        Button btn = (Button)view.findViewById(R.id.klar);
-        btn.setOnClickListener(this);
+        Button klarBtn = (Button)view.findViewById(R.id.klar);
+        klarBtn.setOnClickListener(this);
+        Button AvbrytBtn = (Button)view.findViewById(R.id.avbryt);
+        AvbrytBtn.setOnClickListener(this);
         return view;
     }
 
@@ -29,8 +33,9 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
         switch(v.getId()){
             case R.id.klar:
-                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
 
+                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
+                Log.d("Case", "klar");
                 //int id = item.getItemId();
                 fragment = new AnnonsFragment();
                 fm.replace(R.id.content, fragment);
@@ -39,6 +44,18 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 //fm.addToBackStack(this); //Kan vara bra för när man ska stänga formuläret./koppla formuläret mot annonssidan.
 
                 break;
+
+            case R.id.avbryt:
+
+                Log.d("Case", "avbryt");
+                //int id = item.getItemId();
+                fragment = new AnnonsFragment();
+                fm.replace(R.id.content, fragment);
+                fm.commit();
+
+                break;
         }
     }
+
+
 }

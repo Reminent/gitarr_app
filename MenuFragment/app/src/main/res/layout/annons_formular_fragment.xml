@@ -97,6 +97,6 @@
         android:id="@+id/avbryt"
         android:layout_gravity="left"
         android:layout_alignTop="@+id/klar"
-        ></Button>
+        />
 
 </RelativeLayout>
