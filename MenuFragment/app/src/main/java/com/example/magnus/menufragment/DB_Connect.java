@@ -66,3 +66,37 @@ public class DB_Connect extends AsyncTask<String, Void, String> {
         return new String(buffer);
     }
 }
+
+/*
+För att anropa databasen så använd denna kod i onClick:
+--------------------------------------------------------------
+String stringUrl = "http://reminent.no-ip.org/slimapi/public/json";
+                ConnectivityManager connMgr = (ConnectivityManager)
+                        getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    try{
+                        EkoGet task = new EkoGet();
+                        task.execute(stringUrl);
+                    } catch(Throwable e){
+                    }
+                } else {
+                    textView.setText("No network connection available.");
+                }
+--------------------------------------------------------------
+
+Sedan så måste man copy pasta in denna del i botten av classen:
+--------------------------------------------------------------
+private class EkoGet extends DB_Connect{
+        @Override
+        protected void onPostExecute(String result) {
+            textView.setText(result);
+        }
+    }
+--------------------------------------------------------------
+Det som behöver ändras är i andra delen på första raden så byter man "EkoGet" till ett passande namn och sedan byter man
+även "EkoGet task = new EkoGet();" i första delen till samma namn. Svaret får man i andra stycket på onPostExecute, det
+är också där som den nya koden ska in med parsande av XML resultatet, ändring av texter osv. StringURL i första stycket
+är den URL som ni ska hämta data från.
+Fråga Oskar eller Magnus vid frågor.
+ */
