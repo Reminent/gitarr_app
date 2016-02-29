@@ -7,23 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link nyInkomstFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link nyInkomstFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class nyInkomstFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-    public nyInkomstFragment() {
-        // Required empty public constructor
-    }
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
