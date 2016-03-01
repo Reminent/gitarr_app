@@ -4,11 +4,14 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.w3c.dom.Document;
@@ -20,6 +23,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,11 +31,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class EkonomiFragment extends android.support.v4.app.Fragment {
     private TextView textView;
+    private ListView listView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ekonomi_fragment, container, false);
         textView = (TextView) view.findViewById(R.id.test_textView);
+        //listView = (ListView) view.findViewById(R.id.list);
         Button button = (Button) view.findViewById(R.id.Ekonomi_Button_Ny_Inkommst);
         Button button1 = (Button) view.findViewById(R.id.Ekonomi_Button_Ny_Utgift);
 
@@ -58,7 +64,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrServerAPI/webresources/webservices.product";
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrWebbservices/webresources/webresources.product";
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -79,25 +85,25 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
     private class EkoGet extends DB_Connect{
         @Override
         protected void onPostExecute(String result) {
-            Advert_Parse add_par = new Advert_Parse();
-            ArrayList<Advert> adds = null;
 
+            List<Advert> advert = null;
 
             try {
-                adds = add_par.parseXML(result);
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                Advert_Parse parser = new Advert_Parse();
+                advert = parser.parse(result);
 
-            String test = "test: ";
-            Iterator<Advert> it = adds.iterator();
-            while(it.hasNext()){
-                Advert tmp = it.next();
-                test = test + "genre" + tmp.getGenre();
+                String s = advert.get(0).getProductName();
+
+                s = s + " " + advert.get(0).getGenre();
+
+                //String s = "fsdazsdgdfs";
+                textView.setText(s);
+
+                //ArrayAdapter<Advert> adapter = new ArrayAdapter<Advert>(this, R.layout.ekonomi_fragment, advert);
+                //listView.setAdapter(adapter);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            textView.setText(test);
         }
     }
 }
