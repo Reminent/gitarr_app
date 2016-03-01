@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class EkonomiFragment extends android.support.v4.app.Fragment implements View.OnClickListener{
+
     @Nullable
 
     View view;
