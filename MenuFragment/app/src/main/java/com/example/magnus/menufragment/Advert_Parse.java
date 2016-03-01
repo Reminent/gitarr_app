@@ -12,59 +12,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Advert_Parse {
+
     /*
-    public ArrayList<Advert> parseXML (String results)
+    public List<Advert> parse (String results)
             throws XmlPullParserException, IOException
     {
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         factory.setNamespaceAware(true);
-        XmlPullParser xpp = factory.newPullParser();
-        ArrayList<Advert> adds = null;
+        XmlPullParser parser = factory.newPullParser();
+
+        List<Advert> adverts = null;
         Advert advert = null;
 
-        xpp.setInput(new StringReader(results));
-        int eventType = xpp.getEventType();
+        parser.setInput(new StringReader(results));
+        int eventType = parser.getEventType();
         while (eventType != XmlPullParser.END_DOCUMENT) {
             String name = null;
 
             switch(eventType) {
                 case XmlPullParser.START_DOCUMENT:
-                    adds = new ArrayList();
+                    advert = new Advert();
                     break;
                 case XmlPullParser.START_TAG:
-                    name = xpp.getName();
+                    name = parser.getName();
                     if (name == "product") {
                         advert = new Advert();
                     } else if (advert != null) {
                         if (name == "genre") {
-                            advert.setGenre(xpp.nextText());
+                            advert.setGenre(parser.nextText());
                         } else if (name == "imageURl") {
-                            advert.setImageURl(xpp.nextText());
+                            advert.setImageURl(parser.nextText());
                         } else if (name == "imageId") {
-                            advert.setImageId(xpp.nextText());
+                            advert.setImageId(parser.nextText());
                         } else if (name == "title") {
-                            advert.setTitle(xpp.nextText());
+                            advert.setTitle(parser.nextText());
                         } else if (name == "manufacturer") {
-                            advert.setManufacturer(xpp.nextText());
+                            advert.setManufacturer(parser.nextText());
                         } else if (name == "productName") {
-                            advert.setProductName(xpp.nextText());
+                            advert.setProductName(parser.nextText());
                         } else if (name == "productId") {
-                            advert.setProductId(xpp.nextText());
+                            advert.setProductId(parser.nextText());
                         }
                     }
                     break;
                 case XmlPullParser.END_TAG:
-                    name = xpp.getName();
+                    name = parser.getName();
 
                     if (name.equalsIgnoreCase("product") && advert != null) {
-                        adds.add(advert);
+                        adverts.add(advert);
                     }
                     break;
             }
-            eventType = xpp.next();
+            eventType = parser.next();
         }
-        return adds;
-    }*/
+        return adverts;
+    }
+    */
 
     //Nytt
 
@@ -87,15 +90,15 @@ public class Advert_Parse {
             factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             parser = factory.newPullParser();
-            //parser.setInput(is, null);
+            parser.setInput(new StringReader(is));
 
             int eventType = parser.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 String tagname = parser.getName();
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
-                        if (tagname.equalsIgnoreCase("product")) {
-                            // create a new instance of employee
+                        if (tagname.equalsIgnoreCase("products")) {
+                            // create a new instance of adverts
                             advert = new Advert();
                         }
                         break;
@@ -105,8 +108,8 @@ public class Advert_Parse {
                         break;
 
                     case XmlPullParser.END_TAG:
-                        if (tagname.equalsIgnoreCase("product")) {
-                            // add employee object to list
+                        if (tagname.equalsIgnoreCase("products")) {
+                            // add advert object to list
                             adverts.add(advert);
                         } else if (tagname.equalsIgnoreCase("genre")) {
                             advert.setGenre(text);

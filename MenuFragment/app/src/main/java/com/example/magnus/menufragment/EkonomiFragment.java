@@ -37,7 +37,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ekonomi_fragment, container, false);
         textView = (TextView) view.findViewById(R.id.test_textView);
-        listView = (ListView) view.findViewById(R.id.list);
+        //listView = (ListView) view.findViewById(R.id.list);
         Button button = (Button) view.findViewById(R.id.Ekonomi_Button_Ny_Inkommst);
         Button button1 = (Button) view.findViewById(R.id.Ekonomi_Button_Ny_Utgift);
 
@@ -64,7 +64,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrServerAPI/webresources/webservices.product";
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrWebbservices/webresources/webresources.product";
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -87,34 +87,23 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         protected void onPostExecute(String result) {
 
             List<Advert> advert = null;
+
             try {
                 Advert_Parse parser = new Advert_Parse();
                 advert = parser.parse(result);
-                ArrayAdapter<Advert> adapter = new ArrayAdapter<Advert>(this, android.R.layout.simple_list_item_1, advert);
-                listView.setAdapter(adapter);
-            } catch (IOException e) {
+
+                String s = advert.get(0).getProductName();
+
+                s = s + " " + advert.get(0).getGenre();
+
+                //String s = "fsdazsdgdfs";
+                textView.setText(s);
+
+                //ArrayAdapter<Advert> adapter = new ArrayAdapter<Advert>(this, R.layout.ekonomi_fragment, advert);
+                //listView.setAdapter(adapter);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            /*
-            Advert_Parse add_par = new Advert_Parse();
-            ArrayList<Advert> adds = null;
-
-            try {
-                adds = add_par.parseXML(result);
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            String test = "test: ";
-            Iterator<Advert> it = adds.iterator();
-            while(it.hasNext()){
-                Advert tmp = it.next();
-                test = test + "genre" + tmp.getGenre();
-            }*/
-            //textView.setText(result);
         }
     }
 }

@@ -189,12 +189,12 @@
             android:gravity="center"
             android:id="@+id/Ekonomi_Button_Ny_Utgift"
             android:text="Ny utgift"/>
-
+<!--
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
+-->
     </LinearLayout>
 
 </RelativeLayout>
