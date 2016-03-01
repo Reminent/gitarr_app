@@ -25,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class AnnonsFormularFragment extends android.support.v4.app.Fragment implements View.OnClickListener{
     @Nullable
@@ -59,7 +61,14 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
     private void takePhoto(View v){
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"picture.jpg"); //change so it will not override picture.jpg
+
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time =&gt; "+c.getTime());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+        //Now formattedDate has current date/time
+
+        File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),formattedDate + ".jpg");
         imageUri = Uri.fromFile(photo);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(intent, TAKE_PICTURE); //We are passing in number 1, which is a request code  == main camera.
@@ -119,7 +128,6 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 // Store EditText in Variable
                 String beskrivningStr = inputTxtBeskrivning.getText().toString();
                 Log.d("Beskrivningsträng", beskrivningStr);
-
 
                 getFragmentManager().popBackStack();
                 fm.commit();
