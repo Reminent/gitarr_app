@@ -82,7 +82,6 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
             Advert_Parse add_par = new Advert_Parse();
             ArrayList<Advert> adds = null;
 
-
             try {
                 adds = add_par.parseXML(result);
             } catch (XmlPullParserException e) {
