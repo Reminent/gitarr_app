@@ -176,14 +176,16 @@
             android:layout_weight="1"
             android:gravity="center"
             android:id="@+id/nyinkomst"
-            android:layout_alignParentBottom="true"
             android:text="Ny inkomst"
+            android:layout_alignParentBottom="true"
+
             />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:id="@+id/nyutgift"
             android:text="Ny utgift"/>
 
     </LinearLayout>

@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
-            android:text="Utfört arbete" />
+            android:text="Utgiftskälla" />
 
         <EditText
             android:id="@+id/txtInkomst"
@@ -51,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
-            android:text="Kund" />
+            android:text="Inköpt vara" />
 
         <EditText
             android:id="@+id/txtKund"
@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="5"
-                android:text="Lagra inkomst" />
+                android:text="Lagra utgift" />
 
             <Button
                 android:id="@+id/btnStop"
@@ -116,14 +116,6 @@
                 android:layout_height="wrap_content"
                 android:ems="5"
                 android:text="Avbryt nu" />
-
-            <Button
-                android:id="@+id/btnDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:text="Date naow"
-                android:onClick="showDatePickerDialog"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
