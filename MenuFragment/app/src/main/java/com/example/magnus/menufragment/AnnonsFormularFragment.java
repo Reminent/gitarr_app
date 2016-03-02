@@ -30,9 +30,9 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
     @Nullable
 
     private static String logtag = "CameraApp8";
-    private static int TAKE_PICTURE = 1;
+    private static final int TAKE_PICTURE = 1;
     private Uri imageUri;
-
+    private static final int SELECT_PICTURE = 2;
 
     View view;
     @Override
@@ -45,25 +45,19 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         Button AvbrytBtn = (Button)view.findViewById(R.id.avbryt);
         AvbrytBtn.setOnClickListener(this);
 
+
         ImageButton kameraBtn = (ImageButton)view.findViewById(R.id.kamerasymbol);
-        kameraBtn.setOnClickListener(cameraListener);
+        kameraBtn.setOnClickListener(this);
 
         ImageButton galleriBtn = (ImageButton)view.findViewById(R.id.gallerisymbol);
         galleriBtn.setOnClickListener(this);
 
         return view;
     }
-    private View.OnClickListener cameraListener = new View.OnClickListener(){
-        public void onClick(View v){
-            takePhoto(v);
-        }
-    };
 
     private void takePhoto(View v){
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-
         Calendar c = Calendar.getInstance();
-        System.out.println("Current time =&gt; "+c.getTime());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String formattedDate = df.format(c.getTime());
         //Now formattedDate has current date/time
@@ -78,23 +72,37 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
 
-        if(resultCode == Activity.RESULT_OK){ //If clicked ok
-            Uri selectedImage = imageUri;
+        ImageView imageView = (ImageView)view.findViewById(R.id.image_camera);
 
-            getActivity().getContentResolver().notifyChange(selectedImage, null);
-            ImageView imageView = (ImageView)view.findViewById(R.id.image_camera);
-            ContentResolver cr = getActivity().getContentResolver();
-            Bitmap bitmap;
+        switch (requestCode) {
+            case TAKE_PICTURE:
+                Log.d("inside ta bild", "inside1");
+                Uri selectedImage = imageUri;
 
-            try{
-                bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
-                imageView.setImageBitmap(bitmap);
-                Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
-            }catch (Exception e){
-                Log.e(logtag, e.toString());
-            }
+                getActivity().getContentResolver().notifyChange(selectedImage, null);
+                ContentResolver cr = getActivity().getContentResolver();
+                Bitmap bitmap;
+
+                try{
+                    bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
+                    imageView.setImageBitmap(bitmap);
+                    Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
+                }catch (Exception e){
+                    Log.e(logtag, e.toString());
+                }
+                break;
+
+            case SELECT_PICTURE:
+                //Log.d("inside välj bild", "inside2");
+                Uri selectedImage2 = intent.getData();
+                imageView.setImageURI(selectedImage2);
+
+                break;
+
+            default:
+                Log.d("fail", "onActResult failed case failed.");
+                break;
         }
-
     }
 
 
@@ -106,7 +114,6 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
             case R.id.klar:
 
                 //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
-
                 // get EditText by id
                 EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel);
                 // Store EditText in Variable
@@ -138,12 +145,11 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 getFragmentManager().popBackStack();
                 fm.commit();
 
-
-
                 break;
             case R.id.kamerasymbol:
+                takePhoto(v);
 
-                ((TextView)view.findViewById(R.id.taKort)).setText("Beep!");
+               // ((TextView)view.findViewById(R.id.taKort)).setText("Beep!");
 
                 //Log.d("Case", "avbryt");
                 //int id = item.getItemId();
@@ -155,9 +161,12 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 break;
             case R.id.gallerisymbol:
 
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//opens gallery
+                startActivityForResult(galleryIntent, SELECT_PICTURE); //allows to get back image
+
                 //Log.d("Case", "avbryt");
                 //int id = item.getItemId();
-                ((TextView)view.findViewById(R.id.väljBild)).setText("Boop!");
+                //((TextView)view.findViewById(R.id.väljBild)).setText("Boop!");
 
                // fragment = new AnnonsFragment();
                // fm.replace(R.id.content, fragment);
