@@ -86,21 +86,13 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         @Override
         protected void onPostExecute(String result) {
 
-            List<Advert> advert = null;
-
+            List<Advert> advert = new ArrayList<>();
             try {
                 Advert_Parse parser = new Advert_Parse();
                 advert = parser.parse(result);
-
-                String s = advert.get(0).getProductName();
-
-                s = s + " " + advert.get(0).getGenre();
-
-                //String s = "fsdazsdgdfs";
+                String s = advert.get(1).getProductName();
+                s = s + " " + advert.size();
                 textView.setText(s);
-
-                //ArrayAdapter<Advert> adapter = new ArrayAdapter<Advert>(this, R.layout.ekonomi_fragment, advert);
-                //listView.setAdapter(adapter);
             } catch (Exception e) {
                 e.printStackTrace();
             }

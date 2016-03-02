@@ -13,77 +13,10 @@ import java.util.List;
 
 public class Advert_Parse {
 
-    /*
-    public List<Advert> parse (String results)
-            throws XmlPullParserException, IOException
-    {
-        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-        factory.setNamespaceAware(true);
-        XmlPullParser parser = factory.newPullParser();
-
-        List<Advert> adverts = null;
-        Advert advert = null;
-
-        parser.setInput(new StringReader(results));
-        int eventType = parser.getEventType();
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            String name = null;
-
-            switch(eventType) {
-                case XmlPullParser.START_DOCUMENT:
-                    advert = new Advert();
-                    break;
-                case XmlPullParser.START_TAG:
-                    name = parser.getName();
-                    if (name == "product") {
-                        advert = new Advert();
-                    } else if (advert != null) {
-                        if (name == "genre") {
-                            advert.setGenre(parser.nextText());
-                        } else if (name == "imageURl") {
-                            advert.setImageURl(parser.nextText());
-                        } else if (name == "imageId") {
-                            advert.setImageId(parser.nextText());
-                        } else if (name == "title") {
-                            advert.setTitle(parser.nextText());
-                        } else if (name == "manufacturer") {
-                            advert.setManufacturer(parser.nextText());
-                        } else if (name == "productName") {
-                            advert.setProductName(parser.nextText());
-                        } else if (name == "productId") {
-                            advert.setProductId(parser.nextText());
-                        }
-                    }
-                    break;
-                case XmlPullParser.END_TAG:
-                    name = parser.getName();
-
-                    if (name.equalsIgnoreCase("product") && advert != null) {
-                        adverts.add(advert);
-                    }
-                    break;
-            }
-            eventType = parser.next();
-        }
-        return adverts;
-    }
-    */
-
-    //Nytt
-
-    List<Advert> adverts;
-    private Advert advert;
-    private String text;
-
-    public Advert_Parse() {
-        adverts = new ArrayList<Advert>();
-    }
-
-    public List<Advert> getAdverts() {
-        return adverts;
-    }
-
     public List<Advert> parse(String is) {
+        List<Advert> adverts = new ArrayList();
+        Advert advert = new Advert();
+        String text = "";
         XmlPullParserFactory factory = null;
         XmlPullParser parser = null;
         try {
@@ -97,7 +30,7 @@ public class Advert_Parse {
                 String tagname = parser.getName();
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
-                        if (tagname.equalsIgnoreCase("products")) {
+                        if (tagname.equalsIgnoreCase("product")) {
                             // create a new instance of adverts
                             advert = new Advert();
                         }
@@ -108,7 +41,7 @@ public class Advert_Parse {
                         break;
 
                     case XmlPullParser.END_TAG:
-                        if (tagname.equalsIgnoreCase("products")) {
+                        if (tagname.equalsIgnoreCase("product")) {
                             // add advert object to list
                             adverts.add(advert);
                         } else if (tagname.equalsIgnoreCase("genre")) {
@@ -127,13 +60,12 @@ public class Advert_Parse {
                             advert.setProductId(text);
                         }
                         break;
-
                     default:
                         break;
                 }
                 eventType = parser.next();
+                eventType = parser.getEventType();
             }
-
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         } catch (IOException e) {
