@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+import com.example.magnus.menufragment.XML_Parsing.Product;
+import com.example.magnus.menufragment.XML_Parsing.Product_Parse;
+
 import java.util.List;
 
 
@@ -67,7 +71,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-    private class EkoGet extends DB_Connect{
+    private class EkoGet extends DB_Connect {
         @Override
         protected void onPostExecute(String result) {
 

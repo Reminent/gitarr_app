@@ -1,7 +1,8 @@
-package com.example.magnus.menufragment;
+package com.example.magnus.menufragment.XML_Parsing;
 
 public class Product {
     private String genre;
+    private String imageTitle;
     private String imageURl;
     private String imageId;
     private String title;
@@ -15,6 +16,14 @@ public class Product {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public String getImageTitle() {
+        return imageTitle;
+    }
+
+    public void setImageTitle(String imageTitle) {
+        this.imageTitle = imageTitle;
     }
 
     public String getImageURl() {

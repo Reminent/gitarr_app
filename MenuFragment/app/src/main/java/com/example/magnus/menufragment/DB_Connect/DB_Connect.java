@@ -1,4 +1,4 @@
-package com.example.magnus.menufragment;
+package com.example.magnus.menufragment.DB_Connect;
 
 import android.os.AsyncTask;
 import android.util.Log;
