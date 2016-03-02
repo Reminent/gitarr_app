@@ -27,7 +27,7 @@ public class DB_Connect extends AsyncTask<String, Void, String> {
 
     private String downloadUrl(String myurl) throws IOException {
         InputStream is = null;
-        int len = 500;
+        int len = 1000;
 
         try {
             URL url = new URL(myurl);

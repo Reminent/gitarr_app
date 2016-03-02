@@ -1,6 +1,6 @@
 package com.example.magnus.menufragment;
 
-public class Advert {
+public class Product {
     private String genre;
     private String imageURl;
     private String imageId;
