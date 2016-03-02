@@ -4,14 +4,12 @@ package com.example.magnus.menufragment;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +37,8 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
         view = inflater.inflate(R.layout.annons_formular_fragment, container, false);
         Button klarBtn = (Button)view.findViewById(R.id.klar);
         klarBtn.setOnClickListener(this);
@@ -70,34 +70,26 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
         File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),formattedDate + ".jpg");
         imageUri = Uri.fromFile(photo);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri); //puts it in the gallery
         startActivityForResult(intent, TAKE_PICTURE); //We are passing in number 1, which is a request code  == main camera.
     }
 
-    //Osäkert om det funkar, kan inte göra som vanligt eftersom att man inte kan extenda två klasser (extends Activity saknas) Se rad (***)
-    Context context;
-    public void ContactManager (Context context) {
-        this.context = context;
-    }
-
-
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent){ //should be protected, but that doesnt work.
-        onActivityResult(requestCode, resultCode, intent); //super.
+    public void onActivityResult(int requestCode, int resultCode, Intent intent){
+        super.onActivityResult(requestCode, resultCode, intent);
 
-        if(resultCode == Activity.RESULT_OK){
+        if(resultCode == Activity.RESULT_OK){ //If clicked ok
             Uri selectedImage = imageUri;
-            context.getContentResolver().notifyChange(selectedImage, null); //*** "contect." var inte med i guiden.
 
-            ImageView imageView = (ImageView)view.findViewById(R.id.image_camera); //changed, view.
-            ContentResolver cr = context.getContentResolver(); //changed, context.
+            getActivity().getContentResolver().notifyChange(selectedImage, null);
+            ImageView imageView = (ImageView)view.findViewById(R.id.image_camera);
+            ContentResolver cr = getActivity().getContentResolver();
             Bitmap bitmap;
 
             try{
-
                 bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                 imageView.setImageBitmap(bitmap);
-                Toast.makeText(context, selectedImage.toString(), Toast.LENGTH_LONG).show(); //ändrad //context -> mainactivity
+                Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
             }catch (Exception e){
                 Log.e(logtag, e.toString());
             }
@@ -108,7 +100,6 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
     @Override
     public void onClick(View v) {
-        Fragment fragment;
         FragmentTransaction fm = getFragmentManager().beginTransaction();
 
         switch(v.getId()){
