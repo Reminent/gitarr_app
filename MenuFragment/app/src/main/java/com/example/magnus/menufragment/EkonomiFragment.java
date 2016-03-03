@@ -26,13 +26,11 @@ import java.util.List;
 
 public class EkonomiFragment extends android.support.v4.app.Fragment {
     private TextView textView;
-    private ListView listView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ekonomi_fragment, container, false);
         textView = (TextView) view.findViewById(R.id.test_textView);
-        //listView = (ListView) view.findViewById(R.id.list);
         Button button = (Button) view.findViewById(R.id.Ekonomi_Button_Ny_Inkommst);
         Button button1 = (Button) view.findViewById(R.id.Ekonomi_Button_Ny_Utgift);
 
@@ -94,12 +92,10 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
 
                 //s = s + " " + advert.get(0).getGenre();
 
-
                 for(Consultation model : consultation) {
                     s += " " + model.getConsultationid();
                     s += " " + model.getCustomerName();
                 }
-
 
                 textView.setText(s);
                 //textView.setText(advert.size());
@@ -121,12 +117,10 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
 
                 //s = s + " " + advert.get(0).getGenre();
 
-
                 for(Inventory model : inventory) {
                     s += " " + model.getInventoryQuantity();
                     s += " " + model.getGenre();
                 }
-
 
                 textView.setText(s);
                 //textView.setText(advert.size());
@@ -148,11 +142,9 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
 
                 //s = s + " " + advert.get(0).getGenre();
 
-
                 for(Advert model : advert) {
                     s += " " + model.getAdvertTitle();
                 }
-
 
                 textView.setText(s);
                 //textView.setText(advert.size());
@@ -174,11 +166,9 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
 
                 //s = s + " " + advert.get(0).getGenre();
 
-
                 for(Product model : product) {
                     s += " " + model.getProductName();
                 }
-
 
                 textView.setText(s);
                 //textView.setText(advert.size());
