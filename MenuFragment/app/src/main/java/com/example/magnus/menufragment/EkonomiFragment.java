@@ -20,6 +20,10 @@ import com.example.magnus.menufragment.XML_Parsing.Inventory;
 import com.example.magnus.menufragment.XML_Parsing.Inventory_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Product;
 import com.example.magnus.menufragment.XML_Parsing.Product_Parse;
+import com.example.magnus.menufragment.XML_Parsing.Transaction;
+import com.example.magnus.menufragment.XML_Parsing.TransactionProduct;
+import com.example.magnus.menufragment.XML_Parsing.TransactionProduct_Parse;
+import com.example.magnus.menufragment.XML_Parsing.Transaction_Parse;
 
 import java.util.List;
 
@@ -57,7 +61,8 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.inventory";
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.transactionproduct";
+
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -144,30 +149,6 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
 
                 for(Advert model : advert) {
                     s += " " + model.getAdvertTitle();
-                }
-
-                textView.setText(s);
-                //textView.setText(advert.size());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            */
-            /*
-            // Product
-
-            List<Product> product = null;
-
-            try {
-                Product_Parse parser = new Product_Parse();
-                product = parser.parse(result);
-
-                String s = "";
-                //String s = advert.get(1).getProductName();
-
-                //s = s + " " + advert.get(0).getGenre();
-
-                for(Product model : product) {
-                    s += " " + model.getProductName();
                 }
 
                 textView.setText(s);
