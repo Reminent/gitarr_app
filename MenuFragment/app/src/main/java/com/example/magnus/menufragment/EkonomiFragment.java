@@ -12,6 +12,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+import com.example.magnus.menufragment.XML_Parsing.Advert;
+import com.example.magnus.menufragment.XML_Parsing.Advert_Parse;
+import com.example.magnus.menufragment.XML_Parsing.Consultation;
+import com.example.magnus.menufragment.XML_Parsing.Consultation_Parse;
+import com.example.magnus.menufragment.XML_Parsing.Inventory;
+import com.example.magnus.menufragment.XML_Parsing.Inventory_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Product;
 import com.example.magnus.menufragment.XML_Parsing.Product_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Transaction;
@@ -24,20 +30,18 @@ import java.util.List;
 
 public class EkonomiFragment extends android.support.v4.app.Fragment {
     private TextView textView;
-    private ListView listView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ekonomi_fragment, container, false);
         textView = (TextView) view.findViewById(R.id.test_textView);
-        //listView = (ListView) view.findViewById(R.id.list);
         Button button = (Button) view.findViewById(R.id.Ekonomi_Button_Ny_Inkommst);
         Button button1 = (Button) view.findViewById(R.id.Ekonomi_Button_Ny_Utgift);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrWebbservices/webresources/webresources.product";
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation";
 
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -58,6 +62,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.transactionproduct";
+
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -79,28 +84,79 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         @Override
         protected void onPostExecute(String result) {
 
-            List<TransactionProduct> product = null;
+            // Consultation
+
+            List<Consultation> consultation = null;
 
             try {
-                TransactionProduct_Parse parser = new TransactionProduct_Parse();
-                product = parser.parse(result);
+                Consultation_Parse parser = new Consultation_Parse();
+                consultation = parser.parse(result);
 
                 String s = "";
                 //String s = advert.get(1).getProductName();
 
                 //s = s + " " + advert.get(0).getGenre();
 
-
-                for(TransactionProduct model : product) {
-                    s += " " + model.getTransactionAmount();
+                for(Consultation model : consultation) {
+                    s += " " + model.getConsultationid();
+                    s += " " + model.getCustomerName();
                 }
-
 
                 textView.setText(s);
                 //textView.setText(advert.size());
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            /*
+            // Inventory
+
+            List<Inventory> inventory = null;
+
+            try {
+                Inventory_Parse parser = new Inventory_Parse();
+                inventory = parser.parse(result);
+
+                String s = "";
+                //String s = advert.get(1).getProductName();
+
+                //s = s + " " + advert.get(0).getGenre();
+
+                for(Inventory model : inventory) {
+                    s += " " + model.getInventoryQuantity();
+                    s += " " + model.getGenre();
+                }
+
+                textView.setText(s);
+                //textView.setText(advert.size());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            */
+            /*
+            // Advert
+
+            List<Advert> advert = null;
+
+            try {
+                Advert_Parse parser = new Advert_Parse();
+                advert = parser.parse(result);
+
+                String s = "";
+                //String s = advert.get(1).getProductName();
+
+                //s = s + " " + advert.get(0).getGenre();
+
+                for(Advert model : advert) {
+                    s += " " + model.getAdvertTitle();
+                }
+
+                textView.setText(s);
+                //textView.setText(advert.size());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            */
         }
     }
 }
