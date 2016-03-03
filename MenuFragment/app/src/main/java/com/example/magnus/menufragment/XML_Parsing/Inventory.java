@@ -1,15 +1,33 @@
 package com.example.magnus.menufragment.XML_Parsing;
 
-public class Product {
+public class Inventory {
+    private String inventoryQuantity;
+    private String inventoryid;
     private String genre;
     private String imageTitle;
-    private String imageURl;
-    private String imageId;
+    private String imageUrl;
+    private String imageid;
     private String manufacturer;
     private String productName;
-    private String productId;
+    private String productid;
     private String purchasePrice;
     private String sellingPrice;
+
+    public String getInventoryQuantity() {
+        return inventoryQuantity;
+    }
+
+    public void setInventoryQuantity(String inventoryQuantity) {
+        this.inventoryQuantity = inventoryQuantity;
+    }
+
+    public String getInventoryid() {
+        return inventoryid;
+    }
+
+    public void setInventoryid(String inventoryid) {
+        this.inventoryid = inventoryid;
+    }
 
     public String getGenre() {
         return genre;
@@ -27,20 +45,20 @@ public class Product {
         this.imageTitle = imageTitle;
     }
 
-    public String getImageURl() {
-        return imageURl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageURl(String imageURl) {
-        this.imageURl = imageURl;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public String getImageId() {
-        return imageId;
+    public String getImageid() {
+        return imageid;
     }
 
-    public void setImageId(String imageId) {
-        this.imageId = imageId;
+    public void setImageid(String imageid) {
+        this.imageid = imageid;
     }
 
     public String getManufacturer() {
@@ -59,12 +77,12 @@ public class Product {
         this.productName = productName;
     }
 
-    public String getProductId() {
-        return productId;
+    public String getProductid() {
+        return productid;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setProductid(String productid) {
+        this.productid = productid;
     }
 
     public String getPurchasePrice() {
