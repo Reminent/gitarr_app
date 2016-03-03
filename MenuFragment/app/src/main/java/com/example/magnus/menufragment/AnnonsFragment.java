@@ -36,9 +36,10 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
         String testSUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert";
         testAG.execute(testSUrl);
 
+        /*
         advertTitle2 = (TextView)view.findViewById(R.id.annons_titel_2);
         advertTitle10 = (TextView)view.findViewById(R.id.annons_titel_10);
-
+        */
         return view;
 
     }

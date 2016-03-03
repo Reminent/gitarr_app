@@ -9,7 +9,7 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="top"
         android:layout_weight="1"
         tools:context="com.example.magnus.menufragment.MainActivity">
@@ -18,160 +18,56 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <LinearLayout
-                android:paddingTop="10dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/annons_layout_5">
 
-                <TextView
-                    android:id="@+id/annons_titel_1"
-                    android:textSize="20sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Titel"
-                    android:layout_gravity="top|center"
-                    android:singleLine="false" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:id="@+id/annons_layout_5">
 
                 <ImageView
                     android:id="@+id/annons_image_1"
-                    android:layout_width="match_parent"
+                    android:paddingLeft="20dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/guitar2"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
                 <TextView
-                    android:id="@+id/annons_beskrivning_8"
-                    android:layout_width="match_parent"
+                    android:paddingTop="10dp"
+                    android:id="@+id/annons_titel_1"
+                    android:textSize="13dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Beskrivning av din gitar"
-                    android:gravity="center"
-                    />
-            </LinearLayout>
+                    android:gravity="left"
+                    android:text="Titel"
+                    android:layout_gravity="top|center"
+                    android:singleLine="false" />
 
-            <LinearLayout
-                android:paddingTop="10dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/annons_layout_2">
 
-                <TextView
-                    android:id="@+id/annons_titel_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:text="Titel för din gitar"
-                    android:layout_gravity="center|top"/>
 
-                <ImageView
-                    android:id="@+id/annons_image_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/guitar1"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-                <TextView
-                    android:id="@+id/annons_beskrivning_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Beskrivning av din gitar"
-                    android:gravity="center"
-                    />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="match_parent">
 
-            </LinearLayout>
+                    <Button
+                        android:textSize="15dp"
+                        android:layout_width="100dp"
+                        android:layout_height="45dp"
+                        android:gravity="center"
+                        android:id="@+id/redigera"
+                        android:text="redigera"/>
+                    <Button
+                        android:textSize="15dp"
+                        android:layout_width="100dp"
+                        android:layout_height="45dp"
+                        android:gravity="center"
+                        android:id="@+id/ta_bort"
+                        android:text="ta bort"/>
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:paddingTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/annons_layout_3">
-
-                <TextView
-                    android:id="@+id/annons_titel_10"
-                    android:textSize="20sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Titel för din gitar"
-                    android:layout_gravity="center|top"/>
-
-                <ImageView
-                    android:id="@+id/annons_image_99"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/guitar3"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-                <TextView
-                    android:id="@+id/annons_beskrivning_6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Beskrivning av din gitar"
-                    android:gravity="center"
-                    />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/guitar3"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Beskrivning av din gitar"
-                    android:gravity="center"
-                    />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/guitar3"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Beskrivning av din gitar"
-                    android:gravity="center"
-                    />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/guitar3"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Beskrivning av din gitar"
-                    android:gravity="center"
-                    />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/guitar3"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Beskrivning av din gitar"
-                    android:gravity="center"
-                    />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/guitar3"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Beskrivning av din gitar"
-                    android:gravity="center"
-                    />
+                </LinearLayout>
 
             </LinearLayout>
 
