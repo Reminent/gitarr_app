@@ -95,9 +95,13 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
             case SELECT_PICTURE: //runs even if i click back button
                 Log.d("inside välj bild", "inside2");
-                selectedImage = intent.getData(); //crashes when clicked back on gallery here.
-                imageView.setImageURI(selectedImage);
 
+                try {
+                    selectedImage = intent.getData(); //crashes when clicked back on gallery here.
+                    imageView.setImageURI(selectedImage);
+                } catch (Exception e){
+                    Log.e(logtag, e.toString());
+                }
                 break;
 
             default:
