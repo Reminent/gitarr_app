@@ -33,6 +33,8 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
     private static final int TAKE_PICTURE = 1;
     private Uri imageUri;
     private static final int SELECT_PICTURE = 2;
+    private Uri selectedImage;
+
 
     View view;
     @Override
@@ -73,11 +75,10 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         super.onActivityResult(requestCode, resultCode, intent);
 
         ImageView imageView = (ImageView)view.findViewById(R.id.image_camera);
-
         switch (requestCode) {
             case TAKE_PICTURE:
                 Log.d("inside ta bild", "inside1");
-                Uri selectedImage = imageUri;
+                selectedImage = imageUri;
 
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
                 ContentResolver cr = getActivity().getContentResolver();
@@ -92,10 +93,10 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 }
                 break;
 
-            case SELECT_PICTURE:
-                //Log.d("inside välj bild", "inside2");
-                Uri selectedImage2 = intent.getData();
-                imageView.setImageURI(selectedImage2);
+            case SELECT_PICTURE: //runs even if i click back button
+                Log.d("inside välj bild", "inside2");
+                selectedImage = intent.getData(); //crashes when clicked back on gallery here.
+                imageView.setImageURI(selectedImage);
 
                 break;
 
@@ -118,14 +119,17 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel);
                 // Store EditText in Variable
                 String titelStr = inputTxtTitel.getText().toString();
-                Log.d("Titelsträng", titelStr);
+                Log.d("Titelsträng", titelStr); //Skicka titel till databasen
 
 
                 // get EditText by id
                 EditText inputTxtBeskrivning = (EditText)view.findViewById(R.id.editTextBeskrivning);
                 // Store EditText in Variable
                 String beskrivningStr = inputTxtBeskrivning.getText().toString();
-                Log.d("Beskrivningsträng", beskrivningStr);
+                Log.d("Beskrivningsträng", beskrivningStr); //Skicka beskrivning till databasen
+
+                Log.d("Image uri: ", selectedImage.toString()); //Skicka bild till databasen
+
 
                 getFragmentManager().popBackStack();
                 fm.commit();
@@ -172,6 +176,9 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                // fm.replace(R.id.content, fragment);
                // fm.commit();
 
+                break;
+            default:
+                Log.d("Default", "Default case running");
                 break;
         }
     }

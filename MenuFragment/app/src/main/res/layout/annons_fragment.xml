@@ -24,7 +24,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Titel"
-                android:layout_gravity="center|top"/>
+                android:layout_gravity="top|center"
+                android:singleLine="false" />
 
             <ImageView
                 android:id="@+id/annons_image_1"
