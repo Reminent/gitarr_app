@@ -60,7 +60,6 @@
         android:layout_gravity="right"
         android:layout_above="@+id/gallerisymbol"
         android:layout_alignStart="@+id/gallerisymbol" />
-
     <ImageButton
         android:id="@+id/gallerisymbol"
         android:layout_width="75dp"
