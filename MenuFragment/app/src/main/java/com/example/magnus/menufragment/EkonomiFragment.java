@@ -11,6 +11,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+import com.example.magnus.menufragment.XML_Parsing.Product;
+import com.example.magnus.menufragment.XML_Parsing.Product_Parse;
+import com.example.magnus.menufragment.XML_Parsing.Transaction;
+import com.example.magnus.menufragment.XML_Parsing.TransactionProduct;
+import com.example.magnus.menufragment.XML_Parsing.TransactionProduct_Parse;
+import com.example.magnus.menufragment.XML_Parsing.Transaction_Parse;
+
 import java.util.List;
 
 
@@ -49,7 +57,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrWebbservices/webresources/webresources.product";
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.transactionproduct";
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -67,14 +75,14 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-    private class EkoGet extends DB_Connect{
+    private class EkoGet extends DB_Connect {
         @Override
         protected void onPostExecute(String result) {
 
-            List<Product> product = null;
+            List<TransactionProduct> product = null;
 
             try {
-                Product_Parse parser = new Product_Parse();
+                TransactionProduct_Parse parser = new TransactionProduct_Parse();
                 product = parser.parse(result);
 
                 String s = "";
@@ -83,8 +91,8 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                 //s = s + " " + advert.get(0).getGenre();
 
 
-                for(Product model : product) {
-                    s += " " + model.getProductName();
+                for(TransactionProduct model : product) {
+                    s += " " + model.getTransactionAmount();
                 }
 
 

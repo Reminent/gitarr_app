@@ -1,6 +1,8 @@
-package com.example.magnus.menufragment;
+package com.example.magnus.menufragment.XML_Parsing;
 
 import android.util.Xml;
+
+import com.example.magnus.menufragment.XML_Parsing.Product;
 
 import org.xmlpull.v1.XmlPullParser;
 import java.io.StringReader;
