@@ -78,7 +78,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.transactionproduct";
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.product";
 
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -103,20 +103,20 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
 
             // Consultation
 
-            List<Consultation> consultation = null;
+            List<Product> products = null;
 
             try {
-                Consultation_Parse parser = new Consultation_Parse();
-                consultation = parser.parse(result);
+                Product_Parse parser = new Product_Parse();
+                products = parser.parse(result);
 
                 String s = "";
                 //String s = advert.get(1).getProductName();
 
                 //s = s + " " + advert.get(0).getGenre();
 
-                for(Consultation model : consultation) {
-                    s += " " + model.getConsultationid();
-                    s += " " + model.getCustomerName();
+                for(Product model : products) {
+                    s += " " + model.getProductName();
+                    s += " " + model.getSellingPrice();
                 }
 
                 textView.setText(s);
