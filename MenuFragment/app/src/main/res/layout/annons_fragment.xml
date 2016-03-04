@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:gravity="center"
-                android:text="Titel för din gitar(martin suger)"
+                android:text="Titel för din gitarr"
 
                 android:layout_gravity="center|top"/>
 
@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Titel för din gitar"
+                android:text="Titel för din gitarr"
                 android:layout_gravity="center|top"/>
 
             <ImageView
@@ -101,7 +101,7 @@
                 android:id="@+id/annons_beskrivning_6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Beskrivning av din gitar"
+                android:text="Beskrivning av din gitarr"
                 android:gravity="center"
                 />
 

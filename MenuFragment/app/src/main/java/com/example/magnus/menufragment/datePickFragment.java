@@ -1,4 +1,4 @@
-/*package com.example.magnus.menufragment;
+package com.example.magnus.menufragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -52,4 +52,3 @@ public class datePickFragment extends android.support.v4.app.Fragment implements
     }
 
 }
-*/
