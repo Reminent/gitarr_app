@@ -61,8 +61,8 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = df.format(c.getTime());
-        //Now formattedDate has current date/time
+        String formattedDate = df.format(c.getTime()); //Now formattedDate has current date/time
+
 
         File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),formattedDate + ".jpg");
         imageUri = Uri.fromFile(photo);
