@@ -75,7 +75,6 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
             try {
                 Advert_Parse parser = new Advert_Parse();
                 adverts = parser.parse(result);
-
                 String s = "";
                 //String s = advert.get(1).getProductName();
 

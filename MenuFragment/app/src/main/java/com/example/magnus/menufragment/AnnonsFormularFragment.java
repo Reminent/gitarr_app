@@ -138,54 +138,28 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 getFragmentManager().popBackStack();
                 fm.commit();
                 //fm.replace(R.id.content, fragment);
-
                 break;
 
             case R.id.avbryt:
 
-                //Log.d("Case", "avbryt");
-                //int id = item.getItemId();
-                //fragment = new AnnonsFragment();
-                //fm.replace(R.id.content, fragment);
-                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Success!");
-               // fm.addToBackStack(null);
-                //fm.remove(R.id.content);
                 getFragmentManager().popBackStack();
                 fm.commit();
-
                 break;
+
             case R.id.kamerasymbol:
+
                 takePhoto(v);
-
-               // ((TextView)view.findViewById(R.id.taKort)).setText("Beep!");
-
-                //Log.d("Case", "avbryt");
-                //int id = item.getItemId();
-                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
-                //fragment = new AnnonsFragment();
-                //fm.replace(R.id.content, fragment);
-                //fm.commit();
-
                 break;
+
             case R.id.gallerisymbol:
 
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//opens gallery
                 startActivityForResult(galleryIntent, SELECT_PICTURE); //allows to get back image
-
-                //Log.d("Case", "avbryt");
-                //int id = item.getItemId();
-                //((TextView)view.findViewById(R.id.väljBild)).setText("Boop!");
-
-               // fragment = new AnnonsFragment();
-               // fm.replace(R.id.content, fragment);
-               // fm.commit();
-
                 break;
+
             default:
                 Log.d("Default", "Default case running");
                 break;
         }
     }
-
-
 }
