@@ -28,12 +28,13 @@ import java.util.Calendar;
 
 public class AnnonsFormularFragment extends android.support.v4.app.Fragment implements View.OnClickListener{
     @Nullable
-
+    private ContentResolver cr;
     private static String logtag = "CameraApp8";
     private static final int TAKE_PICTURE = 1;
     private Uri imageUri;
     private static final int SELECT_PICTURE = 2;
     private Uri selectedImage;
+    private Bitmap bitmap;
 
 
     View view;
@@ -73,7 +74,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
-
+        cr = getActivity().getContentResolver();
         ImageView imageView = (ImageView)view.findViewById(R.id.image_camera);
         switch (requestCode) {
             case TAKE_PICTURE:
@@ -81,10 +82,9 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 selectedImage = imageUri;
 
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
-                ContentResolver cr = getActivity().getContentResolver();
-                Bitmap bitmap;
 
                 try{
+                    //bitmap ska vara base 64
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                     imageView.setImageBitmap(bitmap);
                     Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
@@ -98,7 +98,8 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
                 try {
                     selectedImage = intent.getData(); //crashes when clicked back on gallery here.
-                    imageView.setImageURI(selectedImage);
+                    bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
+                    imageView.setImageBitmap(bitmap);
                 } catch (Exception e){
                     Log.e(logtag, e.toString());
                 }
@@ -110,46 +111,48 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         }
     }
 
+    private boolean isEmpty(EditText etText) {
+        return etText.getText().toString().trim().length() == 0;
+    }
+
 
     @Override
     public void onClick(View v) {
         FragmentTransaction fm = getFragmentManager().beginTransaction();
-
+        EditText eTextTitel = (EditText)view.findViewById(R.id.editTextTitel);
+        EditText eTextBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning);
         switch(v.getId()){
             case R.id.klar:
+                if(!isEmpty(eTextTitel)&& !isEmpty(eTextBeskrivning) && selectedImage != null) {
 
-                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
-                // get EditText by id
-                EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel);
-                // Store EditText in Variable
-                String titelStr = inputTxtTitel.getText().toString();
-                Log.d("Titelsträng", titelStr); //Skicka titel till databasen
+                    EditText inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel);
+                    String titelStr = inputTxtTitel.getText().toString();
+                    Log.d("Titelsträng", titelStr); //Skicka titel till databasen
 
+                    EditText inputTxtBeskrivning = (EditText) view.findViewById(R.id.editTextBeskrivning);
+                    String beskrivningStr = inputTxtBeskrivning.getText().toString();
+                    Log.d("Beskrivningsträng", beskrivningStr); //Skicka beskrivning till databasen
 
-                // get EditText by id
-                EditText inputTxtBeskrivning = (EditText)view.findViewById(R.id.editTextBeskrivning);
-                // Store EditText in Variable
-                String beskrivningStr = inputTxtBeskrivning.getText().toString();
-                Log.d("Beskrivningsträng", beskrivningStr); //Skicka beskrivning till databasen
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
+                    }catch (Exception e){
+                        Log.e(logtag, e.toString());
+                        Log.d("Du", "Suger");
+                    }
+                    Log.d("Image uri: ", selectedImage.toString()); //Skicka bild till databasen
 
-                Log.d("Image uri: ", selectedImage.toString()); //Skicka bild till databasen
+                    getFragmentManager().popBackStack();
+                    fm.commit();
+                } else {
+                    Toast.makeText(getContext().getApplicationContext(),
+                            "Du måste välja titel, beskrivning och bild" , Toast.LENGTH_LONG).show();
+                }
 
-
-                getFragmentManager().popBackStack();
-                fm.commit();
-                //fm.replace(R.id.content, fragment);
 
                 break;
 
             case R.id.avbryt:
 
-                //Log.d("Case", "avbryt");
-                //int id = item.getItemId();
-                //fragment = new AnnonsFragment();
-                //fm.replace(R.id.content, fragment);
-                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Success!");
-               // fm.addToBackStack(null);
-                //fm.remove(R.id.content);
                 getFragmentManager().popBackStack();
                 fm.commit();
 
@@ -157,32 +160,16 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
             case R.id.kamerasymbol:
                 takePhoto(v);
 
-               // ((TextView)view.findViewById(R.id.taKort)).setText("Beep!");
-
-                //Log.d("Case", "avbryt");
-                //int id = item.getItemId();
-                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
-                //fragment = new AnnonsFragment();
-                //fm.replace(R.id.content, fragment);
-                //fm.commit();
-
                 break;
             case R.id.gallerisymbol:
 
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//opens gallery
                 startActivityForResult(galleryIntent, SELECT_PICTURE); //allows to get back image
 
-                //Log.d("Case", "avbryt");
-                //int id = item.getItemId();
-                //((TextView)view.findViewById(R.id.väljBild)).setText("Boop!");
-
-               // fragment = new AnnonsFragment();
-               // fm.replace(R.id.content, fragment);
-               // fm.commit();
-
                 break;
             default:
                 Log.d("Default", "Default case running");
+
                 break;
         }
     }
