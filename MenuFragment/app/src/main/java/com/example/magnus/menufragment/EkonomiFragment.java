@@ -30,7 +30,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment implements 
         Fragment fragment;
         FragmentTransaction fm = getFragmentManager().beginTransaction();
 
-        switch(v.getId()){
+        switch(v.getId()) {
             case R.id.nyinkomst:
                 //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
 
@@ -49,6 +49,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment implements 
                 fm.commit();
 
                 break;
+
         }
     }
 }
