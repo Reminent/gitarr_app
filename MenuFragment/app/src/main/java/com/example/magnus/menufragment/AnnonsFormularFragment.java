@@ -49,10 +49,10 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         AvbrytBtn.setOnClickListener(this);
 
 
-        ImageButton kameraBtn = (ImageButton)view.findViewById(R.id.kamerasymbol);
+        Button kameraBtn = (Button)view.findViewById(R.id.kamerasymbol);
         kameraBtn.setOnClickListener(this);
 
-        ImageButton galleriBtn = (ImageButton)view.findViewById(R.id.gallerisymbol);
+        Button galleriBtn = (Button)view.findViewById(R.id.gallerisymbol);
         galleriBtn.setOnClickListener(this);
 
         return view;
