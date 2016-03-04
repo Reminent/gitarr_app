@@ -49,10 +49,11 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
 
                 XML_Generate xml_generate = new XML_Generate();
 
-                //xml_generate.imageTest(title, url)
+                String imageUrl = "/testurl/hej";
+                String imageTitle = "GitarrMannen";
 
                 try {
-                    upload.execute(stringUrl);
+                    upload.execute(xml_generate.imageTable(imageTitle, imageUrl), stringUrl);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
