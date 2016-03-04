@@ -19,12 +19,13 @@ public class XML_Generate {
         return xmlAdvert;
     }
 
-    public String consultationTable (String customerName, String customerPhone, String endDateAndTime, String startDateAndTime) {
+    public String consultationTable (String customerName, String customerPhone, String endDateAndTime, String startDateAndTime, String consultationDescripton) {
         String xmlConsultation = "<consultation>\n" +
                 "<customerName>" + customerName + "</customerName>\n" +
                 "<customerPhone>" + customerPhone + "</customerPhone>\n" +
                 "<endDateAndTime>" + endDateAndTime + "</endDateAndTime>\n" +
                 "<startDateAndTime>" + startDateAndTime + "</startDateAndTime>\n" +
+                "<consultationDescripton>" + consultationDescripton + "</consultationDescripton>\n" +
                 "</consultation>";
         return xmlConsultation;
     }
