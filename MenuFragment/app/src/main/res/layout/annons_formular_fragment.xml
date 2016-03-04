@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
@@ -13,11 +13,13 @@
 
 
     <TextView
-        android:layout_width="324dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_gravity="center"
         android:textSize="20sp"
         android:text="FORMULÄR"
+
         android:id="@+id/textView5"
 
         android:layout_alignParentTop="true" />
@@ -40,72 +42,59 @@
         android:hint="@string/Beskrivning"
         android:selectAllOnFocus="false" />
 
-    <ImageButton
-        android:id="@+id/kamerasymbol"
-        android:layout_width="80dp"
-        android:layout_height="79dp"
-        android:src="@drawable/kamerasymbol"
-        android:layout_gravity="right"
-        android:layout_marginStart="27dp"
-        android:layout_marginBottom="51dp"
-        android:layout_above="@+id/klar"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/VäljBild"
-        android:id="@+id/väljBild"
-        android:layout_gravity="right"
-        android:layout_above="@+id/gallerisymbol"
-        android:layout_alignStart="@+id/gallerisymbol" />
-    <ImageButton
-        android:id="@+id/gallerisymbol"
-        android:layout_width="75dp"
-        android:layout_height="73dp"
-        android:src="@drawable/gallerisymbol"
-        android:layout_gravity="right"
-        android:layout_alignTop="@+id/kamerasymbol"
-        android:layout_toStartOf="@+id/klar" />
-
     <ImageView
         android:id="@+id/image_camera"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_below="@+id/editTextBeskrivning"
-        android:layout_alignEnd="@+id/väljBild"
-        android:layout_above="@+id/väljBild"
-        android:layout_alignStart="@+id/taKort" />
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:id="@+id/klar"
-        android:text="Klar"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        android:layout_alignParentBottom="true"
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
 
-        android:layout_alignEnd="@+id/editTextBeskrivning" />
+            android:layout_height="match_parent"
+            android:text="AVBRYT"
+            android:id="@+id/avbryt"
+            android:layout_gravity="left"
+            android:textSize="20dp"
+            android:layout_alignTop="@+id/kamerasymbol"
+            android:layout_alignBottom="@+id/gallerisymbol" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/TaKort"
-        android:id="@+id/taKort"
-        android:layout_above="@+id/kamerasymbol"
-        android:layout_alignStart="@+id/kamerasymbol" />
+        <Button
+            android:text="TA KORT"
+            android:id="@+id/kamerasymbol"
+            android:layout_weight="1"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:textSize="20dp"
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="AVBRYT"
-        android:id="@+id/avbryt"
-        android:layout_gravity="left"
-        android:layout_alignTop="@+id/klar"
-        />
+            android:src="@drawable/kamerasymbol"/>
+
+        <Button
+            android:text="VÄLJ BILD"
+            android:id="@+id/gallerisymbol"
+            android:layout_weight="1"
+            android:textSize="20dp"
+
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/gallerisymbol"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/klar"
+            android:text="Klar" />
+
+    </LinearLayout>
 
 
-</RelativeLayout>
+
+</LinearLayout>
