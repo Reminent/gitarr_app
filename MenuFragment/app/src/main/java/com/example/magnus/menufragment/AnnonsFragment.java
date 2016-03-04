@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
@@ -32,6 +33,9 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
         Button btn = (Button)view.findViewById(R.id.skapany);
         btn.setOnClickListener(this);
         tv = (TextView)view.findViewById(R.id.annons_titel_1);
+        advertTitle2 = (TextView)view.findViewById(R.id.annons_titel_2);
+        advertTitle10 = (TextView)view.findViewById(R.id.annons_titel_3);
+
         AnnonsGet testAG = new AnnonsGet();
         String testSUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert";
         testAG.execute(testSUrl);
@@ -81,9 +85,10 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
                 //s = s + " " + advert.get(0).getGenre();
 
                 tv.setText(adverts.get(0).getAdvertTitle());
-                //advertTitle2.setText(adverts.get(1).getAdvertTitle());
-                //advertTitle10.setText(adverts.get(2).getAdvertTitle());
-                //textView.setText(advert.size());
+                advertTitle2.setText(adverts.get(1).getAdvertTitle());
+                advertTitle10.setText(adverts.get(2).getAdvertTitle());
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
