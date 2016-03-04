@@ -49,10 +49,11 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
 
                 XML_Generate xml_generate = new XML_Generate();
 
-                //xml_generate.imageTest(title, url)
+                String imageUrl = "/testurl/hej";
+                String imageTitle = "GitarrMannen";
 
                 try {
-                    upload.execute(stringUrl);
+                    upload.execute(xml_generate.imageTable(imageTitle, imageUrl), stringUrl);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -123,56 +124,6 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            /*
-            // Inventory
-
-            List<Inventory> inventory = null;
-
-            try {
-                Inventory_Parse parser = new Inventory_Parse();
-                inventory = parser.parse(result);
-
-                String s = "";
-                //String s = advert.get(1).getProductName();
-
-                //s = s + " " + advert.get(0).getGenre();
-
-                for(Inventory model : inventory) {
-                    s += " " + model.getInventoryQuantity();
-                    s += " " + model.getGenre();
-                }
-
-                textView.setText(s);
-                //textView.setText(advert.size());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            */
-            /*
-            // Advert
-
-            List<Advert> advert = null;
-
-            try {
-                Advert_Parse parser = new Advert_Parse();
-                advert = parser.parse(result);
-
-                String s = "";
-                //String s = advert.get(1).getProductName();
-
-                //s = s + " " + advert.get(0).getGenre();
-
-                for(Advert model : advert) {
-                    s += " " + model.getAdvertTitle();
-                }
-
-                textView.setText(s);
-                //textView.setText(advert.size());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            */
         }
     }
 }

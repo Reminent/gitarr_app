@@ -18,7 +18,7 @@ public class DB_Upload extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... urls) {
         try {
-            return downloadUrl(urls[0]);
+            return downloadUrl(urls[0], urls[1]);
         } catch (IOException e) {
             return "Unable to retrieve web page. URL may be invalid.";
         }
@@ -27,7 +27,7 @@ public class DB_Upload extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
     }
 
-    public String downloadUrl(String stringUrl) throws IOException {
+    public String downloadUrl(String xmlString,String stringUrl) throws IOException {
         URL url = new URL(stringUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         try {
@@ -37,12 +37,8 @@ public class DB_Upload extends AsyncTask<String, Void, String> {
             conn.setRequestProperty("content-type", "application/xml");
             conn.setDoInput(true);
             conn.setDoOutput(true);
-            String body = "<image>\n" +
-                    "<imageTitle>Oskar</imageTitle>\n" +
-                    "<imageUrl>/oskar/test.jpg</imageUrl>\n" +
-                    "</image>";
             OutputStream output = new BufferedOutputStream(conn.getOutputStream());
-            output.write(body.getBytes());
+            output.write(xmlString.getBytes());
             output.flush();
             output.close();
             conn.connect();
