@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+import com.example.magnus.menufragment.DB_Upload.DB_Upload;
+import com.example.magnus.menufragment.DB_Upload.XML_Generate;
 import com.example.magnus.menufragment.XML_Parsing.Advert;
 import com.example.magnus.menufragment.XML_Parsing.Advert_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Consultation;
@@ -25,6 +27,7 @@ import com.example.magnus.menufragment.XML_Parsing.TransactionProduct;
 import com.example.magnus.menufragment.XML_Parsing.TransactionProduct_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Transaction_Parse;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -41,8 +44,21 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation";
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.image";
+                DB_Upload upload = new DB_Upload();
 
+                XML_Generate xml_generate = new XML_Generate();
+
+                String imageUrl = "/testurl/hej";
+                String imageTitle = "GitarrMannen";
+
+                try {
+                    upload.execute(xml_generate.imageTable(imageTitle, imageUrl), stringUrl);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                /*
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -55,6 +71,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                 } else {
                     textView.setText("No network connection available.");
                 }
+                */
             }
         });
 
@@ -107,56 +124,6 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            /*
-            // Inventory
-
-            List<Inventory> inventory = null;
-
-            try {
-                Inventory_Parse parser = new Inventory_Parse();
-                inventory = parser.parse(result);
-
-                String s = "";
-                //String s = advert.get(1).getProductName();
-
-                //s = s + " " + advert.get(0).getGenre();
-
-                for(Inventory model : inventory) {
-                    s += " " + model.getInventoryQuantity();
-                    s += " " + model.getGenre();
-                }
-
-                textView.setText(s);
-                //textView.setText(advert.size());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            */
-            /*
-            // Advert
-
-            List<Advert> advert = null;
-
-            try {
-                Advert_Parse parser = new Advert_Parse();
-                advert = parser.parse(result);
-
-                String s = "";
-                //String s = advert.get(1).getProductName();
-
-                //s = s + " " + advert.get(0).getGenre();
-
-                for(Advert model : advert) {
-                    s += " " + model.getAdvertTitle();
-                }
-
-                textView.setText(s);
-                //textView.setText(advert.size());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            */
         }
     }
 }
