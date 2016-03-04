@@ -81,8 +81,8 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
                 //s = s + " " + advert.get(0).getGenre();
 
                 tv.setText(adverts.get(0).getAdvertTitle());
-                advertTitle2.setText(adverts.get(1).getAdvertTitle());
-                advertTitle10.setText(adverts.get(2).getAdvertTitle());
+                //advertTitle2.setText(adverts.get(1).getAdvertTitle());
+                //advertTitle10.setText(adverts.get(2).getAdvertTitle());
                 //textView.setText(advert.size());
             } catch (Exception e) {
                 e.printStackTrace();
