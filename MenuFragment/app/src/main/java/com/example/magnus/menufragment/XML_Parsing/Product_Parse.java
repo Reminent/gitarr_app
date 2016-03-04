@@ -29,6 +29,8 @@ public class Product_Parse {
                         } else if (currentProduct != null){
                             if (name.equalsIgnoreCase("genre")){
                                 currentProduct.setGenre(parser.nextText());
+                            } else if (name.equalsIgnoreCase("imageTitle")){
+                                currentProduct.setImageTitle(parser.nextText());
                             } else if (name.equalsIgnoreCase("imageURl")){
                                 currentProduct.setImageURl(parser.nextText());
                             } else if (name.equalsIgnoreCase("imageId")){
@@ -39,6 +41,10 @@ public class Product_Parse {
                                 currentProduct.setProductName(parser.nextText());
                             } else if (name.equalsIgnoreCase("productId")){
                                 currentProduct.setProductId(parser.nextText());
+                            } else if (name.equalsIgnoreCase("purchasePrice")){
+                                currentProduct.setPurchasePrice(parser.nextText());
+                            } else if (name.equalsIgnoreCase("sellingPrice")){
+                                currentProduct.setSellingPrice(parser.nextText());
                             }
                         }
                         break;
