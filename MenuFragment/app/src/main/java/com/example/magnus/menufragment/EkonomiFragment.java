@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+import com.example.magnus.menufragment.DB_Upload.DB_Upload;
+import com.example.magnus.menufragment.DB_Upload.XML_Generate;
 import com.example.magnus.menufragment.XML_Parsing.Advert;
 import com.example.magnus.menufragment.XML_Parsing.Advert_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Consultation;
@@ -25,6 +27,7 @@ import com.example.magnus.menufragment.XML_Parsing.TransactionProduct;
 import com.example.magnus.menufragment.XML_Parsing.TransactionProduct_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Transaction_Parse;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -41,8 +44,20 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation";
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.image";
+                DB_Upload upload = new DB_Upload();
 
+                XML_Generate xml_generate = new XML_Generate();
+
+                //xml_generate.imageTest(title, url)
+
+                try {
+                    upload.execute(stringUrl);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                /*
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -55,6 +70,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                 } else {
                     textView.setText("No network connection available.");
                 }
+                */
             }
         });
 
