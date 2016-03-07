@@ -1,5 +1,6 @@
 package com.example.magnus.menufragment;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,8 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
         View view = inflater.inflate(R.layout.fragment_ny_inkomst, container, false);
         Button btn = (Button)view.findViewById(R.id.btnStop);
         btn.setOnClickListener(this);
+        Button btnD = (Button)view.findViewById(R.id.btnDateChange);
+        btn.setOnClickListener(this);
         return view;
     }
 
@@ -30,7 +33,8 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
         //FragmentTransaction fm = getFragmentManager().beginTransaction();
         Fragment fragment;
         FragmentTransaction fm = getFragmentManager().beginTransaction();
-
+        datePickFragment db;
+        FragmentTransaction dm = getFragmentManager().beginTransaction();
         switch(v.getId()){
             case R.id.btnStop:
                 fragment = new EkonomiFragment();
@@ -47,11 +51,10 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
 
                 break;
 
-            /*case R.id.btnDate:
-
-
+            case R.id.btnDateChange:
+                db = new datePickFragment();
                 break;
-*/
+
         }
     }
 

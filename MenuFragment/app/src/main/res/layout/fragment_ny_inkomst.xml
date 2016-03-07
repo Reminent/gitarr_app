@@ -118,11 +118,11 @@
                 android:text="Avbryt nu" />
 
             <Button
-                android:id="@+id/btnDate"
+                android:id="@+id/btnDateChange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="5"
-                android:text="set        date"
+                android:text="set  date"
                 />
         </LinearLayout>
     </LinearLayout>
