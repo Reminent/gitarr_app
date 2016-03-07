@@ -48,20 +48,10 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
                 break;
 
             /*case R.id.btnDate:
-                fragment = new datePickFragment();
-                fm.replace(R.id.content, fragment);
-                fm.commit();
-                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
 
-                //int id = item.getItemId();
-                //fragment = new nyInkomstFragment();
-                //fm.replace(R.id.content, fragment);
-                //fm.commit();
-                //setTitle(item.getTitle());
-                //fm.addToBackStack(this); //Kan vara bra för när man ska stänga formuläret./koppla formuläret mot annonssidan.
 
                 break;
-                */
+*/
         }
     }
 

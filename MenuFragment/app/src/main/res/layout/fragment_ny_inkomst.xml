@@ -122,8 +122,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="5"
-                android:text="Date naow"
-                android:onClick="showDatePickerDialog"/>
+                android:text="set        date"
+                />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
