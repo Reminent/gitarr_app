@@ -16,7 +16,7 @@ public class LagerFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.lager_fragment, container, false);
         return view;
     }
-
+/*
     button1.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -36,4 +36,5 @@ public class LagerFragment extends android.support.v4.app.Fragment {
             }
         }
     });
+    */
 }

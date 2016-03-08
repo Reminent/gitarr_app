@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,11 +95,11 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 }
                 break;
 
-            case SELECT_PICTURE: //runs even if i click back button
+            case SELECT_PICTURE:
                 Log.d("inside välj bild", "inside2");
 
                 try {
-                    selectedImage = intent.getData(); //crashes when clicked back on gallery here.
+                    selectedImage = intent.getData();
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                     imageView.setImageBitmap(bitmap);
                 } catch (Exception e){
@@ -148,17 +150,12 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                             "Du måste välja titel, beskrivning och bild" , Toast.LENGTH_LONG).show();
                 }
 
-                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
-                // get EditText by id
+                /*
                 EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel);
-                // Store EditText in Variable
                 String titelStr = inputTxtTitel.getText().toString();
-                Log.d("Titelsträng", titelStr); //Skicka titel till databasen
+                Log.d("Titelsträng", titelStr);  //Skicka titel till databasen.
 
-
-                // get EditText by id
                 EditText inputTxtBeskrivning = (EditText)view.findViewById(R.id.editTextBeskrivning);
-                // Store EditText in Variable
                 String beskrivningStr = inputTxtBeskrivning.getText().toString();
                 Log.d("Beskrivningsträng", beskrivningStr); //Skicka beskrivning till databasen
 
@@ -167,6 +164,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
                 getFragmentManager().popBackStack();
                 fm.commit();
+                */
                 //fm.replace(R.id.content, fragment);
                 break;
 
