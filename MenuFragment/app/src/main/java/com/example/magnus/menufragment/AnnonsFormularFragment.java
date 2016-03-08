@@ -62,8 +62,8 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = df.format(c.getTime());
-        //Now formattedDate has current date/time
+        String formattedDate = df.format(c.getTime()); //Now formattedDate has current date/time
+
 
         File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),formattedDate + ".jpg");
         imageUri = Uri.fromFile(photo);
@@ -148,31 +148,49 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                             "Du måste välja titel, beskrivning och bild" , Toast.LENGTH_LONG).show();
                 }
 
+                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
+                // get EditText by id
+                EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel);
+                // Store EditText in Variable
+                String titelStr = inputTxtTitel.getText().toString();
+                Log.d("Titelsträng", titelStr); //Skicka titel till databasen
 
+
+                // get EditText by id
+                EditText inputTxtBeskrivning = (EditText)view.findViewById(R.id.editTextBeskrivning);
+                // Store EditText in Variable
+                String beskrivningStr = inputTxtBeskrivning.getText().toString();
+                Log.d("Beskrivningsträng", beskrivningStr); //Skicka beskrivning till databasen
+
+                Log.d("Image uri: ", selectedImage.toString()); //Skicka bild till databasen
+
+
+                getFragmentManager().popBackStack();
+                fm.commit();
+                //fm.replace(R.id.content, fragment);
                 break;
 
             case R.id.avbryt:
 
                 getFragmentManager().popBackStack();
                 fm.commit();
-
                 break;
+
             case R.id.kamerasymbol:
-                takePhoto(v);
 
+                takePhoto(v);
                 break;
+
             case R.id.gallerisymbol:
 
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//opens gallery
                 startActivityForResult(galleryIntent, SELECT_PICTURE); //allows to get back image
-
                 break;
-            default:
-                Log.d("Default", "Default case running");
 
+            default:
+
+                Log.d("Default", "Default case running");
                 break;
         }
     }
-
-
 }

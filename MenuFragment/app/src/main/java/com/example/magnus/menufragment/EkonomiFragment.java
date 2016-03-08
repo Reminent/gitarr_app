@@ -46,27 +46,78 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation";
+                // DB_Delete
+                /*
+                String imageId = "42";
 
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.image/" + imageId;
+                DB_Delete delete = new DB_Delete();
+
+                try {
+                    delete.execute(stringUrl);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                */
+
+                // DB_Put
+
+                String imageUrl = "/images/yesWorks.jpg";
+                String imageTitle = "fuckingworks";
+                String imageId = "37";
+
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.image/" + imageId;
+                DB_Update update = new DB_Update();
+
+                XML_Generate xml_generate = new XML_Generate();
+
+                try {
+                    update.execute(xml_generate.imageTable(imageTitle, imageUrl, imageId), stringUrl);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                // DB_Post
+                /*
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.image";
+                DB_Upload upload = new DB_Upload();
+
+                XML_Generate xml_generate = new XML_Generate();
+
+                String imageUrl = "/images/ortegar200.jpg";
+                String imageTitle = "Oskarsson";
+                String imageId = "1";
+
+                try {
+                    upload.execute(xml_generate.imageTable(imageTitle, imageUrl), stringUrl);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                */
+
+                // DB_Connect
+                /*
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                 if (networkInfo != null && networkInfo.isConnected()) {
-                    try{
-                        EkoGet task = new EkoGet();
-                        task.execute(stringUrl);
-                    } catch(Throwable e){
-                    }
+                        try{
+                            EkoGet task = new EkoGet();
+                            task.execute(stringUrl);
+                        } catch(Throwable e){
+                        }
                 } else {
                     textView.setText("No network connection available.");
                 }
+                */
             }
         });
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.transactionproduct";
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.image";
 
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -75,6 +126,20 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                     try{
                         EkoGet task = new EkoGet();
                         task.execute(stringUrl);
+
+                        DB_Upload upload = new DB_Upload();
+
+                        XML_Generate xml_generate = new XML_Generate();
+
+                        String imageUrl = "/images/testMagnus.jpg";
+                        String imageTitle = "Magnusson";
+
+                        try {
+                            upload.execute(xml_generate.imageTable(imageTitle, imageUrl, "1"), stringUrl);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                     } catch(Throwable e){
                     }
                 } else {
@@ -91,20 +156,20 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
 
             // Consultation
 
-            List<Consultation> consultation = null;
+            List<Product> products = null;
 
             try {
-                Consultation_Parse parser = new Consultation_Parse();
-                consultation = parser.parse(result);
+                Product_Parse parser = new Product_Parse();
+                products = parser.parse(result);
 
                 String s = "";
                 //String s = advert.get(1).getProductName();
 
                 //s = s + " " + advert.get(0).getGenre();
 
-                for(Consultation model : consultation) {
-                    s += " " + model.getConsultationid();
-                    s += " " + model.getCustomerName();
+                for(Product model : products) {
+                    s += " " + model.getProductName();
+                    s += " " + model.getSellingPrice();
                 }
 
                 textView.setText(s);
@@ -112,7 +177,6 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
     }
 }
