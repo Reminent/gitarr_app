@@ -12,6 +12,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+import com.example.magnus.menufragment.DB_Upload.DB_Delete;
+import com.example.magnus.menufragment.DB_Upload.DB_Update;
+import com.example.magnus.menufragment.DB_Upload.DB_Upload;
+import com.example.magnus.menufragment.DB_Upload.XML_Generate;
 import com.example.magnus.menufragment.XML_Parsing.Advert;
 import com.example.magnus.menufragment.XML_Parsing.Advert_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Consultation;
@@ -25,6 +29,7 @@ import com.example.magnus.menufragment.XML_Parsing.TransactionProduct;
 import com.example.magnus.menufragment.XML_Parsing.TransactionProduct_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Transaction_Parse;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -47,11 +52,11 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                 if (networkInfo != null && networkInfo.isConnected()) {
-                        try{
-                            EkoGet task = new EkoGet();
-                            task.execute(stringUrl);
-                        } catch(Throwable e){
-                        }
+                    try{
+                        EkoGet task = new EkoGet();
+                        task.execute(stringUrl);
+                    } catch(Throwable e){
+                    }
                 } else {
                     textView.setText("No network connection available.");
                 }
