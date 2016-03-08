@@ -4,13 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
 import com.example.magnus.menufragment.XML_Parsing.Advert;
@@ -36,10 +39,6 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
         String testSUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert";
         testAG.execute(testSUrl);
 
-        AnnonsAdapter adapter = new AnnonsAdapter(getContext(),R.layout.annons_item, adverts);
-        myListView = (ListView)view.findViewById(R.id.myListView);
-        myListView.setAdapter(adapter);
-
         return view;
     }
     @Override
@@ -59,6 +58,7 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
         }
     }
 
+
     private class AnnonsGet extends DB_Connect {
         @Override
         protected void onPostExecute(String result) {
@@ -68,11 +68,9 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
                 adverts = parser.parse(result);
                 String s = "";
 
-
                 AnnonsAdapter adapter = new AnnonsAdapter(getContext(),R.layout.annons_item, adverts);
                 myListView = (ListView)view.findViewById(R.id.myListView);
                 myListView.setAdapter(adapter);
-
 
             } catch (Exception e) {
                 e.printStackTrace();

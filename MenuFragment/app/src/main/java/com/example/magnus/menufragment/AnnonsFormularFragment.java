@@ -130,10 +130,14 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                     EditText inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel);
                     String titelStr = inputTxtTitel.getText().toString();
                     Log.d("Titelsträng", titelStr); //Skicka titel till databasen
+                    //TODO: Change this so it adds a title in the database instead.
+
 
                     EditText inputTxtBeskrivning = (EditText) view.findViewById(R.id.editTextBeskrivning);
                     String beskrivningStr = inputTxtBeskrivning.getText().toString();
                     Log.d("Beskrivningsträng", beskrivningStr); //Skicka beskrivning till databasen
+                    //TODO: Change this so it adds a description in the database instead.
+
 
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
@@ -142,6 +146,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                         Log.d("Du", "Suger");
                     }
                     Log.d("Image uri: ", selectedImage.toString()); //Skicka bild till databasen
+                    //TODO: Change this so it adds a picture in the database instead.
 
                     getFragmentManager().popBackStack();
                     fm.commit();

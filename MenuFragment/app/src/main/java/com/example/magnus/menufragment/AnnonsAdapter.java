@@ -6,9 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.magnus.menufragment.XML_Parsing.Advert;
 
@@ -17,7 +20,7 @@ import java.util.List;
 /**
  * Created by Jonathan on 2016-03-08.
  */
-public class AnnonsAdapter extends ArrayAdapter<Advert> {
+public class AnnonsAdapter extends ArrayAdapter<Advert> implements View.OnClickListener {
 
     Context context;
     int layoutResourceId;
@@ -32,7 +35,7 @@ public class AnnonsAdapter extends ArrayAdapter<Advert> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         AnnonsHolder holder = null;
 
@@ -44,6 +47,8 @@ public class AnnonsAdapter extends ArrayAdapter<Advert> {
             holder = new AnnonsHolder();
             holder.imgIcon = (ImageView)row.findViewById(R.id.annons_item_image);
             holder.txtTitle = (TextView)row.findViewById(R.id.annons_item_title);
+            holder.change = (Button)row.findViewById(R.id.redigera);
+            holder.remove = (Button)row.findViewById(R.id.ta_bort);
 
             row.setTag(holder);
         }
@@ -57,7 +62,30 @@ public class AnnonsAdapter extends ArrayAdapter<Advert> {
 
         //holder.imgIcon.setImageResource(advert.icon);
        //holder.imgIcon.setImageResource(advert.getImageid()); //TODO: fix this so we can fetch images from db
+
+        holder.change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Redigera annons nr." + position, Toast.LENGTH_LONG).show();
+                //TODO: Change this so it changes the database instead.
+            }
+        });
+
+        holder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Ta bort annons nr." + position, Toast.LENGTH_LONG).show();
+                //TODO: Change this so it deletes an item in the database instead.
+            }
+        });
+
         return row;
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 
     static class AnnonsHolder
@@ -65,5 +93,7 @@ public class AnnonsAdapter extends ArrayAdapter<Advert> {
         //String imgIcon;
         ImageView imgIcon;
         TextView txtTitle;
+        Button remove;
+        Button change;
     }
 }
