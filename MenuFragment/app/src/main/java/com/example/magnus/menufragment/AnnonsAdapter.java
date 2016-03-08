@@ -2,6 +2,8 @@ package com.example.magnus.menufragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,8 +59,26 @@ public class AnnonsAdapter extends ArrayAdapter<Advert> implements View.OnClickL
             holder = (AnnonsHolder)row.getTag();
         }
 
-        Advert advert = data.get(position);
+        final Advert advert = data.get(position);
         holder.txtTitle.setText(advert.getAdvertTitle());
+
+        holder.txtTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle("Beskrivning");
+                //alertDialog.setMessage("Alert message to be shown");
+                alertDialog.setMessage(advert.getAdvertDescription());
+
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
 
         //holder.imgIcon.setImageResource(advert.icon);
        //holder.imgIcon.setImageResource(advert.getImageid()); //TODO: fix this so we can fetch images from db

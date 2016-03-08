@@ -14,6 +14,9 @@
         android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
     <TextView
+        android:onClick="onClick"
+        android:clickable="true"
+
         android:paddingTop="10dp"
         android:id="@+id/annons_item_title"
         android:textSize="13dp"
