@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+import com.example.magnus.menufragment.DB_Upload.DB_Delete;
+import com.example.magnus.menufragment.DB_Upload.DB_Update;
 import com.example.magnus.menufragment.DB_Upload.DB_Upload;
 import com.example.magnus.menufragment.DB_Upload.XML_Generate;
 import com.example.magnus.menufragment.XML_Parsing.Advert;
@@ -44,20 +46,57 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // DB_Delete
+                /*
+                String imageId = "42";
+
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.image/" + imageId;
+                DB_Delete delete = new DB_Delete();
+
+                try {
+                    delete.execute(stringUrl);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                */
+
+                // DB_Put
+
+                String imageUrl = "/images/yesWorks.jpg";
+                String imageTitle = "fuckingworks";
+                String imageId = "37";
+
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.image/" + imageId;
+                DB_Update update = new DB_Update();
+
+                XML_Generate xml_generate = new XML_Generate();
+
+                try {
+                    update.execute(xml_generate.imageTable(imageTitle, imageUrl, imageId), stringUrl);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                // DB_Post
+                /*
                 String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.image";
                 DB_Upload upload = new DB_Upload();
 
                 XML_Generate xml_generate = new XML_Generate();
 
-                String imageUrl = "/testurl/hej";
-                String imageTitle = "GitarrMannen";
+                String imageUrl = "/images/ortegar200.jpg";
+                String imageTitle = "Oskarsson";
+                String imageId = "1";
 
                 try {
                     upload.execute(xml_generate.imageTable(imageTitle, imageUrl), stringUrl);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                */
 
+                // DB_Connect
                 /*
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -78,7 +117,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.product";
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.image";
 
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -87,6 +126,20 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                     try{
                         EkoGet task = new EkoGet();
                         task.execute(stringUrl);
+
+                        DB_Upload upload = new DB_Upload();
+
+                        XML_Generate xml_generate = new XML_Generate();
+
+                        String imageUrl = "/images/testMagnus.jpg";
+                        String imageTitle = "Magnusson";
+
+                        try {
+                            upload.execute(xml_generate.imageTable(imageTitle, imageUrl, "1"), stringUrl);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                     } catch(Throwable e){
                     }
                 } else {
