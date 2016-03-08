@@ -3,9 +3,7 @@ package com.example.magnus.menufragment.DB_Upload;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
