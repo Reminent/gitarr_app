@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Antons gitarrversktad</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
+    <string name="Titel">Titel</string>
+    <string name="Beskrivning">Beskrivning</string>
+    <string name="VäljBild">Välj bild</string>
+    <string name="TaKort">Ta kort</string>
+
 </resources>
