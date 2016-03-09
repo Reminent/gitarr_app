@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +39,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
     private static final int SELECT_PICTURE = 2;
     private Uri selectedImage;
     private Bitmap bitmap;
+    private String pictureName;
 
 
     View view;
@@ -58,14 +63,14 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         return view;
     }
 
-    private void takePhoto(View v){
+    public void takePhoto(View v){
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String formattedDate = df.format(c.getTime()); //Now formattedDate has current date/time
+        pictureName = formattedDate + ".jpg";
 
-
-        File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),formattedDate + ".jpg");
+        File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), pictureName);
         imageUri = Uri.fromFile(photo);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri); //puts it in the gallery
         startActivityForResult(intent, TAKE_PICTURE); //We are passing in number 1, which is a request code  == main camera.
@@ -78,7 +83,6 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         ImageView imageView = (ImageView)view.findViewById(R.id.image_camera);
         switch (requestCode) {
             case TAKE_PICTURE:
-                Log.d("inside ta bild", "inside1");
                 selectedImage = imageUri;
 
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
@@ -93,11 +97,15 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 }
                 break;
 
-            case SELECT_PICTURE: //runs even if i click back button
+            case SELECT_PICTURE:
                 Log.d("inside välj bild", "inside2");
 
                 try {
-                    selectedImage = intent.getData(); //crashes when clicked back on gallery here.
+
+
+                    selectedImage = intent.getData();
+                    pictureName = selectedImage.toString();
+                    Log.d("Picturenamegallery: ", pictureName);
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                     imageView.setImageBitmap(bitmap);
                 } catch (Exception e){
@@ -128,18 +136,39 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                     EditText inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel);
                     String titelStr = inputTxtTitel.getText().toString();
                     Log.d("Titelsträng", titelStr); //Skicka titel till databasen
+                    //TODO: Change this so it adds a title in the database instead.
+
 
                     EditText inputTxtBeskrivning = (EditText) view.findViewById(R.id.editTextBeskrivning);
                     String beskrivningStr = inputTxtBeskrivning.getText().toString();
                     Log.d("Beskrivningsträng", beskrivningStr); //Skicka beskrivning till databasen
+                    //TODO: Change this so it adds a description in the database instead.
+
 
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
+
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream .toByteArray();
+                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        //http://spaaket.no-ip.org:1080/quercus-4.0.39/connection.php
+                        //han tar encoded string + titel via en POST
+
+                        //post till image>product>advert
+
+
+                        Log.d("Imagename: ",pictureName );
+                        //Log.d("Encoded string: ", encoded); //encodade stringen
+                        Toast.makeText(getContext().getApplicationContext(),
+                                "Annons skickad till databasen"
+                                , Toast.LENGTH_LONG).show();
+
                     }catch (Exception e){
-                        Log.e(logtag, e.toString());
-                        Log.d("Du", "Suger");
+                        e.printStackTrace();
                     }
                     Log.d("Image uri: ", selectedImage.toString()); //Skicka bild till databasen
+                    //TODO: Change this so it adds a picture in the database instead.
 
                     getFragmentManager().popBackStack();
                     fm.commit();
@@ -148,17 +177,12 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                             "Du måste välja titel, beskrivning och bild" , Toast.LENGTH_LONG).show();
                 }
 
-                //((TextView)view.findViewById(R.id.annons_titel_1)).setText("Supe du klicke på knapp!");
-                // get EditText by id
+                /*
                 EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel);
-                // Store EditText in Variable
                 String titelStr = inputTxtTitel.getText().toString();
-                Log.d("Titelsträng", titelStr); //Skicka titel till databasen
+                Log.d("Titelsträng", titelStr);  //Skicka titel till databasen.
 
-
-                // get EditText by id
                 EditText inputTxtBeskrivning = (EditText)view.findViewById(R.id.editTextBeskrivning);
-                // Store EditText in Variable
                 String beskrivningStr = inputTxtBeskrivning.getText().toString();
                 Log.d("Beskrivningsträng", beskrivningStr); //Skicka beskrivning till databasen
 
@@ -167,6 +191,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
                 getFragmentManager().popBackStack();
                 fm.commit();
+                */
                 //fm.replace(R.id.content, fragment);
                 break;
 

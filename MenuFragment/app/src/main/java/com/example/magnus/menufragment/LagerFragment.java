@@ -28,6 +28,9 @@ public class LagerFragment extends android.support.v4.app.Fragment {
 
     private class LagerGet extends DB_Connect {
 
+/*
+    button1.setOnClickListener(new View.OnClickListener() {
+>>>>>>> origin/Annons-Mattias
         @Override
         protected void onPostExecute(String result) {
             //List<Product> products = null;
@@ -39,5 +42,7 @@ public class LagerFragment extends android.support.v4.app.Fragment {
                 e.printStackTrace();
             }
         }
-    }
 }
+    });
+    */
+    }
