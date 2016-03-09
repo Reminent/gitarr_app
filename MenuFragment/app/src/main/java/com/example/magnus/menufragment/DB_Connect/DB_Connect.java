@@ -13,7 +13,6 @@ import java.net.URL;
 
 public class DB_Connect extends AsyncTask<String, Void, String> {
     private static final String DEBUG_TAG = "HttpExample";
-
     @Override
     protected String doInBackground(String... urls) {
         try {

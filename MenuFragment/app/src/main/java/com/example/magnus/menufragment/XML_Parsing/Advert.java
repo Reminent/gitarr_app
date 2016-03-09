@@ -4,7 +4,8 @@ public class Advert {
     private String advertDate;
     private String advertTitle;
     private String advertid;
-    private String description;
+    private String advertDescription;
+
     private String genre;
     private String imageTitle;
     private String imageUrl;
@@ -39,12 +40,12 @@ public class Advert {
         this.advertid = advertid;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAdvertDescription() {
+        return advertDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAdvertDescription(String advertDescription) {
+        this.advertDescription = advertDescription;
     }
 
     public String getGenre() {

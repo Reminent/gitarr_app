@@ -1,9 +1,6 @@
 package com.example.magnus.menufragment;
 
 import android.app.DialogFragment;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import com.example.magnus.menufragment.DB_Connect.DB_Connect;
 
 
 public class nyInkomstFragment extends android.support.v4.app.Fragment implements View.OnClickListener {
@@ -34,24 +29,6 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
 
     @Override
     public void onClick(View v) {
-
-        String stringUrl = "http://reminent.no-ip.org/slimapi/public/json";
-        ConnectivityManager connMgr;
-        connMgr = (ConnectivityManager)
-                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            try{
-                EkoGet task = new EkoGet();
-                task.execute(stringUrl);
-            } catch(Throwable e){
-            }
-        } else {
-            //textView.setText("No network connection available.");
-        }
-
-
-
         //Fragment fragment;
         //FragmentTransaction fm = getFragmentManager().beginTransaction();
         Fragment fragment;
@@ -80,10 +57,5 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
 
         }
     }
-    private class EkoGet extends DB_Connect {
-        @Override
-        protected void onPostExecute(String result) {
-            textView.setText(result);
-        }
-    }
+
 }

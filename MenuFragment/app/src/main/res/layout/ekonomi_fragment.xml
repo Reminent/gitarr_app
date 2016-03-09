@@ -175,7 +175,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:id="@+id/nyinkomst"
+            android:id="@+id/Ekonomi_Button_Ny_Inkommst"
             android:layout_alignParentBottom="true"
             android:text="Ny inkomst"
             />
@@ -184,7 +184,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:id="@+id/nyutgift"
+            android:id="@+id/Ekonomi_Button_Ny_Utgift"
             android:text="Ny utgift"/>
 
     </LinearLayout>
