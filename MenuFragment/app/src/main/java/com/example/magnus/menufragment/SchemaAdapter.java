@@ -66,7 +66,21 @@ public class SchemaAdapter extends ArrayAdapter<Consultation>{
         final Consultation consultation = data.get(position);
 
         // Splitta datum
-        holder.time.setText(consultation.getEndDateAndTime());
+        String endTime = consultation.getEndDateAndTime();
+        String startTime = consultation.getStartDateAndTime();
+
+        String[] endSplit = endTime.split("T");
+        String[] startSplit = startTime.split("T");
+
+        endSplit = endSplit[1].split(":");
+        startSplit = startSplit[1].split(":");
+
+        String endHour = endSplit[0];
+        String endMinute = endSplit[1];
+        String startHour = startSplit[0];
+        String startMinute = startSplit[1];
+
+        holder.time.setText(startHour + ":" + startMinute + " - " + endHour + ":" + endMinute);
         holder.customer.setText(consultation.getCustomerName());
         holder.description.setText(consultation.getCustomerPhone());
         holder.date.setText(date);
