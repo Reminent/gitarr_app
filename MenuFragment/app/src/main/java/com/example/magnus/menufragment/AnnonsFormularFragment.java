@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -141,9 +143,21 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
+
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream .toByteArray();
+                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        //http://spaaket.no-ip.org:1080/GitarrAppAPI/connection.php
+                        //han tar encoded string + titel via en POST
+
+                        //Log.d("Encoded string: ", encoded); //encodade stringen
+                        Toast.makeText(getContext().getApplicationContext(),
+                                "Annons skickad till databasen" + ".jpg"
+                                , Toast.LENGTH_LONG).show();
+
                     }catch (Exception e){
-                        Log.e(logtag, e.toString());
-                        Log.d("Du", "Suger");
+                        e.printStackTrace();
                     }
                     Log.d("Image uri: ", selectedImage.toString()); //Skicka bild till databasen
                     //TODO: Change this so it adds a picture in the database instead.

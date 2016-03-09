@@ -22,12 +22,20 @@ import java.util.List;
 /**
  * Created by Jonathan on 2016-03-08.
  */
-public class AnnonsAdapter extends ArrayAdapter<Advert> implements View.OnClickListener {
+public class AnnonsAdapter extends ArrayAdapter<Advert>{
 
     Context context;
     int layoutResourceId;
     private List<Advert> data;
 
+    static class AnnonsHolder
+    {
+        //String imgIcon;
+        ImageView imgIcon;
+        TextView txtTitle;
+        Button remove;
+        Button change;
+    }
 
     public AnnonsAdapter(Context context, int layoutResourceId, List<Advert> data) {
         super(context, layoutResourceId, data);
@@ -100,19 +108,5 @@ public class AnnonsAdapter extends ArrayAdapter<Advert> implements View.OnClickL
 
         return row;
 
-    }
-
-    @Override
-    public void onClick(View v) {
-
-    }
-
-    static class AnnonsHolder
-    {
-        //String imgIcon;
-        ImageView imgIcon;
-        TextView txtTitle;
-        Button remove;
-        Button change;
     }
 }

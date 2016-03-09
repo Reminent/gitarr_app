@@ -1,3 +1,4 @@
+
 package com.example.magnus.menufragment;
 
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class SchemaFragment extends android.support.v4.app.Fragment {
+    /*
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,4 +50,5 @@ public class SchemaFragment extends android.support.v4.app.Fragment {
 
         return view;
     }
+*/
 }
