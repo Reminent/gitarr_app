@@ -1,6 +1,5 @@
+/*
 package com.example.magnus.menufragment;
-
-
 import java.util.Calendar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -73,7 +72,7 @@ public class datePickFragment extends Activity  {
 
     @Override
     protected Dialog onCreateDialog(Bundle savedInstanceState) {
-        switch () {
+        switch (DATE_DIALOG_ID) {
             case DATE_DIALOG_ID:
                 // set date picker as current date
                 return new DatePickerDialog(this, datePickerListener,

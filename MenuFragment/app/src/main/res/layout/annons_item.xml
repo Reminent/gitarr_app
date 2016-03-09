@@ -27,8 +27,6 @@
         android:layout_gravity="top|center"
         android:singleLine="false" />
 
-
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"

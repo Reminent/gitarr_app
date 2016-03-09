@@ -9,10 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
+
+import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+import com.example.magnus.menufragment.XML_Parsing.Advert;
+import com.example.magnus.menufragment.XML_Parsing.Advert_Parse;
+import com.example.magnus.menufragment.XML_Parsing.Transaction_Parse;
+import com.example.magnus.menufragment.XML_Parsing.Transaction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EkonomiFragment extends android.support.v4.app.Fragment implements View.OnClickListener{
 
     @Nullable
+    private ListView myListVieww;
+    private List<Transaction> ekonom = new ArrayList<>();
 
     View view;
 
@@ -23,6 +35,11 @@ public class EkonomiFragment extends android.support.v4.app.Fragment implements 
         btnI.setOnClickListener(this);
         Button btnU = (Button)view.findViewById(R.id.Ekonomi_Button_Ny_Utgift);
         btnU.setOnClickListener(this);
+
+
+        getEkonomi testEkonomi = new getEkonomi();
+        String testSUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.transaction";
+        testEkonomi.execute(testSUrl);
         return view;
     }
 
@@ -50,6 +67,24 @@ public class EkonomiFragment extends android.support.v4.app.Fragment implements 
                 fm.commit();
 
                 break;
+        }
+    }
+    private class getEkonomi extends DB_Connect {
+        @Override
+        protected void onPostExecute(String result) {
+
+            try {
+                Transaction_Parse Eparser = new Transaction_Parse();
+                ekonom = Eparser.parse(result);
+                String s = "";
+
+                EkonomiAdapter adapter = new EkonomiAdapter(getContext(),R.layout.annons_item, ekonom);
+                myListVieww = (ListView)view.findViewById(R.id.myListVieww);
+                myListVieww.setAdapter(adapter);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

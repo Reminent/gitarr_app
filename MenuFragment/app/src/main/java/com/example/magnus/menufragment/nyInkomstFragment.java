@@ -20,9 +20,9 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ny_inkomst, container, false);
-        Button btn = (Button)view.findViewById(R.id.btnStop);
+        Button btn = (Button) view.findViewById(R.id.btnStop);
         btn.setOnClickListener(this);
-        Button btnD = (Button)view.findViewById(R.id.btnDateChange);
+        Button btnD = (Button) view.findViewById(R.id.btnDateChange);
         btn.setOnClickListener(this);
         return view;
     }
@@ -33,9 +33,9 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
         //FragmentTransaction fm = getFragmentManager().beginTransaction();
         Fragment fragment;
         FragmentTransaction fm = getFragmentManager().beginTransaction();
-        datePickFragment db;
+        //datePickFragment db;
         FragmentTransaction dm = getFragmentManager().beginTransaction();
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.btnStop:
                 fragment = new EkonomiFragment();
                 fm.replace(R.id.content, fragment);
@@ -50,12 +50,14 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
                 //fm.addToBackStack(this); //Kan vara bra för när man ska stänga formuläret./koppla formuläret mot annonssidan.
 
                 break;
-
+/*
             case R.id.btnDateChange:
                 db = new datePickFragment();
                 break;
 
         }
-    }
+        */
+        }
 
+    }
 }
