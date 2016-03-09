@@ -1,40 +1,24 @@
 package com.example.magnus.menufragment;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
 import com.example.magnus.menufragment.DB_Upload.DB_Delete;
-import com.example.magnus.menufragment.DB_Upload.DB_Update;
-import com.example.magnus.menufragment.DB_Upload.DB_Upload;
-import com.example.magnus.menufragment.DB_Upload.XML_Generate;
-import com.example.magnus.menufragment.XML_Parsing.Advert;
-import com.example.magnus.menufragment.XML_Parsing.Advert_Parse;
-import com.example.magnus.menufragment.XML_Parsing.Consultation;
-import com.example.magnus.menufragment.XML_Parsing.Consultation_Parse;
-import com.example.magnus.menufragment.XML_Parsing.Inventory;
-import com.example.magnus.menufragment.XML_Parsing.Inventory_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Product;
 import com.example.magnus.menufragment.XML_Parsing.Product_Parse;
-import com.example.magnus.menufragment.XML_Parsing.Transaction;
-import com.example.magnus.menufragment.XML_Parsing.TransactionProduct;
-import com.example.magnus.menufragment.XML_Parsing.TransactionProduct_Parse;
-import com.example.magnus.menufragment.XML_Parsing.Transaction_Parse;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class EkonomiFragment extends android.support.v4.app.Fragment {
     private TextView textView;
+    //List<Product> products = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,10 +31,10 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 // DB_Delete
-                /*
-                String imageId = "42";
 
-                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.image/" + imageId;
+                String imageId = "1";
+
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation/" + imageId;
                 DB_Delete delete = new DB_Delete();
 
                 try {
@@ -58,10 +42,10 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                */
+
 
                 // DB_Put
-
+                /*
                 String imageUrl = "/images/yesWorks.jpg";
                 String imageTitle = "fuckingworks";
                 String imageId = "37";
@@ -76,7 +60,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+                */
 
                 // DB_Post
                 /*
@@ -113,7 +97,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                 */
             }
         });
-
+        /*
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,11 +115,12 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
 
                         XML_Generate xml_generate = new XML_Generate();
 
-                        String imageUrl = "/images/testMagnus.jpg";
-                        String imageTitle = "Magnusson";
+                        String imageUrl = "/images/ortegar200.jpg";
+                        String imageTitle = "Ivar";
+                        String imageId = "1";
 
                         try {
-                            upload.execute(xml_generate.imageTable(imageTitle, imageUrl, "1"), stringUrl);
+                            upload.execute(xml_generate.imageTable(imageTitle, imageUrl, imageId), stringUrl);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -146,7 +131,8 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                     textView.setText("No network connection available.");
                 }
             }
-        });
+        });*/
+
         return view;
     }
 
@@ -155,9 +141,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
         protected void onPostExecute(String result) {
 
             // Consultation
-
-            List<Product> products = null;
-
+            List<Product> products = new ArrayList<>();
             try {
                 Product_Parse parser = new Product_Parse();
                 products = parser.parse(result);

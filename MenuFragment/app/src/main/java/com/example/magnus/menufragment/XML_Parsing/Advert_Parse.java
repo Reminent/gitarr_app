@@ -35,8 +35,8 @@ public class Advert_Parse {
                                 currentAdvert.setAdvertTitle(parser.nextText());
                             } else if (name.equalsIgnoreCase("advertid")){
                                 currentAdvert.setAdvertid(parser.nextText());
-                            } else if (name.equalsIgnoreCase("description")){
-                                currentAdvert.setDescription(parser.nextText());
+                            } else if (name.equalsIgnoreCase("advertDescription")){
+                                currentAdvert.setAdvertDescription(parser.nextText());
                             } else if (name.equalsIgnoreCase("genre")){
                                 currentAdvert.setGenre(parser.nextText());
                             } else if (name.equalsIgnoreCase("imageTitle")){
