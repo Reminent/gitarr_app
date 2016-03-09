@@ -35,7 +35,7 @@ public class SchemaFragment extends android.support.v4.app.Fragment {
 
         final TextView textView = (TextView) view.findViewById(R.id.dateDisplay);
 
-        CalendarView myCalendar = (CalendarView) view.findViewById(R.id.calendarView);
+        /*CalendarView myCalendar = (CalendarView) view.findViewById(R.id.calendarView);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String selectedDate = sdf.format(new Date(myCalendar.getDate()));
@@ -57,7 +57,7 @@ public class SchemaFragment extends android.support.v4.app.Fragment {
                 textView.setText(newDate);
             }
         };
-        myCalendar.setOnDateChangeListener(myCalendarListener);
+        myCalendar.setOnDateChangeListener(myCalendarListener);*/
 
         String url = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation";
         SchemaGet task = new SchemaGet();
