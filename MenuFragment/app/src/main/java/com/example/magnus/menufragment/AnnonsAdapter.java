@@ -67,7 +67,6 @@ public class AnnonsAdapter extends ArrayAdapter<Advert> implements View.OnClickL
             public void onClick(View v) {
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
                 alertDialog.setTitle("Beskrivning");
-                //alertDialog.setMessage("Alert message to be shown");
                 alertDialog.setMessage(advert.getAdvertDescription());
 
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
