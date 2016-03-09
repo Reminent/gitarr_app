@@ -41,6 +41,7 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
 
         return view;
     }
+
     @Override
     public void onClick(View v) {
         Fragment fragment;
