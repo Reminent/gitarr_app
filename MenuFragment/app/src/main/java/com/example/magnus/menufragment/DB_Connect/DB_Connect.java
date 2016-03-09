@@ -3,6 +3,8 @@ package com.example.magnus.menufragment.DB_Connect;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.magnus.menufragment.Interface.ConsultationResultListener;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +14,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class DB_Connect extends AsyncTask<String, Void, String> {
+    public ConsultationResultListener delegate = null;
+
     private static final String DEBUG_TAG = "HttpExample";
     @Override
     protected String doInBackground(String... urls) {
@@ -23,6 +27,7 @@ public class DB_Connect extends AsyncTask<String, Void, String> {
     }
     @Override
     protected void onPostExecute(String result) {
+        delegate.processFinish(result);
     }
 
     private String downloadUrl(String myurl) throws IOException {
