@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/schema_item"
-    android:onClick="onClick"
-    android:clickable="true"
     android:layout_margin="15dp">
 
     <TextView
@@ -24,6 +22,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/schema_description"
+        android:text="description" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/schema_selectedDate"
         android:text="description" />
 
 </LinearLayout>

@@ -22,18 +22,21 @@ public class SchemaAdapter extends ArrayAdapter<Consultation>{
     int layoutResourceId;
     private List<Consultation> data;
     LinearLayout ll;
+    private String date;
 
     static class SchemaHolder {
         TextView time;
         TextView customer;
         TextView description;
+        TextView date;
     }
 
-    public SchemaAdapter(Context context, int layoutResourceId, List<Consultation> data) {
+    public SchemaAdapter(Context context, int layoutResourceId, List<Consultation> data, String selectedDate) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.data = data;
+        this.date = selectedDate;
     }
 
     @Override
@@ -52,6 +55,7 @@ public class SchemaAdapter extends ArrayAdapter<Consultation>{
             holder.time = (TextView) row.findViewById(R.id.schema_time);
             holder.customer = (TextView) row.findViewById(R.id.schema_customer);
             holder.description = (TextView) row.findViewById(R.id.schema_description);
+            holder.date = (TextView) row.findViewById(R.id.schema_selectedDate);
             row.setTag(holder);
         }
         else
@@ -79,7 +83,7 @@ public class SchemaAdapter extends ArrayAdapter<Consultation>{
         holder.time.setText(startHour + ":" + startMinute + " - " + endHour + ":" + endMinute);
         holder.customer.setText(consultation.getCustomerName());
         holder.description.setText(consultation.getCustomerPhone());
-        
+        holder.date.setText(date);
         
         /*
         ll.setOnClickListener(new View.OnClickListener() {
