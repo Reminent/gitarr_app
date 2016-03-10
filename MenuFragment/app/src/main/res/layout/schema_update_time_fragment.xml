@@ -22,7 +22,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_gravity="center"
             android:textSize="20sp"
-            android:text="Skapa bokning"
+            android:text="Ändra bokning"
             android:id="@+id/textView5"
             android:layout_alignParentTop="true" />
 

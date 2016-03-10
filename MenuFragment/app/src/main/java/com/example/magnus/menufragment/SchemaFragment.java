@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -207,6 +208,7 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         SchemaAdapter schemaAdapter = new SchemaAdapter(getContext(), R.layout.schema_item, tmp);
         listView = (ListView) view.findViewById(R.id.schemaListView);
         listView.setAdapter(schemaAdapter);
+
     }
 
     /*

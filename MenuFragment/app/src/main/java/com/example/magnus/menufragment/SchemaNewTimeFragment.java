@@ -40,24 +40,21 @@ public class SchemaNewTimeFragment extends android.support.v4.app.Fragment {
 
                 String id, name, phone, enddate, startdate, description;
                 id = "0";
-                name = "oskar andersson";
-                phone = "0702222222";
                 enddate = "2016-03-15T14:00:00+01:00";
                 startdate = "2016-03-15T14:30:00+01:00";
-                description = "testar att ladda upp bokningar från appen";
-                /*
+
                 name = nameText.getText().toString();
                 phone = phoneText.getText().toString();
-                enddate = endDateText.getText().toString();
-                startdate = startDateText.getText().toString();
+                //enddate = endDateText.getText().toString();
+                //startdate = startDateText.getText().toString();
                 description = descriptionText.getText().toString();
-                */
+
 
                 XML_Generate generator = new XML_Generate();
                 String results = generator.consultationTable(id,name,phone,enddate,startdate,description);
                 DB_Upload upload = new DB_Upload();
                 upload.execute(results, URL);
-                Toast.makeText(getContext(), results, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "uppladdat", Toast.LENGTH_LONG).show();
             }
         });
 

@@ -85,4 +85,21 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void schemaUpdateTime(View view) {
+        Toast.makeText(view.getContext(), "edit annons", Toast.LENGTH_LONG).show();
+        Fragment fragment;
+        FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
+
+        switch (view.getId()) {
+            case R.id.schema_edit:
+
+                fragment = new SchemaUpdateTimeFragment();
+                fm.replace(R.id.content, fragment);
+                fm.addToBackStack(null);
+                fm.commit();
+
+                break;
+        }
+    }
 }

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,22 +107,24 @@ public class SchemaAdapter extends ArrayAdapter<Consultation> {
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Redigera tid nr." + position, Toast.LENGTH_LONG).show();
-                /*
+                Toast.makeText(getContext(), "Redigera tid nr." + consultation.getCustomerName(), Toast.LENGTH_LONG).show();
+
+
+                AppCompatActivity a = (AppCompatActivity) context;
+
                 Fragment fragment;
-                FragmentTransaction fm = getFragmentManager().beginTransaction();
+                FragmentTransaction fm = a.getSupportFragmentManager().beginTransaction();
+
+
 
                 switch (v.getId()) {
                     case R.id.schema_edit:
-
                         fragment = new SchemaUpdateTimeFragment();
                         fm.replace(R.id.content, fragment);
                         fm.addToBackStack(null);
                         fm.commit();
-
                         break;
                 }
-                */
             }
         });
         
