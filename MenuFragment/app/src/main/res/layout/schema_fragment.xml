@@ -1,70 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
     tools:context="com.example.magnus.menufragment.MainActivity">
 
-            <CalendarView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/calendarView" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="0dp"
+        android:id="@+id/schema_layoutContent">
 
-            <TextView
-                android:id="@+id/dateDisplay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"/>
+        <CalendarView
+            android:layout_width="match_parent"
+            android:layout_height="330dp"
+            android:id="@+id/calendarView"
+            android:visibility="visible"
+            android:showWeekNumber="true"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tisdag:"
-                android:textSize="20sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10:00 -   Martin  Trasig hals"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="11:00 -   Slash  Stämma gitaren"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="Onsdag"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="11:30 -   Jimi Hendrix  Lösa skruvar"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="14:00 -   Jimmy Page  byta strängar"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="15:00 -   Dave Murray  Hål i baksidan"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="Torsdag"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="11:30 -   Bob Dylan  Stämmning"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="14:00 -   Mark Knopfler  byta hals och laga hål"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="15:00 -   Chuck Berry  Nya stämskruvar"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:visibility="invisible"
+            android:background="#80484e55"
+            android:textColor="@android:color/white"
+            android:id="@+id/dateDisplay"/>
 
+        <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/schemaListView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top" />
 
-</LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/schema_layoutBottom">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/schema_add"
+            android:text="Skapa ny" />
+
+    </LinearLayout>
+</RelativeLayout>
