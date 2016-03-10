@@ -2,7 +2,8 @@ package com.example.magnus.menufragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +15,7 @@ import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
 import com.example.magnus.menufragment.Interface.ConsultationResultListener;
@@ -124,6 +126,7 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         task.execute(url);
 
         final TextView textView = (TextView) view.findViewById(R.id.dateDisplay);
+        Button newAdd = (Button) view.findViewById(R.id.schema_add);
 
         CalendarView myCalendar = (CalendarView) view.findViewById(R.id.calendarView);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -131,7 +134,7 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
 
         String[] currDate = selectedDate.split("-");
 
-        textView.setText(currDate[2] + " " + months[ Integer.parseInt(currDate[1]) - 1 ] + " " + currDate[0]);
+        textView.setText(currDate[2] + " " + months[Integer.parseInt(currDate[1]) - 1] + " " + currDate[0]);
 
         CalendarView.OnDateChangeListener myCalendarListener = new CalendarView.OnDateChangeListener(){
             public void onSelectedDayChange(CalendarView view, int year, int month, int day){
@@ -153,6 +156,27 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
             }
         };
         myCalendar.setOnDateChangeListener(myCalendarListener);
+
+        newAdd.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "skapa ny add", Toast.LENGTH_LONG).show();
+                Fragment fragment;
+                FragmentTransaction fm = getFragmentManager().beginTransaction();
+
+                switch (v.getId()) {
+                    case R.id.schema_add:
+
+                        fragment = new SchemaNewTimeFragment();
+                        fm.replace(R.id.content, fragment);
+                        fm.addToBackStack(null);
+                        fm.commit();
+
+                        break;
+                }
+            }
+        });
 
         /*
         String url = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation";
@@ -184,6 +208,7 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         SchemaAdapter schemaAdapter = new SchemaAdapter(getContext(), R.layout.schema_item, tmp);
         listView = (ListView) view.findViewById(R.id.schemaListView);
         listView.setAdapter(schemaAdapter);
+
     }
 
     /*
@@ -193,6 +218,10 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
             try {
                 Consultation_Parse parser = new Consultation_Parse();
                 consultation = parser.parse(result);
+                List<Consultation> consultation = new ArrayList<>();
+                for(Consultation tmp : consultation){
+                    if
+                }
 
                 SchemaAdapter schemaAdapter = new SchemaAdapter(getContext(), R.layout.schema_item, consultation);
                 listView = (ListView) view.findViewById(R.id.schemaListView);
