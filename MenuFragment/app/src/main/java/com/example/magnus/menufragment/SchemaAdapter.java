@@ -99,29 +99,6 @@ public class SchemaAdapter extends ArrayAdapter<Consultation>{
             }
         });
         */
-
-
-        //holder.imgIcon.setImageResource(advert.icon);
-        //holder.imgIcon.setImageResource(advert.getImageid()); //TODO: fix this so we can fetch images from db
-
-        /*
-        holder.change.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Redigera annons nr." + position, Toast.LENGTH_LONG).show();
-                //TODO: Change this so it changes the database instead.
-            }
-        });
-
-        holder.remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Ta bort annons nr." + position, Toast.LENGTH_LONG).show();
-                //TODO: Change this so it deletes an item in the database instead.
-            }
-        });
-        */
-
         return row;
     }
 }
