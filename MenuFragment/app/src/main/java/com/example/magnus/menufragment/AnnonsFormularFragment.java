@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -51,7 +52,6 @@ import java.util.Map;
 public class AnnonsFormularFragment extends android.support.v4.app.Fragment implements View.OnClickListener{
     @Nullable
     private ContentResolver cr;
-    private static String logtag = "CameraApp8";
     private static final int TAKE_PICTURE = 1;
     private Uri imageUri;
     private static final int SELECT_PICTURE = 2;
@@ -85,22 +85,26 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
         myContext = getContext();
 
+        /* //TODO: Fixa så att man kan redigera en annons genom att skapa en ny vy.
         Bundle bundle = this.getArguments();
         final String titel = bundle.getString("titel");
+
         Toast.makeText(getContext().getApplicationContext(), titel, Toast.LENGTH_LONG).show();
 
         //String url = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert";
+        */
 
-
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date cDate = new Date();
+        fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+        formattedDate = df.format(c.getTime()).replace(" ", ""); //Now formattedDate has current date/time
+        pictureName = formattedDate + ".jpg";
         return view;
     }
 
     public void takePhoto(View v){
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-
-
-
-        Log.d("wtf takePhoto", pictureName);
         File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), pictureName);
         imageUri = Uri.fromFile(photo);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri); //puts it in the gallery
@@ -113,15 +117,6 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         cr = getActivity().getContentResolver();
         ImageView imageView = (ImageView)view.findViewById(R.id.image_camera);
 
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        Date cDate = new Date();
-        fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-
-        formattedDate = df.format(c.getTime()).replace(" ", ""); //Now formattedDate has current date/time
-        pictureName = formattedDate + ".jpg";
-
         switch (requestCode) {
             case TAKE_PICTURE:
                 selectedImage = imageUri;
@@ -129,12 +124,17 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
 
                 try{
-                    //bitmap ska vara base 64
+                    int newHeight = 100;
+                    int newWidth = 100;
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
+
+                    //Todo Fix so this actually works
+                    //bitmap = getResizedBitmap(bitmap, newHeight, newWidth);
+
                     imageView.setImageBitmap(bitmap);
                     Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
                 }catch (Exception e){
-                    Log.e(logtag, e.toString());
+                    e.printStackTrace();
                 }
                 break;
 
@@ -145,15 +145,10 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
 
                     selectedImage = intent.getData();
-                    /*
-                    //pictureName = selectedImage.toString();
-                    pictureName = intent.getDataString();
-                    Log.d("Picturenamegallery: ", pictureName);
-                    */
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                     imageView.setImageBitmap(bitmap);
                 } catch (Exception e){
-                    Log.e(logtag, e.toString());
+                    e.printStackTrace();
                 }
                 break;
 
@@ -167,14 +162,11 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         return etText.getText().toString().trim().length() == 0;
     }
 
-
     @Override
     public void onClick(View v) {
         FragmentTransaction fm = getFragmentManager().beginTransaction();
         EditText eTextTitel = (EditText)view.findViewById(R.id.editTextTitel);
         EditText eTextBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning);
-
-
 
         switch(v.getId()){
             case R.id.klar:
@@ -182,14 +174,10 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                     try {
                         EditText inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel);
                         titelStr = inputTxtTitel.getText().toString();
-                        Log.d("Titelsträng", titelStr); //Skicka titel till databasen
-                        //TODO: Change this so it adds a title in the database instead.
-
 
                         EditText inputTxtBeskrivning = (EditText) view.findViewById(R.id.editTextBeskrivning);
                         beskrivningStr = inputTxtBeskrivning.getText().toString();
-                        Log.d("Beskrivningsträng", beskrivningStr); //Skicka beskrivning till databasen
-                        //TODO: Change this so it adds a description in the database instead.
+
 
                         bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -201,18 +189,13 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                         String url = "http://spaaket.no-ip.org:1080/quercus-4.0.39/connection.php";
                         ap.execute(url);
 
-
                         Toast.makeText(getContext().getApplicationContext(),
                                 "Annons skickad till databasen"
                                 , Toast.LENGTH_LONG).show();
 
-
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-                    Log.d("Image uri: ", selectedImage.toString()); //Skicka bild till databasen
-                    //TODO: Change this so it adds a picture in the database instead.
-
                     getFragmentManager().popBackStack();
                     fm.commit();
                 } else {
@@ -245,8 +228,6 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         }
     }
 
-
-    //private class AnnonsPut extends DB_Connect {
     private class AnnonsPut extends DB_Connect {
         @Override
         protected void onPostExecute(String result) {
@@ -272,11 +253,11 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                         HashMap<String,String> map = new HashMap<>();
                         //Set as nothing
                         map.put("encoded_string", encoded);
-                        map.put("image_name", pictureName); //fixa till pictureName
-                        map.put("product_name", formattedDate); //ändra till picturename - .jpg
-                        map.put("advert_date", fDate); //ändra till nuvarande datum
-                        map.put("advert_description", beskrivningStr); //Ändra till beskrivningssträng
-                        map.put("advert_title", titelStr); //ändra till adverttitel
+                        map.put("image_name", pictureName);
+                        map.put("product_name", formattedDate);
+                        map.put("advert_date", fDate);
+                        map.put("advert_description", beskrivningStr);
+                        map.put("advert_title", titelStr);
 
                         return map;
                     }
@@ -286,5 +267,19 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 e.printStackTrace();
             }
         }
+    }
+    public static Bitmap getResizedBitmap(Bitmap image, int newHeight, int newWidth) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // create a matrix for the manipulation
+        Matrix matrix = new Matrix();
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight);
+        // recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(image, 0, 0, width, height,
+                matrix, false);
+        return resizedBitmap;
     }
 }

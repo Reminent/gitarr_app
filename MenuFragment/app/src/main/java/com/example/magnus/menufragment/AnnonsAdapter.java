@@ -1,15 +1,19 @@
 package com.example.magnus.menufragment;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +25,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.magnus.menufragment.DB_Connect.DB_Connect;
 import com.example.magnus.menufragment.DB_Upload.DB_Delete;
 import com.example.magnus.menufragment.XML_Parsing.Advert;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,7 +50,6 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
 
     static class AnnonsHolder
     {
-        //String imgIcon;
         ImageView imgIcon;
         TextView txtTitle;
         Button remove;
@@ -81,39 +88,11 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
 
         final Advert advert = data.get(position);
 
-
-
-
-
-        String getFromURL = "http://spaaket.no-ip.org:1080/quercus-4.0.39/images/";
-        String fullURL = getFromURL + "2016-03-1015:12:18.jpg";
-       // InputStream fileInputStream=getContext().getContentResolver().openInputStream(uri);
-
-       // Uri imageUri = Uri.parse(fullURL);
-
-
-        URL url;
-        Uri imageUri = null;
-        try {
-            url = new URL(fullURL);
-            imageUri = Uri.parse( url.toURI().toString() );
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-
-        holder.imgIcon.setImageURI(imageUri);
-
-
-
-
+        String getFromURL = "http://spaaket.no-ip.org:1080/quercus-4.0.39/";
+        String fullURL = getFromURL + advert.getImageUrl();
+        new DownloadImageTask(holder.imgIcon).execute(fullURL);
 
         holder.txtTitle.setText(advert.getAdvertTitle());
-
-
-
 
         holder.txtTitle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,9 +111,6 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
             }
         });
 
-        //holder.imgIcon.setImageResource(advert.icon);
-       //holder.imgIcon.setImageResource(advert.getImageid()); //TODO: fix this so we can fetch images from db
-
         holder.change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,10 +120,10 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
                 Bundle bundle = new Bundle();
                 bundle.putString("titel",advert.getAdvertTitle() );
                 bundle.putString("beskrivning",advert.getAdvertDescription());
-                //bundle.putString("beskrivning",advert.getAdvertDescription());
-                //TODO:: fixa så man kan redigera bildn.
+                //bundle.putString("BILD);
+                //TODO:: fixa så man kan redigera bilden.
 
-                AppCompatActivity a = (AppCompatActivity) context; //ful hax
+                AppCompatActivity a = (AppCompatActivity) context; //ful hax a la Stefan
                 Fragment fragment;
                 FragmentTransaction fm = a.getSupportFragmentManager().beginTransaction();
                 switch(v.getId()){
@@ -168,12 +144,38 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Ta bort annons nr." + position, Toast.LENGTH_LONG).show();
-                //TODO: Change this so it deletes an item in the database instead.
+                 //TODO: Update site when an advert is deleted.
+                //TODO: Delete broke??
                 DB_Delete delete = new DB_Delete();
                 String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert/" + advert.getAdvertid();
                 delete.execute(URL);
             }
         });
         return row;
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }
