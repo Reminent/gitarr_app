@@ -1,11 +1,20 @@
 package com.example.magnus.menufragment.XML_Parsing;
 
 public class Consultation {
+    private String consultationDescription;
     private String consultationid;
     private String customerName;
     private String customerPhone;
     private String endDateAndTime;
     private String startDateAndTime;
+
+    public String getConsultationDescription() {
+        return consultationDescription;
+    }
+
+    public void setConsultationDescription(String consultationDescription) {
+        this.consultationDescription = consultationDescription;
+    }
 
     public String getConsultationid() {
         return consultationid;

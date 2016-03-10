@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,12 @@ import android.widget.TextView;
 
 import com.example.magnus.menufragment.XML_Parsing.Consultation;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class SchemaAdapter extends ArrayAdapter<Consultation>{
+public class SchemaAdapter extends ArrayAdapter<Consultation> {
 
     Context context;
     int layoutResourceId;
@@ -78,27 +82,9 @@ public class SchemaAdapter extends ArrayAdapter<Consultation>{
 
         holder.time.setText(startHour + ":" + startMinute + " - " + endHour + ":" + endMinute);
         holder.customer.setText(consultation.getCustomerName());
-        holder.description.setText(consultation.getCustomerPhone());
-        
-        
-        /*
-        ll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-                alertDialog.setTitle("Beskrivning");
-                alertDialog.setMessage(Consultation.getAdvertDescription());
 
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
-            }
-        });
-        */
+        holder.description.setText(consultation.getConsultationDescription());
+        
         return row;
     }
 }
