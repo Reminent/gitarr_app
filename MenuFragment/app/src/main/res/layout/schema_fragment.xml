@@ -9,20 +9,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="45dp">
+        android:paddingBottom="0dp"
+        android:id="@+id/schema_layoutContent">
 
         <CalendarView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="330dp"
             android:id="@+id/calendarView"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            android:showWeekNumber="true"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_gravity="center"
+            android:gravity="center"
             android:textStyle="bold"
             android:textSize="20sp"
+            android:visibility="invisible"
+            android:background="#80484e55"
+            android:textColor="@android:color/white"
             android:id="@+id/dateDisplay"/>
 
         <ListView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -36,7 +42,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:visibility="invisible"
         android:layout_alignParentBottom="true"
         android:id="@+id/schema_layoutBottom">
 
