@@ -2,13 +2,16 @@ package com.example.magnus.menufragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,10 +29,12 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
     private List<Consultation> consultation = new ArrayList<>();
     private ListView listView;
     private View view;
-    private String selectedDate;
+    private String selectedDate = "";
     private String newDate = "";
     private DB_Connect task;
     private String url = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation";
+    private String[] months = {"Januari", "Februari", "Mars", "April", "Maj", "Juni",
+            "Juli", "Augusti", "September", "Oktober", "November", "December"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,7 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         int id = item.getItemId();
         if(id == R.id.action_filter){
             final CalendarView propLayout = (CalendarView) view.findViewById(R.id.calendarView);
+
             if (propLayout.getVisibility() == View.VISIBLE) {
                 propLayout.setVisibility(View.INVISIBLE);
                 ViewGroup.LayoutParams params = propLayout.getLayoutParams();
@@ -72,13 +78,15 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         task.delegate = this;
         task.execute(url);
 
-        //final TextView textView = (TextView) view.findViewById(R.id.dateDisplay);
+        final TextView textView = (TextView) view.findViewById(R.id.dateDisplay);
 
         CalendarView myCalendar = (CalendarView) view.findViewById(R.id.calendarView);
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         selectedDate = sdf.format(new Date(myCalendar.getDate()));
-        //textView.setText(selectedDate);
+
+        String[] currDate = selectedDate.split("-");
+
+        textView.setText(currDate[2] + " " + months[ Integer.parseInt(currDate[1]) - 1 ] + " " + currDate[0]);
 
         CalendarView.OnDateChangeListener myCalendarListener = new CalendarView.OnDateChangeListener(){
             public void onSelectedDayChange(CalendarView view, int year, int month, int day){
@@ -93,7 +101,7 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
                     d = "0" + day;
                 }
                 newDate = year + "-" + m + "-" + d;
-                //textView.setText(newDate);
+                textView.setText(d + " " + months[ Integer.parseInt(m) - 1 ] + " " + year);
                 task = new DB_Connect();
                 task.delegate = SchemaFragment.this;
                 task.execute(url);
@@ -110,10 +118,25 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
     }
 
     public void processFinish(String result) {
+        List<Consultation> tmp = new ArrayList<>();
         Consultation_Parse parser = new Consultation_Parse();
         consultation = parser.parse(result);
 
-        SchemaAdapter schemaAdapter = new SchemaAdapter(getContext(), R.layout.schema_item, consultation, newDate);
+        for (Consultation obj : consultation) {
+            String endTime = obj.getEndDateAndTime();
+            String[] endSplit = endTime.split("T");
+
+            if (newDate.equalsIgnoreCase("")){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                newDate = sdf.format(new Date());
+            }
+
+            if (endSplit[0].equalsIgnoreCase(newDate)){
+                tmp.add(obj);
+            }
+        }
+
+        SchemaAdapter schemaAdapter = new SchemaAdapter(getContext(), R.layout.schema_item, tmp);
         listView = (ListView) view.findViewById(R.id.schemaListView);
         listView.setAdapter(schemaAdapter);
     }
