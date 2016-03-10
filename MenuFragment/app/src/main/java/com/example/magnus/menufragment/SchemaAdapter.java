@@ -109,13 +109,10 @@ public class SchemaAdapter extends ArrayAdapter<Consultation> {
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Redigera tid nr." + consultation.getCustomerName(), Toast.LENGTH_LONG).show();
 
-
                 AppCompatActivity a = (AppCompatActivity) context;
 
                 Fragment fragment;
                 FragmentTransaction fm = a.getSupportFragmentManager().beginTransaction();
-
-
 
                 switch (v.getId()) {
                     case R.id.schema_edit:

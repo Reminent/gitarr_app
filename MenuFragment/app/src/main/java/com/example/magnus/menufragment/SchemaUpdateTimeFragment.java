@@ -58,6 +58,20 @@ public class SchemaUpdateTimeFragment extends android.support.v4.app.Fragment {
                 DB_Upload upload = new DB_Upload();
                 upload.execute(results, URL);
                 Toast.makeText(getContext(), results, Toast.LENGTH_LONG).show();
+
+                Fragment fragment;
+                FragmentTransaction fm = getFragmentManager().beginTransaction();
+
+                switch(v.getId()){
+                    case R.id.schema_newTime_done:
+
+                        fragment = new SchemaFragment();
+                        fm.replace(R.id.content, fragment);
+                        fm.addToBackStack(null);
+                        fm.commit();
+
+                        break;
+                }
             }
         });
 
