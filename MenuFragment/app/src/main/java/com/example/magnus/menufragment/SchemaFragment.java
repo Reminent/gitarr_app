@@ -52,18 +52,63 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_filter){
-            final CalendarView propLayout = (CalendarView) view.findViewById(R.id.calendarView);
+            final CalendarView calendarView = (CalendarView) view.findViewById(R.id.calendarView);
+            final TextView dateDisplay = (TextView) view.findViewById(R.id.dateDisplay);
+            final LinearLayout schema_layoutBottom = (LinearLayout) view.findViewById(R.id.schema_layoutBottom);
+            final LinearLayout schema_layoutContent = (LinearLayout) view.findViewById(R.id.schema_layoutContent);
 
-            if (propLayout.getVisibility() == View.VISIBLE) {
-                propLayout.setVisibility(View.INVISIBLE);
-                ViewGroup.LayoutParams params = propLayout.getLayoutParams();
-                params.height = 0;
-                propLayout.setLayoutParams(params);
+            int density = (int) getResources().getDisplayMetrics().density;
+
+            if (calendarView.getVisibility() == View.VISIBLE) {
+                // Calendar
+                calendarView.setVisibility(View.INVISIBLE);
+                ViewGroup.LayoutParams paramsCalendar = calendarView.getLayoutParams();
+                paramsCalendar.height = 0;
+                calendarView.setLayoutParams(paramsCalendar);
+
+                // Date
+                dateDisplay.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams paramsDate = dateDisplay.getLayoutParams();
+                //paramsDate.height = 100;
+                int dateHeight = 45 * density;
+                paramsDate.height = dateHeight;
+                dateDisplay.setLayoutParams(paramsDate);
+
+                // Schema content padding
+                int dateSLC = 45 * density;
+                schema_layoutContent.setPadding(0, 0, 0, dateSLC);
+
+                // Button bottom
+                schema_layoutBottom.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams paramsButton = schema_layoutBottom.getLayoutParams();
+                //paramsBut.height = 200;
+                int bottomHeight = 45 * density;
+                paramsButton.height = bottomHeight;
+                schema_layoutBottom.setLayoutParams(paramsButton);
+
             } else {
-                propLayout.setVisibility(View.VISIBLE);
-                ViewGroup.LayoutParams params = propLayout.getLayoutParams();
-                params.height = 1000;
-                propLayout.setLayoutParams(params);
+                // Calendar
+                calendarView.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams paramsCalendar = calendarView.getLayoutParams();
+                //params.height = 300;
+                int calendarHeight = 330 * density;
+                paramsCalendar.height = calendarHeight;
+                calendarView.setLayoutParams(paramsCalendar);
+
+                // Date
+                dateDisplay.setVisibility(View.INVISIBLE);
+                ViewGroup.LayoutParams paramsDate = dateDisplay.getLayoutParams();
+                paramsDate.height = 0;
+                dateDisplay.setLayoutParams(paramsDate);
+
+                // Schema content padding
+                schema_layoutContent.setPadding(0, 0, 0, 0);
+
+                // Button bottom
+                schema_layoutBottom.setVisibility(View.INVISIBLE);
+                ViewGroup.LayoutParams paramsButon = schema_layoutBottom.getLayoutParams();
+                paramsButon.height = 0;
+                schema_layoutBottom.setLayoutParams(paramsButon);
             }
             return true;
         }
