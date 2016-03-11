@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.magnus.menufragment.DB_Upload.DB_Delete;
 import com.example.magnus.menufragment.XML_Parsing.Consultation;
@@ -98,7 +97,6 @@ public class SchemaAdapter extends ArrayAdapter<Consultation> {
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Ta bort tid nr." + position, Toast.LENGTH_LONG).show();
                 DB_Delete delete = new DB_Delete();
                 String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation/" + consultation.getConsultationid();
                 delete.execute(URL);
@@ -108,8 +106,6 @@ public class SchemaAdapter extends ArrayAdapter<Consultation> {
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Redigera tid nr." + consultation.getConsultationid(), Toast.LENGTH_LONG).show();
-
                 AppCompatActivity a = (AppCompatActivity) context;
 
                 Fragment fragment;
