@@ -44,6 +44,7 @@ import java.util.List;
  */
 public class AnnonsAdapter extends ArrayAdapter<Advert>{
 
+
     Context context;
     int layoutResourceId;
     private List<Advert> data;
