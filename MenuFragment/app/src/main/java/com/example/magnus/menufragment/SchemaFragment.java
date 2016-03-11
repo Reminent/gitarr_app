@@ -1,3 +1,4 @@
+
 package com.example.magnus.menufragment;
 
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 public class SchemaFragment extends android.support.v4.app.Fragment implements ConsultationResultListener {
+
     private List<Consultation> consultation = new ArrayList<>();
     private ListView listView;
     private View view;
@@ -44,6 +46,11 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         setHasOptionsMenu(true);
     }
 
+    @Override
+    public void processFinish(String result) {
+
+    }
+/*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.filter, menu);
@@ -117,74 +124,9 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         return super.onOptionsItemSelected(item);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.schema_fragment, container, false);
-        task = new DB_Connect();
-        task.delegate = this;
-        task.execute(url);
 
-        final TextView textView = (TextView) view.findViewById(R.id.dateDisplay);
-        Button newAdd = (Button) view.findViewById(R.id.schema_add);
 
-        CalendarView myCalendar = (CalendarView) view.findViewById(R.id.calendarView);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        selectedDate = sdf.format(new Date(myCalendar.getDate()));
 
-        String[] currDate = selectedDate.split("-");
-
-        textView.setText(currDate[2] + " " + months[Integer.parseInt(currDate[1]) - 1] + " " + currDate[0]);
-
-        CalendarView.OnDateChangeListener myCalendarListener = new CalendarView.OnDateChangeListener(){
-            public void onSelectedDayChange(CalendarView view, int year, int month, int day){
-                month = month + 1;
-                String m = "" + month;
-                String d = "" + day;
-
-                if (month < 10) {
-                    m = "0" + month;
-                }
-                if (day < 10) {
-                    d = "0" + day;
-                }
-                newDate = year + "-" + m + "-" + d;
-                textView.setText(d + " " + months[ Integer.parseInt(m) - 1 ] + " " + year);
-                task = new DB_Connect();
-                task.delegate = SchemaFragment.this;
-                task.execute(url);
-            }
-        };
-        myCalendar.setOnDateChangeListener(myCalendarListener);
-
-        newAdd.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "skapa ny add", Toast.LENGTH_LONG).show();
-                Fragment fragment;
-                FragmentTransaction fm = getFragmentManager().beginTransaction();
-
-                switch (v.getId()) {
-                    case R.id.schema_add:
-
-                        fragment = new SchemaNewTimeFragment();
-                        fm.replace(R.id.content, fragment);
-                        fm.addToBackStack(null);
-                        fm.commit();
-
-                        break;
-                }
-            }
-        });
-
-        /*
-        String url = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation";
-        SchemaGet task = new SchemaGet();
-        task.execute(url);*/
-
-        return view;
-    }
 
     public void processFinish(String result) {
         List<Consultation> tmp = new ArrayList<>();
@@ -211,7 +153,7 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
 
     }
 
-    /*
+
     private class SchemaGet extends DB_Connect {
         @Override
         protected void onPostExecute(String result) {
@@ -231,5 +173,6 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
             }
         }
     }
+
     */
 }
