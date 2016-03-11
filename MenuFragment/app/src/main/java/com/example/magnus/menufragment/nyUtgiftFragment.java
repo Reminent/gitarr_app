@@ -11,7 +11,7 @@ import android.widget.Button;
 
 
 public class nyUtgiftFragment extends android.support.v4.app.Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     @Nullable
     View view;

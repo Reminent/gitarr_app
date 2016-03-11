@@ -154,7 +154,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                     e.printStackTrace();
                 }
                 */
-
+/*
                 String advertDate = "2016-11-11T00:00:00+01:00";
                 String advertDescription = "fuckingworks2";
                 String advertTitle = "Works2";
