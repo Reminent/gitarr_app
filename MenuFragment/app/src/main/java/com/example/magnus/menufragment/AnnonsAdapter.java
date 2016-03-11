@@ -39,11 +39,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
-/**
- * Created by Jonathan on 2016-03-08.
- */
 public class AnnonsAdapter extends ArrayAdapter<Advert>{
-
 
     Context context;
     int layoutResourceId;
