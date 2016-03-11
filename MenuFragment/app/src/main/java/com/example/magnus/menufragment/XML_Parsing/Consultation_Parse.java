@@ -29,7 +29,9 @@ public class Consultation_Parse {
                         if (name.equalsIgnoreCase("consultation")){
                             currentConsultation = new Consultation();
                         } else if (currentConsultation != null){
-                            if (name.equalsIgnoreCase("consultationid")){
+                            if (name.equalsIgnoreCase("consultationDescription")){
+                                currentConsultation.setConsultationDescription(parser.nextText());
+                            } else if (name.equalsIgnoreCase("consultationid")){
                                 currentConsultation.setConsultationid(parser.nextText());
                             } else if (name.equalsIgnoreCase("customerName")){
                                 currentConsultation.setCustomerName(parser.nextText());
