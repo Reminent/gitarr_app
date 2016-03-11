@@ -1,4 +1,3 @@
-
 package com.example.magnus.menufragment;
 
 import android.os.Bundle;
@@ -187,23 +186,25 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         return view;
     }
 
-
     public void processFinish(String result) {
         List<Consultation> tmp = new ArrayList<>();
         Consultation_Parse parser = new Consultation_Parse();
         consultation = parser.parse(result);
 
         for (Consultation obj : consultation) {
-            String endTime = obj.getEndDateAndTime();
-            String[] endSplit = endTime.split("T");
+            try {
+                String endTime = obj.getEndDateAndTime();
+                String[] endSplit = endTime.split("T");
+                if (newDate.equalsIgnoreCase("")) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    newDate = sdf.format(new Date());
+                }
 
-            if (newDate.equalsIgnoreCase("")){
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                newDate = sdf.format(new Date());
-            }
-
-            if (endSplit[0].equalsIgnoreCase(newDate)){
-                tmp.add(obj);
+                if (endSplit[0].equalsIgnoreCase(newDate)) {
+                    tmp.add(obj);
+                }
+            } catch(Exception e){
+                e.printStackTrace();
             }
         }
 
