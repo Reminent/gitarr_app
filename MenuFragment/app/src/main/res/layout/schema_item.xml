@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/schema_item"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/schema_time"
+            android:textStyle="bold"
+            android:text="TID" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/schema_customer"
+            android:text="Customer" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/schema_description"
+            android:text="description" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:id="@+id/schema_layoutItem">
+
+        <Button
+            android:textSize="15dp"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:id="@+id/schema_edit"
+            android:text="redigera"
+            android:onClick="schemaUpdateTime"/>
+        <Button
+            android:textSize="15dp"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:id="@+id/schema_delete"
+            android:text="ta bort"/>
+
+    </LinearLayout>
+</RelativeLayout>
+
