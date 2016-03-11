@@ -181,8 +181,8 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         /*
         String url = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation";
         SchemaGet task = new SchemaGet();
-        task.execute(url);*/
-
+        task.execute(url);
+        */
         return view;
     }
 
