@@ -26,8 +26,7 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
 
     private ListView myListView;
     private List<Advert> adverts = new ArrayList<>();
-
-    View view;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,8 +35,8 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
         btn.setOnClickListener(this);
 
         AnnonsGet testAG = new AnnonsGet();
-        String testSUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert";
-        testAG.execute(testSUrl);
+        String url = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert";
+        testAG.execute(url);
 
         return view;
     }
@@ -67,7 +66,6 @@ public class AnnonsFragment extends android.support.v4.app.Fragment implements V
             try {
                 Advert_Parse parser = new Advert_Parse();
                 adverts = parser.parse(result);
-                String s = "";
 
                 AnnonsAdapter adapter = new AnnonsAdapter(getContext(),R.layout.annons_item, adverts);
                 myListView = (ListView)view.findViewById(R.id.myListView);

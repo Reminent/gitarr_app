@@ -101,6 +101,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
 import com.example.magnus.menufragment.DB_Upload.DB_Delete;
+import com.example.magnus.menufragment.DB_Upload.DB_Update;
+import com.example.magnus.menufragment.DB_Upload.XML_Generate;
 import com.example.magnus.menufragment.XML_Parsing.Product;
 import com.example.magnus.menufragment.XML_Parsing.Product_Parse;
 import java.util.ArrayList;
@@ -122,7 +124,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 // DB_Delete
-
+                /*
                 String imageId = "1";
 
                 String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation/" + imageId;
@@ -133,7 +135,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+                */
 
                 // DB_Put
                 /*
@@ -152,6 +154,26 @@ public class EkonomiFragment extends android.support.v4.app.Fragment {
                     e.printStackTrace();
                 }
                 */
+
+                String advertDate = "2016-11-11T00:00:00+01:00";
+                String advertDescription = "fuckingworks2";
+                String advertTitle = "Works2";
+                String advertid = "5";
+                String imageid = "1";
+                String productid = "1";
+
+                String stringUrl = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert/" + advertid;
+                DB_Update update = new DB_Update();
+
+                XML_Generate xml_generate = new XML_Generate();
+
+                try {
+                    update.execute(xml_generate.advertTable(advertDate, advertDescription, advertTitle, advertid, imageid, productid), stringUrl);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                //String advertDate, String advertDescription, String advertTitle, String advertid, String imageid, String productid
 
                 // DB_Post
                 /*
