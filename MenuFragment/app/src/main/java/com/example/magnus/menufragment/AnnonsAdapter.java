@@ -112,16 +112,33 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
             }
         });
 
+        final AnnonsHolder finalHolder = holder;
         holder.change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("wtf", "1");
                 Toast.makeText(getContext(), "Redigera annons nr." + position, Toast.LENGTH_LONG).show();
                 //TODO: Change this so it changes the database instead.
+                Log.d("wtf", "2");
 
                 Bundle bundle = new Bundle();
-                bundle.putString("titel",advert.getAdvertTitle() );
-                bundle.putString("beskrivning",advert.getAdvertDescription());
-                //bundle.putString("BILD);
+                bundle.putString("titel", advert.getAdvertTitle());
+                bundle.putString("beskrivning", advert.getAdvertDescription());
+                //bundle.put("BILD);
+
+                Bitmap myBm = finalHolder.imgIcon.getDrawingCache(); //TODO bitmap == null, why?
+
+                //Convert to byte array
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                myBm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+
+
+                bundle.putByteArray("bild", byteArray);
+
+                Log.d("wtf", "3");
+
                 //TODO:: fixa så man kan redigera bilden.
 
                 AppCompatActivity a = (AppCompatActivity) context; //ful hax a la Stefan
@@ -130,7 +147,13 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
                 switch(v.getId()){
                     case R.id.redigera:
 
-                        fragment = new AnnonsFormularFragment();
+                        Toast.makeText(getContext(), "ändrar annons nr." + position, Toast.LENGTH_LONG).show();
+                        //TODO: Update site when an advert is deleted.
+                        DB_Delete delete = new DB_Delete();
+                        String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert/" + advert.getAdvertid();
+                        delete.execute(URL);
+
+                        fragment = new AnnonsFormularRedigera();
                         fragment.setArguments(bundle);
                         fm.replace(R.id.content, fragment);
                         fm.addToBackStack(null);
@@ -138,6 +161,7 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
 
                         break;
                 }
+                Log.d("wtf", "4");
             }
         });
 
@@ -146,7 +170,6 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Ta bort annons nr." + position, Toast.LENGTH_LONG).show();
                  //TODO: Update site when an advert is deleted.
-                //TODO: Delete broke??
                 DB_Delete delete = new DB_Delete();
                 String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert/" + advert.getAdvertid();
                 delete.execute(URL);
