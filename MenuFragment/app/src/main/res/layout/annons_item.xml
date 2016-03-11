@@ -16,7 +16,6 @@
     <TextView
         android:onClick="onClick"
         android:clickable="true"
-
         android:paddingTop="10dp"
         android:id="@+id/annons_item_title"
         android:textSize="13dp"
@@ -40,6 +39,7 @@
             android:gravity="center"
             android:id="@+id/redigera"
             android:text="redigera"/>
+
         <Button
             android:textSize="15dp"
             android:layout_width="100dp"
@@ -47,7 +47,6 @@
             android:gravity="center"
             android:id="@+id/ta_bort"
             android:text="ta bort"/>
-
     </LinearLayout>
 </LinearLayout>
 

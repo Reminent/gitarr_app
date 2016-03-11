@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
-import com.example.magnus.menufragment.XML_Parsing.Advert;
-import com.example.magnus.menufragment.XML_Parsing.Advert_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Transaction_Parse;
 import com.example.magnus.menufragment.XML_Parsing.Transaction;
 

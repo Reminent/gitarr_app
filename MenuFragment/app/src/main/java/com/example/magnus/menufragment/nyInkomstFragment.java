@@ -50,13 +50,16 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
                 //fm.addToBackStack(this); //Kan vara bra för när man ska stänga formuläret./koppla formuläret mot annonssidan.
 
                 break;
-/*
-            case R.id.btnDateChange:
-                db = new datePickFragment();
+
+            case R.id.btnSkicka:
+
+
+
+
                 break;
 
         }
-        */
+
         }
 
     }

@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.75"
             android:ems="10" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -117,6 +118,7 @@
                 android:ems="5"
                 android:text="Avbryt nu" />
 
+            <!--
             <Button
                 android:id="@+id/btnDateChange"
                 android:layout_width="wrap_content"
@@ -124,6 +126,7 @@
                 android:ems="5"
                 android:text="set  date"
                 />
+                -->
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

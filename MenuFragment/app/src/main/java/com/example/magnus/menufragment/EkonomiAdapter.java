@@ -48,8 +48,8 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
 
             holder = new EkonomiHolder();
             holder.txtTitle = (TextView)row.findViewById(R.id.annons_item_title);
-            holder.change = (Button)row.findViewById(R.id.redigera);
-            holder.remove = (Button)row.findViewById(R.id.ta_bort);
+           // holder.change = (Button)row.findViewById(R.id.redigera);
+           // holder.remove = (Button)row.findViewById(R.id.ta_bort);
 
             row.setTag(holder);
         }
@@ -80,7 +80,7 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
 
         //holder.imgIcon.setImageResource(advert.icon);
         //holder.imgIcon.setImageResource(advert.getImageid()); //TODO: fix this so we can fetch images from db
-
+/*
         holder.change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +96,7 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
                 //TODO: Change this so it deletes an item in the database instead.
             }
         });
-
+*/
         return row;
 
     }
@@ -111,7 +111,7 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
         //String imgIcon;
         ImageView imgIcon;
         TextView txtTitle;
-        Button remove;
-        Button change;
+        //Button remove;
+        //Button change;
     }
 }
