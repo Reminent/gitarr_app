@@ -29,7 +29,6 @@ import java.util.Date;
 import java.util.List;
 
 public class SchemaFragment extends android.support.v4.app.Fragment implements ConsultationResultListener {
-
     private List<Consultation> consultation = new ArrayList<>();
     private ListView listView;
     private View view;
@@ -46,11 +45,6 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void processFinish(String result) {
-
-    }
-/*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.filter, menu);
@@ -124,10 +118,6 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
-
     public void processFinish(String result) {
         List<Consultation> tmp = new ArrayList<>();
         Consultation_Parse parser = new Consultation_Parse();
@@ -153,7 +143,7 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
 
     }
 
-
+    /*
     private class SchemaGet extends DB_Connect {
         @Override
         protected void onPostExecute(String result) {
@@ -173,6 +163,5 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
             }
         }
     }
-
     */
 }
