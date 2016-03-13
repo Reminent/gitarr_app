@@ -1,7 +1,6 @@
 package com.example.magnus.menufragment;
 
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,29 +20,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
-import com.example.magnus.menufragment.DB_Upload.DB_Upload;
-import com.example.magnus.menufragment.XML_Parsing.Advert_Parse;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.text.DateFormat;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -70,13 +61,11 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
         view = inflater.inflate(R.layout.annons_formular_redigera, container, false);
         Button klarBtn = (Button)view.findViewById(R.id.klar2);
         klarBtn.setOnClickListener(this);
         Button AvbrytBtn = (Button)view.findViewById(R.id.avbryt2);
         AvbrytBtn.setOnClickListener(this);
-
 
         Button kameraBtn = (Button)view.findViewById(R.id.kamerasymbol2);
         kameraBtn.setOnClickListener(this);
@@ -86,39 +75,42 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
 
         myContext = getContext();
 
-         //TODO: Fixa så att man kan redigera en annons genom att skapa en ny vy.
-        Bundle bundle = this.getArguments();
-
-        String changedTitel = bundle.getString("titel");
-        EditText changeTxtTitel = (EditText) view.findViewById(R.id.editTextTitel2);
-        changeTxtTitel.setText(changedTitel);
-
-        String changedBeskrivning = bundle.getString("beskrivning");
-        EditText changeTxtBeskrivning= (EditText) view.findViewById(R.id.editTextBeskrivning2);
-        changeTxtBeskrivning.setText(changedBeskrivning);
-
-        byte[] byteArray = bundle.getByteArray("bild");
-        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        ImageView changeImgView= (ImageView) view.findViewById(R.id.image_camera2);
-
-
-
-        /*
-        EditText inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel);
-        titelStr = inputTxtTitel.getText().toString();
-        */
-
-        //Toast.makeText(getContext().getApplicationContext(), titel, Toast.LENGTH_LONG).show();
-
-        //String url = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert";
-
-
+        //Used for things that needs to be named unique (based on date on time)
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date cDate = new Date();
         fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
         formattedDate = df.format(c.getTime()).replace(" ", ""); //Now formattedDate has current date/time
         pictureName = formattedDate + ".jpg";
+
+
+        Bundle bundle = this.getArguments();
+
+        //Fixes the set title
+        String changedTitel = bundle.getString("titel");
+        EditText changeTxtTitel = (EditText) view.findViewById(R.id.editTextTitel2);
+        changeTxtTitel.setText(changedTitel);
+
+        //Fixes the set description
+        String changedBeskrivning = bundle.getString("beskrivning");
+        EditText changeTxtBeskrivning= (EditText) view.findViewById(R.id.editTextBeskrivning2);
+        changeTxtBeskrivning.setText(changedBeskrivning);
+
+        cr = getActivity().getContentResolver();
+
+        //Fixes the set image
+        byte[] byteArray = bundle.getByteArray("bild");
+        Bitmap bmp = null;
+        if (byteArray != null) {
+            bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        }
+        ImageView changeImgView= (ImageView) view.findViewById(R.id.image_camera2);
+        changeImgView.setImageBitmap(bmp);
+
+        File changedPhoto = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), pictureName);
+        saveBitmapToFile(bmp, changedPhoto);
+        selectedImage = Uri.fromFile(changedPhoto);
+
         return view;
     }
 
@@ -133,13 +125,11 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
-        cr = getActivity().getContentResolver();
         ImageView imageView = (ImageView)view.findViewById(R.id.image_camera2);
 
         switch (requestCode) {
             case TAKE_PICTURE:
                 selectedImage = imageUri;
-
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
 
                 try{
@@ -158,10 +148,8 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                 break;
 
             case SELECT_PICTURE:
-                Log.d("inside välj bild", "inside2");
 
                 try {
-
 
                     selectedImage = intent.getData();
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
@@ -172,7 +160,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                 break;
 
             default:
-                Log.d("fail", "onActResult failed case failed.");
+                Log.d("fail", "onActResult failed default case called.");
                 break;
         }
     }
@@ -184,19 +172,18 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
     @Override
     public void onClick(View v) {
         FragmentTransaction fm = getFragmentManager().beginTransaction();
-        EditText eTextTitel = (EditText)view.findViewById(R.id.editTextTitel2);
-        EditText eTextBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning2);
+        EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel2);
+        EditText inputTxtBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning2);
 
         switch(v.getId()){
             case R.id.klar2:
-                if(!isEmpty(eTextTitel)&& !isEmpty(eTextBeskrivning) && selectedImage != null) {
+                if(!isEmpty(inputTxtTitel)&& !isEmpty(inputTxtBeskrivning) && selectedImage != null) {
                     try {
-                        EditText inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel2);
+                        inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel2);
                         titelStr = inputTxtTitel.getText().toString();
 
-                        EditText inputTxtBeskrivning = (EditText) view.findViewById(R.id.editTextBeskrivning2);
+                        inputTxtBeskrivning = (EditText) view.findViewById(R.id.editTextBeskrivning2);
                         beskrivningStr = inputTxtBeskrivning.getText().toString();
-
 
                         bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -209,7 +196,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                         ap.execute(url);
 
                         Toast.makeText(getContext().getApplicationContext(),
-                                "Annons ändrad till databasen"
+                                "Annons ändrad i databasen"
                                 , Toast.LENGTH_LONG).show();
 
                     }catch (Exception e){
@@ -301,4 +288,33 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                 matrix, false);
         return resizedBitmap;
     }
+
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "title", null);
+        return Uri.parse(path);
+    }
+
+
+    private void saveBitmapToFile(Bitmap bmp, File filename){
+                FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(filename);
+
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+            // PNG is a lossless format, the compression factor (100) is ignored
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

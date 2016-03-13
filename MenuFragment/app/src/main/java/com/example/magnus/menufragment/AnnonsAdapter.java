@@ -114,27 +114,40 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
 
         final AnnonsHolder finalHolder = holder;
         holder.change.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
-                Log.d("wtf", "1");
                 Toast.makeText(getContext(), "Redigera annons nr." + position, Toast.LENGTH_LONG).show();
                 //TODO: Change this so it changes the database instead.
-                Log.d("wtf", "2");
 
                 Bundle bundle = new Bundle();
                 bundle.putString("titel", advert.getAdvertTitle());
                 bundle.putString("beskrivning", advert.getAdvertDescription());
                 //bundle.put("BILD);
 
-                Bitmap myBm = finalHolder.imgIcon.getDrawingCache(); //TODO bitmap == null, why?
+
+                Bitmap myBm = null;
+                try {
+                    View mv = finalHolder.imgIcon;
+                    //Code preventing drawingcache from being null
+                    mv.setDrawingCacheEnabled(true);
+                    mv.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                    mv.layout(0, 0, mv.getMeasuredWidth(), mv.getMeasuredHeight());
+                    mv.buildDrawingCache(true);
+                    myBm = Bitmap.createBitmap(mv.getDrawingCache());
+                    mv.setDrawingCacheEnabled(false); // clear drawing cache
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
 
                 //Convert to byte array
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                myBm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                if (myBm != null) {
+                    myBm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                }
                 byte[] byteArray = stream.toByteArray();
-
-
-
                 bundle.putByteArray("bild", byteArray);
 
                 Log.d("wtf", "3");
@@ -148,10 +161,12 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
                     case R.id.redigera:
 
                         Toast.makeText(getContext(), "ändrar annons nr." + position, Toast.LENGTH_LONG).show();
-                        //TODO: Update site when an advert is deleted.
+                        //TODO: Update site when an advert is edited. Change from remove+add to edit.
+
                         DB_Delete delete = new DB_Delete();
                         String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert/" + advert.getAdvertid();
                         delete.execute(URL);
+
 
                         fragment = new AnnonsFormularRedigera();
                         fragment.setArguments(bundle);
@@ -161,7 +176,6 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
 
                         break;
                 }
-                Log.d("wtf", "4");
             }
         });
 
