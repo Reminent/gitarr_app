@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.magnus.menufragment.DB_Upload.DB_Delete;
 
 import com.example.magnus.menufragment.XML_Parsing.Transaction;
 
@@ -48,8 +49,8 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
 
             holder = new EkonomiHolder();
             holder.txtTitle = (TextView)row.findViewById(R.id.annons_item_title);
-           // holder.change = (Button)row.findViewById(R.id.redigera);
-           // holder.remove = (Button)row.findViewById(R.id.ta_bort);
+            holder.change = (Button)row.findViewById(R.id.redigera);
+            holder.remove = (Button)row.findViewById(R.id.ta_bort);
 
             row.setTag(holder);
         }
@@ -88,16 +89,21 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
                 //TODO: Change this so it changes the database instead.
             }
         });
-
-        holder.remove.setOnClickListener(new View.OnClickListener() {
+*/
+ holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Ta bort annons nr." + position, Toast.LENGTH_LONG).show();
-                //TODO: Change this so it deletes an item in the database instead.
+                Toast.makeText(getContext(), "Ta bort transaction nr." + position, Toast.LENGTH_LONG).show();
+                 //TODO: Update site when an advert is deleted.
+                //TODO: Delete broke??
+                DB_Delete delete = new DB_Delete();
+                String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.transaction/" + transaction.getTransactionid();
+                delete.execute(URL);
             }
         });
-*/
         return row;
+
+
 
     }
 
@@ -108,10 +114,10 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
 
     static class EkonomiHolder
     {
-        //String imgIcon;
+
         ImageView imgIcon;
         TextView txtTitle;
-        //Button remove;
-        //Button change;
+        Button remove;
+        Button change;
     }
 }

@@ -26,6 +26,149 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.magnus.menufragment.DB_Upload.DB_Upload;
+import com.example.magnus.menufragment.DB_Upload.XML_Generate;
+
+public class nyInkomstFragment extends android.support.v4.app.Fragment {
+    @Nullable
+    View view;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_ny_inkomst, container, false);
+
+        Button done = (Button) view.findViewById(R.id.btnSkicka);
+        Button abort = (Button) view.findViewById(R.id.btnStop);
+
+        done.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                //EditText descriptionText = (EditText) view.findViewById(R.id.schema_newTime_description);
+                String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.transaction";
+
+                EditText eTextDate = (EditText)view.findViewById(R.id.txtSetDate);
+                EditText eTextAmount= (EditText)view.findViewById(R.id.txtSetAmount);
+
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date cDate = new Date();
+                String transDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+
+
+                String id, amount, date;
+                id = transDate;
+                amount = eTextAmount.getText().toString();
+                date = eTextDate.getText().toString();
+
+
+
+                XML_Generate generator = new XML_Generate();
+                String results = generator.transactionTable(amount, date,id);
+                DB_Upload upload = new DB_Upload();
+                upload.execute(results, URL);
+                Toast.makeText(getContext(), "uppladdat", Toast.LENGTH_LONG).show();
+
+                Fragment fragment;
+                FragmentTransaction fm = getFragmentManager().beginTransaction();
+
+                switch(v.getId()){
+                    case R.id.btnSkicka:
+
+                        fragment = new EkonomiFragment();
+                        fm.replace(R.id.content, fragment);
+                        fm.addToBackStack(null);
+                        fm.commit();
+
+                        break;
+                }
+            }
+        });
+
+        abort.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "abort", Toast.LENGTH_LONG).show();
+                Fragment fragment;
+                FragmentTransaction fm = getFragmentManager().beginTransaction();
+
+                switch(v.getId()){
+                    case R.id.btnStop:
+
+                        fragment = new EkonomiFragment();
+                        fm.replace(R.id.content, fragment);
+                        fm.addToBackStack(null);
+                        fm.commit();
+
+                        break;
+                }
+            }
+        });
+
+        /*startDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "start", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        endDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "end", Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
+        return view;
+    }
+
+}
+
+
+
+/*package com.example.magnus.menufragment;
+
+import android.content.ContentResolver;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -71,7 +214,7 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
         Fragment fragment;
         FragmentTransaction fm = getFragmentManager().beginTransaction();
         //datePickFragment db;
-        FragmentTransaction dm = getFragmentManager().beginTransaction();
+        //FragmentTransaction dm = getFragmentManager().beginTransaction();
 
         EditText eTextDate = (EditText)view.findViewById(R.id.txtSetDate);
         EditText eTextAmount= (EditText)view.findViewById(R.id.txtSetAmount);
@@ -166,7 +309,7 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment implement
     }
 }
 
-
+*/
 
 
 
