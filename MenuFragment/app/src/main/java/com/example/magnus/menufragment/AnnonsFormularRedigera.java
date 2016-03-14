@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -40,7 +39,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AnnonsFormularRedigera extends android.support.v4.app.Fragment implements View.OnClickListener{
@@ -110,9 +108,10 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         changeImgView.setImageBitmap(bmp);
 
         File changedPhoto = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), pictureName);
-        saveBitmapToFile(bmp, changedPhoto);
-        selectedImage = Uri.fromFile(changedPhoto);
-
+        if(saveBitmapToFile(bmp, changedPhoto)) {
+            Uri tmpImage = Uri.fromFile(changedPhoto);
+            selectedImage = tmpImage;
+        }
         return view;
     }
 
@@ -143,7 +142,6 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                     //bitmap = getResizedBitmap(bitmap, newHeight, newWidth);
 
                     imageView.setImageBitmap(bitmap);
-                    Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -181,10 +179,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
             case R.id.klar2:
                 if(!isEmpty(inputTxtTitel)&& !isEmpty(inputTxtBeskrivning) && selectedImage != null) {
                     try {
-                        inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel2);
                         titelStr = inputTxtTitel.getText().toString();
-
-                        inputTxtBeskrivning = (EditText) view.findViewById(R.id.editTextBeskrivning2);
                         beskrivningStr = inputTxtBeskrivning.getText().toString();
 
                         bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
@@ -300,14 +295,17 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
     }
 
 
-    private void saveBitmapToFile(Bitmap bmp, File filename){
-                FileOutputStream out = null;
+    private boolean saveBitmapToFile(Bitmap bmp, File filename){
+        FileOutputStream out = null;
+        boolean returnedCorrectly = true;
+
         try {
             out = new FileOutputStream(filename);
 
             bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
             // PNG is a lossless format, the compression factor (100) is ignored
         } catch (Exception e) {
+            returnedCorrectly = false;
             e.printStackTrace();
         } finally {
             try {
@@ -315,8 +313,10 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                     out.close();
                 }
             } catch (IOException e) {
+                returnedCorrectly = false;
                 e.printStackTrace();
             }
         }
+        return returnedCorrectly;
     }
 }
