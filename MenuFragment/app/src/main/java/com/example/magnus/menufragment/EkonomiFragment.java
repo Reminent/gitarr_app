@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
 import com.example.magnus.menufragment.XML_Parsing.Transaction_Parse;
@@ -18,6 +17,10 @@ import com.example.magnus.menufragment.XML_Parsing.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/*
+ * Created by Albin and Martin on 2016-03-09.
+ */
 
 public class EkonomiFragment extends android.support.v4.app.Fragment implements View.OnClickListener{
 

@@ -1,8 +1,5 @@
 package com.example.magnus.menufragment;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,32 +10,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.magnus.menufragment.DB_Connect.DB_Connect;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import java.util.regex.Pattern;
 
 import com.example.magnus.menufragment.DB_Upload.DB_Upload;
 import com.example.magnus.menufragment.DB_Upload.XML_Generate;
+
+/*
+ * Created by Albin and Martin on 2016-03-09.
+ */
 
 public class nyInkomstFragment extends android.support.v4.app.Fragment {
     @Nullable
@@ -67,7 +49,7 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment {
                 Date cDate = new Date();
                 String transDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
 
-                if(!isEmpty(eTextAmount)) {
+                if(!isEmpty(eTextAmount)&& Pattern.matches("[0-9]+", eTextAmount.getText().toString()) == true) {
 
                     String id, amount, date;
                     id = transDate;

@@ -9,8 +9,7 @@
 
 
        <TextView
-        android:onClick="onClick"
-        android:clickable="true"
+
         android:paddingTop="10dp"
         android:id="@+id/total_inkomst"
         android:textSize="13dp"
@@ -25,8 +24,7 @@
         />
 
     <TextView
-        android:onClick="onClick"
-        android:clickable="true"
+
         android:paddingTop="10dp"
         android:id="@+id/ekonomi_item_title"
         android:textSize="13dp"
@@ -41,8 +39,7 @@
         />
 
     <TextView
-        android:onClick="onClick"
-        android:clickable="true"
+
         android:paddingTop="10dp"
         android:id="@+id/datum_summa"
         android:textSize="13dp"

@@ -21,11 +21,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -39,6 +44,10 @@ import android.widget.Toast;
 
 import com.example.magnus.menufragment.DB_Upload.DB_Upload;
 import com.example.magnus.menufragment.DB_Upload.XML_Generate;
+
+/*
+ * Created by Albin and Martin on 2016-03-09.
+ */
 
 public class nyUtgiftFragment extends android.support.v4.app.Fragment {
     @Nullable
@@ -67,7 +76,7 @@ public class nyUtgiftFragment extends android.support.v4.app.Fragment {
                 Date cDate = new Date();
                 String transDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
 
-                if(!isEmpty(eTextAmount)) {
+                if(!isEmpty(eTextAmount) && Pattern.matches("[0-9]+", eTextAmount.getText().toString()) == true) {
 
                 String id, amount, date;
                 id = transDate;
