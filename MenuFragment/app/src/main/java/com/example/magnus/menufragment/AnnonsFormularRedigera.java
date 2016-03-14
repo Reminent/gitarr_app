@@ -20,8 +20,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,22 +56,29 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
     private Context myContext;
     private String formattedDate;
     private String fDate;
+    private static final String TAG = AnnonsFormularFragment.class.getName();
+
 
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.annons_formular_fragment, container, false);
-        Button klarBtn = (Button)view.findViewById(R.id.done);
-        klarBtn.setOnClickListener(this);
-        Button AvbrytBtn = (Button)view.findViewById(R.id.cancel);
-        AvbrytBtn.setOnClickListener(this);
 
-        Button kameraBtn = (Button)view.findViewById(R.id.camera);
-        kameraBtn.setOnClickListener(this);
+        Button doneButton = (Button)view.findViewById(R.id.done);
+        doneButton.setOnClickListener(this);
 
-        Button galleriBtn = (Button)view.findViewById(R.id.gallery);
-        galleriBtn.setOnClickListener(this);
+        Button cancelButton = (Button)view.findViewById(R.id.cancel);
+        cancelButton.setOnClickListener(this);
+
+        Button cameraButton = (Button)view.findViewById(R.id.camera);
+        cameraButton.setOnClickListener(this);
+
+        Button galleryButton = (Button)view.findViewById(R.id.gallery);
+        galleryButton.setOnClickListener(this);
+
+        TextView formularTitle = (TextView)view.findViewById(R.id.formularTitle);
+        formularTitle.setText("Redigera annons");
 
         myContext = getContext();
 
@@ -133,13 +141,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
 
                 try{
-                    int newHeight = 100;
-                    int newWidth = 100;
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
-
-                    //Todo Fix so this actually works
-                    //bitmap = getResizedBitmap(bitmap, newHeight, newWidth);
-
                     imageView.setImageBitmap(bitmap);
                 }catch (Exception e){
                     e.printStackTrace();
@@ -158,7 +160,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                 break;
 
             default:
-                Log.d("fail", "onActResult failed default case called.");
+                Log.d( TAG, "onActivityResult default case called.");
                 break;
         }
     }
@@ -253,7 +255,6 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                     protected Map<String,String> getParams() throws AuthFailureError {
 
                         HashMap<String,String> map = new HashMap<>();
-                        //Set as nothing
                         map.put("encoded_string", encoded);
                         map.put("image_name", pictureName);
                         map.put("product_name", formattedDate);
