@@ -77,6 +77,9 @@ public class LagerFormularRedigera extends android.support.v4.app.Fragment imple
 
         view = inflater.inflate(R.layout.lager_formular_fragment, container, false);
 
+        TextView title = (TextView)view.findViewById(R.id.lager_formular_fragment_title);
+        title.setText("Redigera produkt");
+
         /* Sets listeners to buttons */
         Button buttonDone = (Button)view.findViewById(R.id.buttonDone);
         buttonDone.setOnClickListener(this);
@@ -293,14 +296,18 @@ public class LagerFormularRedigera extends android.support.v4.app.Fragment imple
             }
         }
     }
-    private void saveBitmapToFile(Bitmap bmp, File filename){
+
+    private boolean saveBitmapToFile(Bitmap bmp, File filename){
         FileOutputStream out = null;
+        boolean returnedCorrectly = true;
+
         try {
             out = new FileOutputStream(filename);
 
             bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
             // PNG is a lossless format, the compression factor (100) is ignored
         } catch (Exception e) {
+            returnedCorrectly = false;
             e.printStackTrace();
         } finally {
             try {
@@ -308,8 +315,10 @@ public class LagerFormularRedigera extends android.support.v4.app.Fragment imple
                     out.close();
                 }
             } catch (IOException e) {
+                returnedCorrectly = false;
                 e.printStackTrace();
             }
         }
+        return returnedCorrectly;
     }
 }

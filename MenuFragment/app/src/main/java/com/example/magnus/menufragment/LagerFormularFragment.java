@@ -88,22 +88,13 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
 
         myContext = getContext();
 
-        /* //TODO: Fixa så att man kan redigera en annons genom att skapa en ny vy.
-        Bundle bundle = this.getArguments();
-        final String titel = bundle.getString("titel");
-
-        Toast.makeText(getContext().getApplicationContext(), titel, Toast.LENGTH_LONG).show();
-
-        //String url = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert";
-        */
-
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // Tagit bort för att det inte används
         //Date cDate = new Date();
         //fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
         formattedDate = df.format(c.getTime()).replace(" ", ""); //Now formattedDate has current date/time
-        pictureName = formattedDate + ".gif";
+        pictureName = formattedDate + ".jpg";
         return view;
     }
 
@@ -123,19 +114,12 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
 
         switch (requestCode) {
             case TAKE_PICTURE:
-                selectedImage = imageUri;
 
+                selectedImage = imageUri;
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
 
                 try{
-                    // Not used
-                    //int newHeight = 100;
-                    //int newWidth = 100;
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
-
-                    //Todo Fix so this actually works
-                    //bitmap = getResizedBitmap(bitmap, newHeight, newWidth);
-
                     imageView.setImageBitmap(bitmap);
                     Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
                 }catch (Exception e){

@@ -147,6 +147,10 @@ public class LagerAdapter extends ArrayAdapter<Product>{
                 switch(v.getId()){
                     case R.id.product_edit_button:
 
+                        DB_Delete delete = new DB_Delete();
+                        String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.product/" + product.getProductId();
+                        delete.execute(URL);
+
                         fragment = new LagerFormularRedigera();
                         fragment.setArguments(bundle);
                         fm.replace(R.id.content, fragment);
