@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.magnus.menufragment.DB_Upload.DB_Delete;
 import com.example.magnus.menufragment.XML_Parsing.Advert;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
