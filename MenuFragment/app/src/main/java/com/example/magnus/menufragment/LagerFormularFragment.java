@@ -74,17 +74,19 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
 
         view = inflater.inflate(R.layout.lager_formular_fragment, container, false);
 
-        Button klarBtn = (Button)view.findViewById(R.id.klar);
-        klarBtn.setOnClickListener(this);
+        Button buttonDone = (Button)view.findViewById(R.id.buttonDone);
+        buttonDone.setOnClickListener(this);
 
-        Button AvbrytBtn = (Button)view.findViewById(R.id.avbryt);
-        AvbrytBtn.setOnClickListener(this);
+        Button buttonCancel = (Button)view.findViewById(R.id.buttonCancel);
+        buttonCancel.setOnClickListener(this);
 
-        Button kameraBtn = (Button)view.findViewById(R.id.kamerasymbol);
-        kameraBtn.setOnClickListener(this);
+        Button buttonCamera = (Button)view.findViewById(R.id.buttonTakePhoto);
+        buttonCamera.setOnClickListener(this);
 
-        Button galleriBtn = (Button)view.findViewById(R.id.gallerisymbol);
-        galleriBtn.setOnClickListener(this);
+        Button buttonGallery = (Button)view.findViewById(R.id.buttonEnterGallery);
+        buttonGallery.setOnClickListener(this);
+
+        myContext = getContext();
 
         /* //TODO: Fixa så att man kan redigera en annons genom att skapa en ny vy.
         Bundle bundle = this.getArguments();
@@ -173,7 +175,7 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
         EditText editProductSellingPrice = (EditText)view.findViewById(R.id.editSellingPrice);
 
         switch(v.getId()){
-            case R.id.klar:
+            case R.id.buttonDone:
                 if(!isEmpty(editProductName) && selectedImage != null) {
                     try {
                         // Gets strings from EditText views
@@ -210,18 +212,18 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
                 }
                 break;
 
-            case R.id.avbryt:
+            case R.id.buttonCancel:
 
                 getFragmentManager().popBackStack();
                 fm.commit();
                 break;
 
-            case R.id.kamerasymbol:
+            case R.id.buttonTakePhoto:
 
                 takePhoto(v);
                 break;
 
-            case R.id.gallerisymbol:
+            case R.id.buttonEnterGallery:
 
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//opens gallery
                 startActivityForResult(galleryIntent, SELECT_PICTURE); //allows to get back image
@@ -239,7 +241,7 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
         protected void onPostExecute(String result) {
             try {
 
-                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                RequestQueue requestQueue = Volley.newRequestQueue(myContext);
                 StringRequest request = new StringRequest(Request.Method.POST, "http://spaaket.no-ip.org:1080/quercus-4.0.39/connection2.php",
 
                         new Response.Listener<String>() {
@@ -257,7 +259,6 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
                     protected Map<String,String> getParams() throws AuthFailureError {
 
                         HashMap<String,String> map = new HashMap<>();
-                        //Set as nothing
                         map.put("encoded_string", encoded);
                         map.put("image_name", pictureName);
                         map.put("manufacturer", productManufacturer);
@@ -280,6 +281,7 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
             }
         }
     }
+    /*
     public static Bitmap getResizedBitmap(Bitmap image, int newHeight, int newWidth) {
         int width = image.getWidth();
         int height = image.getHeight();
@@ -294,4 +296,5 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
                 matrix, false);
         return resizedBitmap;
     }
+    */
 }

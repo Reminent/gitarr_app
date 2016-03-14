@@ -93,7 +93,7 @@
 
             android:layout_height="match_parent"
             android:text="AVBRYT"
-            android:id="@+id/cancel"
+            android:id="@+id/buttonCancel"
             android:layout_gravity="left"
             android:textSize="20dp"
             android:background="#FFFFFF"
@@ -129,7 +129,7 @@
             android:textSize="20dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:id="@+id/done"
+            android:id="@+id/buttonDone"
             android:text="Klar"
             android:textColor="#A9A9A9"
             android:background="#FFFFFF" />

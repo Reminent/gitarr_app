@@ -105,17 +105,41 @@ public class LagerAdapter extends ArrayAdapter<Product>{
         holder.productBuyingPrice.setText(product.getPurchasePrice());
         holder.productSellingPrice.setText(product.getSellingPrice());
 
+        final LagerHolder finalHolder = holder;
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Redigera annons nr." + position, Toast.LENGTH_LONG).show();
-                //TODO: Change this so it changes the database instead.
+                //Toast.makeText(getContext(), "Redigera annons nr." + position, Toast.LENGTH_LONG).show();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("titel",product.getProductName() );
-                bundle.putString("beskrivning",product.getSellingPrice());
-                //bundle.putString("BILD);
-                //TODO:: fixa så man kan redigera bilden.
+                bundle.putString("productName",product.getProductName());
+                bundle.putString("productManufacturer",product.getManufacturer());
+                bundle.putString("productGenre",product.getGenre());
+                bundle.putString("productPurchaserPrice",product.getPurchasePrice());
+                bundle.putString("productSellingPrice", product.getSellingPrice());
+
+                Bitmap myBm = null;
+                try {
+                    View mv = finalHolder.image;
+                    //Code preventing drawingcache from being null
+                    mv.setDrawingCacheEnabled(true);
+                    mv.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                    mv.layout(0, 0, mv.getMeasuredWidth(), mv.getMeasuredHeight());
+                    mv.buildDrawingCache(true);
+                    myBm = Bitmap.createBitmap(mv.getDrawingCache());
+                    mv.setDrawingCacheEnabled(false); // clear drawing cache
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                //Convert to byte array
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                if (myBm != null) {
+                    myBm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                }
+                byte[] byteArray = stream.toByteArray();
+                bundle.putByteArray("productImage", byteArray);
 
                 AppCompatActivity a = (AppCompatActivity) context; //ful hax a la Stefan
                 Fragment fragment;
@@ -123,7 +147,7 @@ public class LagerAdapter extends ArrayAdapter<Product>{
                 switch(v.getId()){
                     case R.id.product_edit_button:
 
-                        fragment = new LagerFormularFragment();
+                        fragment = new LagerFormularRedigera();
                         fragment.setArguments(bundle);
                         fm.replace(R.id.content, fragment);
                         fm.addToBackStack(null);
@@ -139,7 +163,6 @@ public class LagerAdapter extends ArrayAdapter<Product>{
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Ta bort annons nr." + position, Toast.LENGTH_LONG).show();
                 //TODO: Update site when an advert is deleted.
-                //TODO: Delete broke??
                 DB_Delete delete = new DB_Delete();
                 String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.product/" + product.getProductId();
                 delete.execute(URL);
