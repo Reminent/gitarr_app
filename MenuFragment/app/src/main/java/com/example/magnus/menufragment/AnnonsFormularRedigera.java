@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AnnonsFormularRedigera extends android.support.v4.app.Fragment implements View.OnClickListener{
@@ -202,6 +204,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                     }catch (Exception e){
                         e.printStackTrace();
                     }
+
                     getFragmentManager().popBackStack();
                     fm.commit();
                 } else {
@@ -316,5 +319,4 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
             }
         }
     }
-
 }

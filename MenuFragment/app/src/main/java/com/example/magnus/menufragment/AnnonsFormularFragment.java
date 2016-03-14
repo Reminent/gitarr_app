@@ -170,6 +170,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
         switch(v.getId()){
             case R.id.klar:
+                Toast.makeText(getContext(), "Skickar annons...", Toast.LENGTH_LONG);
                 if(!isEmpty(eTextTitel)&& !isEmpty(eTextBeskrivning) && selectedImage != null) {
                     try {
                         EditText inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel);
