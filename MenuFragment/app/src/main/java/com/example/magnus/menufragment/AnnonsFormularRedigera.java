@@ -272,28 +272,6 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
             }
         }
     }
-    public static Bitmap getResizedBitmap(Bitmap image, int newHeight, int newWidth) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // create a matrix for the manipulation
-        Matrix matrix = new Matrix();
-        // resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight);
-        // recreate the new Bitmap
-        Bitmap resizedBitmap = Bitmap.createBitmap(image, 0, 0, width, height,
-                matrix, false);
-        return resizedBitmap;
-    }
-
-    private Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "title", null);
-        return Uri.parse(path);
-    }
-
 
     private boolean saveBitmapToFile(Bitmap bmp, File filename){
         FileOutputStream out = null;
