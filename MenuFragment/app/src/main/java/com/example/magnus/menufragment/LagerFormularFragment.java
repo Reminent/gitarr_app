@@ -109,7 +109,8 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
-        ImageView imageView = (ImageView)view.findViewById(R.id.image_camera);
+        cr = getActivity().getContentResolver();
+        ImageView imageView = (ImageView)view.findViewById(R.id.productImageView);
 
         switch (requestCode) {
             case TAKE_PICTURE:
@@ -191,7 +192,7 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
                     fm.commit();
                 } else {
                     Toast.makeText(getContext().getApplicationContext(),
-                            "Du måste välja titel, beskrivning och bild" , Toast.LENGTH_LONG).show();
+                            "Du måste välja unikt produktnamn och bild" , Toast.LENGTH_LONG).show();
                 }
                 break;
 
