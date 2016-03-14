@@ -3,8 +3,41 @@
 
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="50dp"
     android:id="@+id/annons_item_1">
+
+
+    <TextView
+        android:onClick="onClick"
+        android:clickable="true"
+        android:paddingTop="10dp"
+        android:id="@+id/total_inkomst"
+        android:textSize="13dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:fontFamily="Arial"
+        android:text="Titel"
+        android:layout_gravity="top|center"
+        android:singleLine="false"
+        />
+
+    <TextView
+        android:onClick="onClick"
+        android:clickable="true"
+        android:paddingTop="10dp"
+        android:id="@+id/ekonomi_item_title"
+        android:textSize="13dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:fontFamily="Arial"
+        android:text="Titel"
+        android:layout_gravity="top|center"
+        android:singleLine="false"
+        />
 
     <ImageView
         android:id="@+id/annons_item_image"
@@ -12,20 +45,6 @@
         android:layout_width="150dp"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-
-
-    <TextView
-        android:onClick="onClick"
-        android:clickable="true"
-        android:paddingTop="10dp"
-        android:id="@+id/annons_item_title"
-        android:textSize="13dp"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="Titel"
-        android:layout_gravity="top|center"
-        android:singleLine="false" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -38,16 +57,7 @@
             android:layout_width="100dp"
             android:layout_height="45dp"
             android:gravity="center"
-            android:id="@+id/redigera"
-            android:text="redigera"/>
-
-        <Button
-            android:textSize="15dp"
-            android:layout_width="100dp"
-            android:layout_height="45dp"
-            android:gravity="center"
             android:id="@+id/ta_bort"
             android:text="ta bort"/>
     </LinearLayout>
 </LinearLayout>
-

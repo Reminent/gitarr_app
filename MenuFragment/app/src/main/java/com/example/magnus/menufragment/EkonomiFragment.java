@@ -76,8 +76,9 @@ public class EkonomiFragment extends android.support.v4.app.Fragment implements 
                 ekonom = Eparser.parse(result);
                 String s = "";
 
-                EkonomiAdapter adapter = new EkonomiAdapter(getContext(),R.layout.annons_item, ekonom);
+                EkonomiAdapter adapter = new EkonomiAdapter(getContext(),R.layout.ekonomi_item, ekonom);
                 myListVieww = (ListView)view.findViewById(R.id.myListVieww);
+
                 myListVieww.setAdapter(adapter);
 
             } catch (Exception e) {

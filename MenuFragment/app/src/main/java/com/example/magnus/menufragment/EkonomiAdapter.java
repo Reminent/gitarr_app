@@ -18,6 +18,8 @@ import com.example.magnus.menufragment.DB_Upload.DB_Delete;
 
 import com.example.magnus.menufragment.XML_Parsing.Transaction;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.List;
 
 /*
@@ -25,9 +27,13 @@ import java.util.List;
  */
 public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.OnClickListener {
 
+    private int total = 0;
+    private int temp=0;
     Context context;
     int layoutResourceId;
     private List<Transaction> data;
+    private String showTotal = "";
+    private String testInt = "";
 
 
     public EkonomiAdapter(Context context, int layoutResourceId, List<Transaction> data) {
@@ -48,9 +54,13 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new EkonomiHolder();
-            holder.txtTitle = (TextView)row.findViewById(R.id.annons_item_title);
+
+            holder.txtTotal = (TextView)row.findViewById(R.id.total_inkomst);
+            holder.txtTitle = (TextView)row.findViewById(R.id.ekonomi_item_title);
             holder.change = (Button)row.findViewById(R.id.redigera);
             holder.remove = (Button)row.findViewById(R.id.ta_bort);
+
+
 
             row.setTag(holder);
         }
@@ -61,6 +71,19 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
 
         final Transaction transaction = data.get(position);
         holder.txtTitle.setText(transaction.getTransactionAmount());
+
+        testInt=transaction.getTransactionAmount();
+
+        try {
+            temp = NumberFormat.getInstance().parse(testInt).intValue();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        total = total+temp;
+
+
+        showTotal = Integer.toString(total);
+        holder.txtTotal.setText(showTotal);
 
         holder.txtTitle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +140,7 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
 
         ImageView imgIcon;
         TextView txtTitle;
+        TextView txtTotal;
         Button remove;
         Button change;
     }

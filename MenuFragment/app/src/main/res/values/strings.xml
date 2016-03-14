@@ -12,4 +12,8 @@
     <string name="VäljBild">Välj bild</string>
     <string name="TaKort">Ta kort</string>
 
+    <string name="hello">Hello World, Set_Text_TitleBar!</string>
+    <color name="titlebackgroundcolor">#3232CD</color>
+    <color name="titletextcolor">#FFFF00</color>
+
 </resources>
