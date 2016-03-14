@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.example.magnus.menufragment.DB_Upload.DB_Delete;
 import com.example.magnus.menufragment.XML_Parsing.Advert;
 import java.io.ByteArrayOutputStream;
@@ -104,7 +103,6 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Redigera annons nr." + position, Toast.LENGTH_LONG).show();
                 //TODO: Change this so it changes the database instead.
 
                 Bundle bundle = new Bundle();
@@ -143,10 +141,7 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
                 FragmentTransaction fm = a.getSupportFragmentManager().beginTransaction();
                 switch(v.getId()){
                     case R.id.redigera:
-
-                        Toast.makeText(getContext(), "ändrar annons nr." + position, Toast.LENGTH_LONG).show();
                         //TODO: Update site when an advert is edited. Change from remove+add to edit.
-
                         DB_Delete delete = new DB_Delete();
                         String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert/" + advert.getAdvertid();
                         delete.execute(URL);
@@ -166,7 +161,6 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Ta bort annons nr." + position, Toast.LENGTH_LONG).show();
                  //TODO: Update site when an advert is deleted.
                 DB_Delete delete = new DB_Delete();
                 String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert/" + advert.getAdvertid();
