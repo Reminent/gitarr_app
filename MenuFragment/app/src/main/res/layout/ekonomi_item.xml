@@ -8,7 +8,7 @@
     android:id="@+id/annons_item_1">
 
 
-    <TextView
+       <TextView
         android:onClick="onClick"
         android:clickable="true"
         android:paddingTop="10dp"

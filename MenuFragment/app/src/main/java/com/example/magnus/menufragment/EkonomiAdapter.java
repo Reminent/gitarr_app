@@ -4,22 +4,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.magnus.menufragment.DB_Upload.DB_Delete;
-
 import com.example.magnus.menufragment.XML_Parsing.Transaction;
-
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -32,8 +29,10 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
     Context context;
     int layoutResourceId;
     private List<Transaction> data;
+    private List<Transaction> arr_temp = new ArrayList<>();
     private String showTotal = "";
     private String testInt = "";
+    private int item_count = 0;
 
 
     public EkonomiAdapter(Context context, int layoutResourceId, List<Transaction> data) {
@@ -47,6 +46,9 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         EkonomiHolder holder = null;
+
+       // TextView totall = (TextView)row.findViewById(R.id.total_inkomst);
+
 
         if(row == null)
         {
@@ -63,6 +65,8 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
 
             row.setTag(holder);
 
+
+
         }
         else
         {
@@ -70,21 +74,26 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
         }
 
 
-        final Transaction transaction = data.get(position);
-        holder.txtTitle.setText(transaction.getTransactionAmount());
-        holder.txtDate.setText(transaction.getTransactionDate().substring(0, 9));
+        for(int i=0; i < data.size(); i++){
+            arr_temp.add(data.get(data.size()-i-1));
+        }
+
+        final Transaction transaction = arr_temp.get(position);
+        holder.txtTitle.setText(transaction.getTransactionAmount()+" kr");
+        holder.txtDate.setText(transaction.getTransactionDate().substring(0, 10));
         testInt=transaction.getTransactionAmount();
+        item_count++;
 
         try {
             temp = NumberFormat.getInstance().parse(testInt).intValue();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        total = total+temp;
 
+        total = total + temp;
 
         showTotal = Integer.toString(total);
-        holder.txtTotal.setText(showTotal);
+        holder.txtTotal.setText(showTotal + " kr");
 
         holder.txtTitle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +111,8 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
                 alertDialog.show();
             }
         });
-        holder.txtTotal.setOnClickListener(new View.OnClickListener() {
+
+        /*holder.txtTotal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
@@ -117,34 +127,20 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
                         });
                 alertDialog.show();
             }
-        });
+        });*/
 
-        //holder.imgIcon.setImageResource(advert.icon);
-        //holder.imgIcon.setImageResource(advert.getImageid()); //TODO: fix this so we can fetch images from db
-/*
-        holder.change.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Redigera annons nr." + position, Toast.LENGTH_LONG).show();
-                //TODO: Change this so it changes the database instead.
-            }
-        });
-*/
- holder.remove.setOnClickListener(new View.OnClickListener() {
+        holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Ta bort transaction nr." + position, Toast.LENGTH_LONG).show();
-                 //TODO: Update site when an advert is deleted.
+                //TODO: Update site when an advert is deleted.
                 //TODO: Delete broke??
                 DB_Delete delete = new DB_Delete();
                 String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.transaction/" + transaction.getTransactionid();
                 delete.execute(URL);
             }
-        });
+                   });
         return row;
-
-
-
     }
 
     @Override
@@ -154,8 +150,6 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
 
     static class EkonomiHolder
     {
-
-        ImageView imgIcon;
         TextView txtTitle;
         TextView txtTotal;
         TextView txtDate;
