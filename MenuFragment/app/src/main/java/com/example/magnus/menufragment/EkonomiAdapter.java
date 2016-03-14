@@ -55,23 +55,24 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
 
             holder = new EkonomiHolder();
 
+            holder.txtDate = (TextView)row.findViewById(R.id.datum_summa);
             holder.txtTotal = (TextView)row.findViewById(R.id.total_inkomst);
             holder.txtTitle = (TextView)row.findViewById(R.id.ekonomi_item_title);
             holder.change = (Button)row.findViewById(R.id.redigera);
             holder.remove = (Button)row.findViewById(R.id.ta_bort);
 
-
-
             row.setTag(holder);
+
         }
         else
         {
             holder = (EkonomiHolder)row.getTag();
         }
 
+
         final Transaction transaction = data.get(position);
         holder.txtTitle.setText(transaction.getTransactionAmount());
-
+        holder.txtDate.setText(transaction.getTransactionDate().substring(0, 9));
         testInt=transaction.getTransactionAmount();
 
         try {
@@ -91,6 +92,22 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
                 alertDialog.setTitle("Beskrivning");
                 alertDialog.setMessage(transaction.getTransactionDate());
+
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+        holder.txtTotal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle("Beskrivning");
+                alertDialog.setMessage("Balans");
 
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                         new DialogInterface.OnClickListener() {
@@ -141,6 +158,7 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
         ImageView imgIcon;
         TextView txtTitle;
         TextView txtTotal;
+        TextView txtDate;
         Button remove;
         Button change;
     }

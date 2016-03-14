@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -38,11 +39,26 @@
         android:layout_gravity="top|center"
         android:singleLine="false"
         />
+    <TextView
+        android:onClick="onClick"
+        android:clickable="true"
+        android:paddingTop="10dp"
+        android:id="@+id/datum_summa"
+        android:textSize="13dp"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:fontFamily="Arial"
+        android:text="Titel"
+        android:layout_gravity="top|center"
+        android:singleLine="false"
+        />
 
     <ImageView
         android:id="@+id/annons_item_image"
         android:paddingLeft="20dp"
-        android:layout_width="150dp"
+        android:layout_width="10dp"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
@@ -54,10 +70,10 @@
 
         <Button
             android:textSize="15dp"
-            android:layout_width="100dp"
-            android:layout_height="45dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:gravity="center"
             android:id="@+id/ta_bort"
-            android:text="ta bort"/>
+            android:text="X"/>
     </LinearLayout>
 </LinearLayout>

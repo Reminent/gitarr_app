@@ -46,7 +46,7 @@ public class nyUtgiftFragment extends android.support.v4.app.Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_ny_inkomst, container, false);
+        view = inflater.inflate(R.layout.fragment_ny_utgift, container, false);
 
         Button done = (Button) view.findViewById(R.id.btnSkicka);
         Button abort = (Button) view.findViewById(R.id.btnStop);
@@ -67,6 +67,7 @@ public class nyUtgiftFragment extends android.support.v4.app.Fragment {
                 Date cDate = new Date();
                 String transDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
 
+                if(!isEmpty(eTextDate)&& !isEmpty(eTextAmount)) {
 
                 String id, amount, date;
                 id = transDate;
@@ -94,6 +95,11 @@ public class nyUtgiftFragment extends android.support.v4.app.Fragment {
                         fm.commit();
 
                         break;
+                }
+            }
+                else{
+                    Toast.makeText(getContext().getApplicationContext(),
+                            "Du måste välja Datum och summa" , Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -138,6 +144,10 @@ public class nyUtgiftFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
+
+    private boolean isEmpty(EditText etText) {
+        return etText.getText().toString().trim().length() == 0;
+    }
 }
 
 

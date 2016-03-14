@@ -67,22 +67,23 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment {
                 Date cDate = new Date();
                 String transDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
 
+                if(!isEmpty(eTextDate)&& !isEmpty(eTextAmount)) {
 
-                String id, amount, date;
-                id = transDate;
-                amount = eTextAmount.getText().toString();
-                date = eTextDate.getText().toString();
+                    String id, amount, date;
+                    id = transDate;
+                    amount = eTextAmount.getText().toString();
+                    date = eTextDate.getText().toString();
 
 
+                    XML_Generate generator = new XML_Generate();
+                    String results = generator.transactionTable(amount, date, id);
+                    DB_Upload upload = new DB_Upload();
+                    upload.execute(results, URL);
+                    Toast.makeText(getContext(), "uppladdat", Toast.LENGTH_LONG).show();
 
-                XML_Generate generator = new XML_Generate();
-                String results = generator.transactionTable(amount, date,id);
-                DB_Upload upload = new DB_Upload();
-                upload.execute(results, URL);
-                Toast.makeText(getContext(), "uppladdat", Toast.LENGTH_LONG).show();
+                    Fragment fragment;
+                    FragmentTransaction fm = getFragmentManager().beginTransaction();
 
-                Fragment fragment;
-                FragmentTransaction fm = getFragmentManager().beginTransaction();
 
                 switch(v.getId()){
                     case R.id.btnSkicka:
@@ -93,6 +94,11 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment {
                         fm.commit();
 
                         break;
+                }
+            }
+                else {
+                    Toast.makeText(getContext().getApplicationContext(),
+                            "Du måste välja Datum och summa" , Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -118,6 +124,9 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment {
             }
         });
 
+
+
+
         /*startDate.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -137,6 +146,10 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
+
+    private boolean isEmpty(EditText etText) {
+        return etText.getText().toString().trim().length() == 0;
+    }
 }
 
 
