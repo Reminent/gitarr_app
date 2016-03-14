@@ -1,11 +1,13 @@
 package com.example.magnus.menufragment;
 
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,94 +21,107 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+import com.example.magnus.menufragment.DB_Upload.DB_Upload;
+import com.example.magnus.menufragment.XML_Parsing.Advert_Parse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AnnonsFormularRedigera extends android.support.v4.app.Fragment implements View.OnClickListener{
+public class LagerFormularRedigera extends android.support.v4.app.Fragment implements View.OnClickListener{
     @Nullable
+    View view;
     private ContentResolver cr;
+    private Context myContext;
     private static final int TAKE_PICTURE = 1;
-    private Uri imageUri;
     private static final int SELECT_PICTURE = 2;
     private Uri selectedImage;
+    private Uri imageUri;
     private Bitmap bitmap;
+
     private String pictureName;
-    private String titelStr;
-    private String beskrivningStr;
     private String encoded;
-    private Context myContext;
     private String formattedDate;
-    private String fDate;
-    private static final String TAG = AnnonsFormularFragment.class.getName();
+    private String productManufacturer;
+    private String productName;
+    private String productPurchasePrice;
+    private String productSellingPrice;
+    private String productGenre;
 
-
-    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.annons_formular_fragment, container, false);
+        view = inflater.inflate(R.layout.lager_formular_fragment, container, false);
 
-        Button doneButton = (Button)view.findViewById(R.id.done);
-        doneButton.setOnClickListener(this);
+        TextView title = (TextView)view.findViewById(R.id.lager_formular_fragment_title);
+        title.setText("Redigera produkt");
 
-        Button cancelButton = (Button)view.findViewById(R.id.cancel);
-        cancelButton.setOnClickListener(this);
+        /* Sets listeners to buttons */
+        Button buttonDone = (Button)view.findViewById(R.id.buttonDone);
+        buttonDone.setOnClickListener(this);
 
-        Button cameraButton = (Button)view.findViewById(R.id.camera);
-        cameraButton.setOnClickListener(this);
+        Button buttonCancel = (Button)view.findViewById(R.id.buttonCancel);
+        buttonCancel.setOnClickListener(this);
 
-        Button galleryButton = (Button)view.findViewById(R.id.gallery);
-        galleryButton.setOnClickListener(this);
+        Button buttonCamera = (Button)view.findViewById(R.id.buttonTakePhoto);
+        buttonCamera.setOnClickListener(this);
 
-        TextView formularTitle = (TextView)view.findViewById(R.id.formularTitle);
-        formularTitle.setText("Redigera annons");
+        Button buttonGallery = (Button)view.findViewById(R.id.buttonEnterGallery);
+        buttonGallery.setOnClickListener(this);
 
         myContext = getContext();
 
-        //Used for things that needs to be named unique (based on date on time)
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date cDate = new Date();
-        fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
         formattedDate = df.format(c.getTime()).replace(" ", ""); //Now formattedDate has current date/time
         pictureName = formattedDate + ".jpg";
 
-
         Bundle bundle = this.getArguments();
 
-        //Fixes the set title
-        String changedTitel = bundle.getString("titel");
-        EditText changeTxtTitel = (EditText) view.findViewById(R.id.editTextTitel);
-        changeTxtTitel.setText(changedTitel);
+        /* Changes the empty fields into the strings that already exist in the product*/
+        EditText presetProductName = (EditText) view.findViewById(R.id.editProductName);
+        presetProductName.setText(bundle.getString("productName"));
 
-        //Fixes the set description
-        String changedBeskrivning = bundle.getString("beskrivning");
-        EditText changeTxtBeskrivning= (EditText) view.findViewById(R.id.editTextBeskrivning);
-        changeTxtBeskrivning.setText(changedBeskrivning);
+        EditText presetProductManufacturer = (EditText) view.findViewById(R.id.editManufacturer);
+        presetProductManufacturer.setText(bundle.getString("productManufacturer"));
+
+        EditText presetProductGenre = (EditText) view.findViewById(R.id.editGenre);
+        presetProductGenre.setText(bundle.getString("productGenre"));
+
+        EditText presetProductPurchaserPrice = (EditText) view.findViewById(R.id.editPurchaserPrice);
+        presetProductPurchaserPrice.setText(bundle.getString("productPurchaserPrice"));
+
+        EditText presetProductSellingPrice = (EditText) view.findViewById(R.id.editSellingPrice);
+        presetProductSellingPrice.setText(bundle.getString("productSellingPrice"));
 
         cr = getActivity().getContentResolver();
 
         //Fixes the set image
-        byte[] byteArray = bundle.getByteArray("bild");
+        byte[] byteArray = bundle.getByteArray("productImage");
         Bitmap bmp = null;
         if (byteArray != null) {
             bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
@@ -115,10 +130,8 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         changeImgView.setImageBitmap(bmp);
 
         File changedPhoto = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), pictureName);
-        if(saveBitmapToFile(bmp, changedPhoto)) {
-            Uri tmpImage = Uri.fromFile(changedPhoto);
-            selectedImage = tmpImage;
-        }
+        saveBitmapToFile(bmp, changedPhoto);
+        selectedImage = Uri.fromFile(changedPhoto);
         return view;
     }
 
@@ -137,12 +150,14 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
 
         switch (requestCode) {
             case TAKE_PICTURE:
+
                 selectedImage = imageUri;
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
 
                 try{
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                     imageView.setImageBitmap(bitmap);
+                    Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -160,7 +175,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                 break;
 
             default:
-                Log.d( TAG, "onActivityResult default case called.");
+                Log.d("Error", "onActivityResult entered default CASE");
                 break;
         }
     }
@@ -171,55 +186,64 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
 
     @Override
     public void onClick(View v) {
+
         FragmentTransaction fm = getFragmentManager().beginTransaction();
-        EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel);
-        EditText inputTxtBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning);
+        EditText editProductName = (EditText)view.findViewById(R.id.editProductName);
+        EditText editProductManufacturer = (EditText)view.findViewById(R.id.editManufacturer);
+        EditText editProductGenre = (EditText)view.findViewById(R.id.editGenre);
+        EditText editProductPurchasePrice = (EditText)view.findViewById(R.id.editPurchaserPrice);
+        EditText editProductSellingPrice = (EditText)view.findViewById(R.id.editSellingPrice);
 
         switch(v.getId()){
-            case R.id.done:
-                if(!isEmpty(inputTxtTitel)&& !isEmpty(inputTxtBeskrivning) && selectedImage != null) {
+            case R.id.buttonDone:
+                if(!isEmpty(editProductName) && selectedImage != null) {
                     try {
-                        titelStr = inputTxtTitel.getText().toString();
-                        beskrivningStr = inputTxtBeskrivning.getText().toString();
+                        // Gets strings from EditText views
+                        productName = editProductName.getText().toString();
+                        productManufacturer = editProductManufacturer.getText().toString();
+                        productGenre = editProductGenre.getText().toString();
+                        productPurchasePrice = editProductPurchasePrice.getText().toString();
+                        productSellingPrice = editProductSellingPrice.getText().toString();
 
+                        // Encodes and saves image
                         bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                         byte[] byteArray = byteArrayOutputStream .toByteArray();
                         encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
-                        AnnonsPut ap = new AnnonsPut();
-                        String url = "http://spaaket.no-ip.org:1080/quercus-4.0.39/connection.php";
-                        ap.execute(url);
+
+                        LagerPut lagerPut = new LagerPut();
+                        String url = "http://spaaket.no-ip.org:1080/quercus-4.0.39/connection2.php";
+                        lagerPut.execute(url);
 
                         Toast.makeText(getContext().getApplicationContext(),
-                                "Annons ändrad i databasen"
+                                "Produkt skickad till databasen"
                                 , Toast.LENGTH_LONG).show();
 
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-
                     getFragmentManager().popBackStack();
                     fm.commit();
                 } else {
                     Toast.makeText(getContext().getApplicationContext(),
-                            "Du måste välja titel, beskrivning och bild" , Toast.LENGTH_LONG).show();
+                            "Du måste välja ett unikt produktnamn och bild" , Toast.LENGTH_LONG).show();
                 }
                 break;
 
-            case R.id.cancel:
+            case R.id.buttonCancel:
 
                 getFragmentManager().popBackStack();
                 fm.commit();
                 break;
 
-            case R.id.camera:
+            case R.id.buttonTakePhoto:
 
                 takePhoto(v);
                 break;
 
-            case R.id.gallery:
+            case R.id.buttonEnterGallery:
 
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//opens gallery
                 startActivityForResult(galleryIntent, SELECT_PICTURE); //allows to get back image
@@ -232,13 +256,13 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         }
     }
 
-    private class AnnonsPut extends DB_Connect {
+    private class LagerPut extends DB_Connect {
         @Override
         protected void onPostExecute(String result) {
-            try {
 
+            try {
                 RequestQueue requestQueue = Volley.newRequestQueue(myContext);
-                StringRequest request = new StringRequest(Request.Method.POST, "http://spaaket.no-ip.org:1080/quercus-4.0.39/connection.php",
+                StringRequest request = new StringRequest(Request.Method.POST, "http://spaaket.no-ip.org:1080/quercus-4.0.39/connection2.php",
 
                         new Response.Listener<String>() {
                             @Override
@@ -248,7 +272,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        // Is intended to be empty
                     }
                 }){
                     @Override
@@ -257,10 +281,11 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                         HashMap<String,String> map = new HashMap<>();
                         map.put("encoded_string", encoded);
                         map.put("image_name", pictureName);
-                        map.put("product_name", formattedDate);
-                        map.put("advert_date", fDate);
-                        map.put("advert_description", beskrivningStr);
-                        map.put("advert_title", titelStr);
+                        map.put("manufacturer", productManufacturer);
+                        map.put("product_name", productName);
+                        map.put("purchase_price", productPurchasePrice);
+                        map.put("selling_price", productSellingPrice);
+                        map.put("genre", productGenre);
 
                         return map;
                     }

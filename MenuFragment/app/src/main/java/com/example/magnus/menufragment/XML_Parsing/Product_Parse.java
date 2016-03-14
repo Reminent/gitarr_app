@@ -35,7 +35,7 @@ public class Product_Parse {
                                 currentProduct.setImageURl(parser.nextText());
                             } else if (name.equalsIgnoreCase("imageId")){
                                 currentProduct.setImageId(parser.nextText());
-                            } else if (name.equalsIgnoreCase("menufacturer")){
+                            } else if (name.equalsIgnoreCase("manufacturer")){
                                 currentProduct.setManufacturer(parser.nextText());
                             } else if (name.equalsIgnoreCase("productName")){
                                 currentProduct.setProductName(parser.nextText());

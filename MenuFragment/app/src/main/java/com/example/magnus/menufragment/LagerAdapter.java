@@ -2,14 +2,12 @@ package com.example.magnus.menufragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,27 +17,34 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.magnus.menufragment.DB_Upload.DB_Delete;
-import com.example.magnus.menufragment.XML_Parsing.Advert;
+import com.example.magnus.menufragment.XML_Parsing.Product;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
-public class AnnonsAdapter extends ArrayAdapter<Advert>{
+public class LagerAdapter extends ArrayAdapter<Product>{
 
     Context context;
     int layoutResourceId;
-    private List<Advert> data;
+    private List<Product> data;
 
-    static class AnnonsHolder
+    static class LagerHolder
     {
-        ImageView imgIcon;
-        TextView txtTitle;
+        ImageView productImage;
+        TextView productName;
+        TextView productManufacturer;
+        TextView productGenre;
+        TextView productSellingPrice;
+        TextView productBuyingPrice;
+        Button edit;
         Button remove;
-        Button change;
     }
 
-    public AnnonsAdapter(Context context, int layoutResourceId, List<Advert> data) {
+    public LagerAdapter(Context context, int layoutResourceId, List<Product> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -49,68 +54,58 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        AnnonsHolder holder = null;
+        LagerHolder holder = null;
 
         if(row == null)
         {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
-            holder = new AnnonsHolder();
-            holder.imgIcon = (ImageView)row.findViewById(R.id.annons_item_image);
-            holder.txtTitle = (TextView)row.findViewById(R.id.annons_item_title);
-            holder.change = (Button)row.findViewById(R.id.redigera);
-            holder.remove = (Button)row.findViewById(R.id.ta_bort);
+            holder = new LagerHolder();
+            holder.productImage = (ImageView)row.findViewById(R.id.productImage);
+            holder.productName = (TextView)row.findViewById(R.id.productName);
+            holder.productManufacturer = (TextView)row.findViewById(R.id.productManufacturer);
+            holder.productGenre = (TextView)row.findViewById(R.id.productGenreName);
+            holder.productBuyingPrice = (TextView)row.findViewById(R.id.productBuyingPrice);
+            holder.productSellingPrice = (TextView)row.findViewById(R.id.productSellingPrice);
+            holder.edit = (Button)row.findViewById(R.id.product_edit_button);
+            holder.remove = (Button)row.findViewById(R.id.product_delete_button);
 
             row.setTag(holder);
         }
         else
         {
-            holder = (AnnonsHolder)row.getTag();
+            holder = (LagerHolder)row.getTag();
         }
 
-        final Advert advert = data.get(position);
+        final Product product = data.get(position);
 
         String getFromURL = "http://spaaket.no-ip.org:1080/quercus-4.0.39/";
-        String fullURL = getFromURL + advert.getImageUrl();
-        new DownloadImageTask(holder.imgIcon).execute(fullURL);
+        String fullURL = getFromURL + product.getImageURl();
+        new DownloadImageTask(holder.productImage).execute(fullURL);
 
-        holder.txtTitle.setText(advert.getAdvertTitle());
+        holder.productName.setText(product.getProductName());
+        holder.productManufacturer.setText(product.getManufacturer());
+        holder.productGenre.setText(product.getGenre());
+        holder.productBuyingPrice.setText(product.getPurchasePrice());
+        holder.productSellingPrice.setText(product.getSellingPrice());
 
-        holder.txtTitle.setOnClickListener(new View.OnClickListener() {
+        final LagerHolder finalHolder = holder;
+        holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-                alertDialog.setTitle("Beskrivning");
-                alertDialog.setMessage(advert.getAdvertDescription());
-
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
-            }
-        });
-
-        final AnnonsHolder finalHolder = holder;
-        holder.change.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-                //TODO: Change this so it changes the database instead.
+                //Toast.makeText(getContext(), "Redigera annons nr." + position, Toast.LENGTH_LONG).show();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("titel", advert.getAdvertTitle());
-                bundle.putString("beskrivning", advert.getAdvertDescription());
-                //bundle.put("BILD);
-
+                bundle.putString("productName",product.getProductName());
+                bundle.putString("productManufacturer",product.getManufacturer());
+                bundle.putString("productGenre",product.getGenre());
+                bundle.putString("productPurchaserPrice",product.getPurchasePrice());
+                bundle.putString("productSellingPrice", product.getSellingPrice());
 
                 Bitmap myBm = null;
                 try {
-                    View mv = finalHolder.imgIcon;
+                    View mv = finalHolder.productImage;
                     //Code preventing drawingcache from being null
                     mv.setDrawingCacheEnabled(true);
                     mv.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
@@ -129,22 +124,19 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
                     myBm.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 }
                 byte[] byteArray = stream.toByteArray();
-                bundle.putByteArray("bild", byteArray);
-
-                //TODO:: fixa så man kan redigera bilden.
+                bundle.putByteArray("productImage", byteArray);
 
                 AppCompatActivity a = (AppCompatActivity) context; //ful hax a la Stefan
                 Fragment fragment;
                 FragmentTransaction fm = a.getSupportFragmentManager().beginTransaction();
                 switch(v.getId()){
-                    case R.id.redigera:
-                        //TODO: Update site when an advert is edited. Change from remove+add to edit.
+                    case R.id.product_edit_button:
+
                         DB_Delete delete = new DB_Delete();
-                        String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert/" + advert.getAdvertid();
+                        String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.product/" + product.getProductId();
                         delete.execute(URL);
 
-
-                        fragment = new AnnonsFormularRedigera();
+                        fragment = new LagerFormularRedigera();
                         fragment.setArguments(bundle);
                         fm.replace(R.id.content, fragment);
                         fm.addToBackStack(null);
@@ -158,9 +150,10 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 //TODO: Update site when an advert is deleted.
+                Toast.makeText(getContext(), "Ta bort annons nr." + position, Toast.LENGTH_LONG).show();
+                //TODO: Update site when an advert is deleted.
                 DB_Delete delete = new DB_Delete();
-                String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert/" + advert.getAdvertid();
+                String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.product/" + product.getProductId();
                 delete.execute(URL);
             }
         });
