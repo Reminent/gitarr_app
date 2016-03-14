@@ -34,7 +34,7 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
     private String testInt = "";
     private int item_count = 0;
     private EkonomiFragment ekonomis;
-
+   // TextView txtTotal;
 
 
     public EkonomiAdapter(Context context, int layoutResourceId, List<Transaction> data) {
@@ -66,35 +66,43 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
             holder.remove = (Button)row.findViewById(R.id.ta_bort);
 
             row.setTag(holder);
-
-
-
         }
         else
         {
             holder = (EkonomiHolder)row.getTag();
         }
 
-
-        for(int i=0; i < data.size(); i++){
-            arr_temp.add(data.get(data.size()-i-1));
-
+        for(int i=0; i < data.size(); i++) {
+            //arr_temp.add(data[i]get.amount(data.size()-i))
+            arr_temp.add(data.get(data.size() - i - 1));
+        }
+        Transaction transactionTest;
+        total =0;
+        for(int i = 0; i < data.size()- position; i++){
+            transactionTest=data.get(i);
+            testInt = transactionTest.getTransactionAmount();
+            try {
+                temp = NumberFormat.getInstance().parse(testInt).intValue();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            total = total + temp;
         }
 
-        
+
         final Transaction transaction = arr_temp.get(position);
         holder.txtTitle.setText(transaction.getTransactionAmount()+" kr");
         holder.txtDate.setText(transaction.getTransactionDate().substring(0, 10));
-        testInt=transaction.getTransactionAmount();
+        //testInt=transactionTest.getTransactionAmount();
         item_count++;
-
+/*
         try {
             temp = NumberFormat.getInstance().parse(testInt).intValue();
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        total = total + temp;
+        total = total + temp;*/
 
         showTotal = Integer.toString(total);
         holder.txtTotal.setText(showTotal + " kr");

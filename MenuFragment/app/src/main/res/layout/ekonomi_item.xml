@@ -39,6 +39,7 @@
         android:layout_gravity="top|center"
         android:singleLine="false"
         />
+
     <TextView
         android:onClick="onClick"
         android:clickable="true"
