@@ -109,7 +109,6 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
-        cr = getActivity().getContentResolver();
         ImageView imageView = (ImageView)view.findViewById(R.id.image_camera);
 
         switch (requestCode) {
@@ -177,9 +176,9 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
                         encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
 
-                        LagerPut ap = new LagerPut();
+                        LagerPut lagerPut = new LagerPut();
                         String url = "http://spaaket.no-ip.org:1080/quercus-4.0.39/connection2.php";
-                        ap.execute(url);
+                        lagerPut.execute(url);
 
                         Toast.makeText(getContext().getApplicationContext(),
                                 "Produkt skickad till databasen"
@@ -251,11 +250,6 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
                         map.put("selling_price", productSellingPrice);
                         map.put("genre", productGenre);
 
-                        //map.put("product_name", formattedDate);
-                        //map.put("advert_date", fDate);
-                        //map.put("advert_description", beskrivningStr);
-                        //map.put("advert_title", titelStr);
-
                         return map;
                     }
                 };
@@ -265,20 +259,4 @@ public class LagerFormularFragment extends android.support.v4.app.Fragment imple
             }
         }
     }
-    /*
-    public static Bitmap getResizedBitmap(Bitmap image, int newHeight, int newWidth) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // create a matrix for the manipulation
-        Matrix matrix = new Matrix();
-        // resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight);
-        // recreate the new Bitmap
-        Bitmap resizedBitmap = Bitmap.createBitmap(image, 0, 0, width, height,
-                matrix, false);
-        return resizedBitmap;
-    }
-    */
 }
