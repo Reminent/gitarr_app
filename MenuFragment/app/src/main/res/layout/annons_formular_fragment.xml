@@ -66,17 +66,15 @@
 
             android:layout_height="match_parent"
             android:text="AVBRYT"
-            android:id="@+id/avbryt"
+            android:id="@+id/cancel"
             android:layout_gravity="left"
             android:textSize="20dp"
-            android:layout_alignTop="@+id/kamerasymbol"
-            android:layout_alignBottom="@+id/gallerisymbol"
             android:background="#FFFFFF"
             android:textColor="#A9A9A9" />
 
         <Button
             android:text="TA KORT"
-            android:id="@+id/kamerasymbol"
+            android:id="@+id/camera"
             android:layout_weight="1"
             android:layout_width="80dp"
             android:layout_height="match_parent"
@@ -88,7 +86,7 @@
 
         <Button
             android:text="VÄLJ BILD"
-            android:id="@+id/gallerisymbol"
+            android:id="@+id/gallery"
             android:layout_weight="1"
             android:textSize="20dp"
 
@@ -104,7 +102,7 @@
             android:textSize="20dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:id="@+id/klar"
+            android:id="@+id/done"
             android:text="Klar"
             android:textColor="#A9A9A9"
             android:background="#FFFFFF" />

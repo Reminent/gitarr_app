@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -61,16 +60,16 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.annons_formular_redigera, container, false);
-        Button klarBtn = (Button)view.findViewById(R.id.klar2);
+        view = inflater.inflate(R.layout.annons_formular_fragment, container, false);
+        Button klarBtn = (Button)view.findViewById(R.id.done);
         klarBtn.setOnClickListener(this);
-        Button AvbrytBtn = (Button)view.findViewById(R.id.avbryt2);
+        Button AvbrytBtn = (Button)view.findViewById(R.id.cancel);
         AvbrytBtn.setOnClickListener(this);
 
-        Button kameraBtn = (Button)view.findViewById(R.id.kamerasymbol2);
+        Button kameraBtn = (Button)view.findViewById(R.id.camera);
         kameraBtn.setOnClickListener(this);
 
-        Button galleriBtn = (Button)view.findViewById(R.id.gallerisymbol2);
+        Button galleriBtn = (Button)view.findViewById(R.id.gallery);
         galleriBtn.setOnClickListener(this);
 
         myContext = getContext();
@@ -88,12 +87,12 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
 
         //Fixes the set title
         String changedTitel = bundle.getString("titel");
-        EditText changeTxtTitel = (EditText) view.findViewById(R.id.editTextTitel2);
+        EditText changeTxtTitel = (EditText) view.findViewById(R.id.editTextTitel);
         changeTxtTitel.setText(changedTitel);
 
         //Fixes the set description
         String changedBeskrivning = bundle.getString("beskrivning");
-        EditText changeTxtBeskrivning= (EditText) view.findViewById(R.id.editTextBeskrivning2);
+        EditText changeTxtBeskrivning= (EditText) view.findViewById(R.id.editTextBeskrivning);
         changeTxtBeskrivning.setText(changedBeskrivning);
 
         cr = getActivity().getContentResolver();
@@ -104,13 +103,14 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         if (byteArray != null) {
             bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         }
-        ImageView changeImgView= (ImageView) view.findViewById(R.id.image_camera2);
+        ImageView changeImgView= (ImageView) view.findViewById(R.id.image_camera);
         changeImgView.setImageBitmap(bmp);
 
         File changedPhoto = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), pictureName);
-        saveBitmapToFile(bmp, changedPhoto);
-        selectedImage = Uri.fromFile(changedPhoto);
-
+        if(saveBitmapToFile(bmp, changedPhoto)) {
+            Uri tmpImage = Uri.fromFile(changedPhoto);
+            selectedImage = tmpImage;
+        }
         return view;
     }
 
@@ -125,7 +125,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
-        ImageView imageView = (ImageView)view.findViewById(R.id.image_camera2);
+        ImageView imageView = (ImageView)view.findViewById(R.id.image_camera);
 
         switch (requestCode) {
             case TAKE_PICTURE:
@@ -141,7 +141,6 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                     //bitmap = getResizedBitmap(bitmap, newHeight, newWidth);
 
                     imageView.setImageBitmap(bitmap);
-                    Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -171,17 +170,14 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
     @Override
     public void onClick(View v) {
         FragmentTransaction fm = getFragmentManager().beginTransaction();
-        EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel2);
-        EditText inputTxtBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning2);
+        EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel);
+        EditText inputTxtBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning);
 
         switch(v.getId()){
-            case R.id.klar2:
+            case R.id.done:
                 if(!isEmpty(inputTxtTitel)&& !isEmpty(inputTxtBeskrivning) && selectedImage != null) {
                     try {
-                        inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel2);
                         titelStr = inputTxtTitel.getText().toString();
-
-                        inputTxtBeskrivning = (EditText) view.findViewById(R.id.editTextBeskrivning2);
                         beskrivningStr = inputTxtBeskrivning.getText().toString();
 
                         bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
@@ -201,6 +197,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                     }catch (Exception e){
                         e.printStackTrace();
                     }
+
                     getFragmentManager().popBackStack();
                     fm.commit();
                 } else {
@@ -209,18 +206,18 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                 }
                 break;
 
-            case R.id.avbryt2:
+            case R.id.cancel:
 
                 getFragmentManager().popBackStack();
                 fm.commit();
                 break;
 
-            case R.id.kamerasymbol2:
+            case R.id.camera:
 
                 takePhoto(v);
                 break;
 
-            case R.id.gallerisymbol2:
+            case R.id.gallery:
 
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//opens gallery
                 startActivityForResult(galleryIntent, SELECT_PICTURE); //allows to get back image
@@ -273,37 +270,18 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
             }
         }
     }
-    public static Bitmap getResizedBitmap(Bitmap image, int newHeight, int newWidth) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // create a matrix for the manipulation
-        Matrix matrix = new Matrix();
-        // resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight);
-        // recreate the new Bitmap
-        Bitmap resizedBitmap = Bitmap.createBitmap(image, 0, 0, width, height,
-                matrix, false);
-        return resizedBitmap;
-    }
 
-    private Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "title", null);
-        return Uri.parse(path);
-    }
+    private boolean saveBitmapToFile(Bitmap bmp, File filename){
+        FileOutputStream out = null;
+        boolean returnedCorrectly = true;
 
-
-    private void saveBitmapToFile(Bitmap bmp, File filename){
-                FileOutputStream out = null;
         try {
             out = new FileOutputStream(filename);
 
             bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
             // PNG is a lossless format, the compression factor (100) is ignored
         } catch (Exception e) {
+            returnedCorrectly = false;
             e.printStackTrace();
         } finally {
             try {
@@ -311,9 +289,10 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                     out.close();
                 }
             } catch (IOException e) {
+                returnedCorrectly = false;
                 e.printStackTrace();
             }
         }
+        return returnedCorrectly;
     }
-
 }

@@ -1,7 +1,5 @@
 package com.example.magnus.menufragment;
 
-
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,29 +18,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
-import com.example.magnus.menufragment.DB_Upload.DB_Upload;
-import com.example.magnus.menufragment.XML_Parsing.Advert_Parse;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -64,6 +52,8 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
     private Context myContext;
     private String formattedDate;
     private String fDate;
+    private static final String TAG = AnnonsFormularFragment.class.getName();
+
 
     View view;
     @Override
@@ -71,28 +61,20 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
 
         view = inflater.inflate(R.layout.annons_formular_fragment, container, false);
-        Button klarBtn = (Button)view.findViewById(R.id.klar);
-        klarBtn.setOnClickListener(this);
-        Button AvbrytBtn = (Button)view.findViewById(R.id.avbryt);
-        AvbrytBtn.setOnClickListener(this);
 
+        Button doneButton = (Button)view.findViewById(R.id.done);
+        doneButton.setOnClickListener(this);
+        
+        Button cancelButton = (Button)view.findViewById(R.id.cancel);
+        cancelButton.setOnClickListener(this);
+        
+        Button cameraButton = (Button)view.findViewById(R.id.camera);
+        cameraButton.setOnClickListener(this);
 
-        Button kameraBtn = (Button)view.findViewById(R.id.kamerasymbol);
-        kameraBtn.setOnClickListener(this);
-
-        Button galleriBtn = (Button)view.findViewById(R.id.gallerisymbol);
-        galleriBtn.setOnClickListener(this);
+        Button galleryButton = (Button)view.findViewById(R.id.gallery);
+        galleryButton.setOnClickListener(this);
 
         myContext = getContext();
-
-        /* //TODO: Fixa så att man kan redigera en annons genom att skapa en ny vy.
-        Bundle bundle = this.getArguments();
-        final String titel = bundle.getString("titel");
-
-        Toast.makeText(getContext().getApplicationContext(), titel, Toast.LENGTH_LONG).show();
-
-        //String url = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert";
-        */
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -124,13 +106,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
 
                 try{
-                    int newHeight = 100;
-                    int newWidth = 100;
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
-
-                    //Todo Fix so this actually works
-                    //bitmap = getResizedBitmap(bitmap, newHeight, newWidth);
-
                     imageView.setImageBitmap(bitmap);
                     Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
                 }catch (Exception e){
@@ -139,11 +115,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 break;
 
             case SELECT_PICTURE:
-                Log.d("inside välj bild", "inside2");
-
                 try {
-
-
                     selectedImage = intent.getData();
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                     imageView.setImageBitmap(bitmap);
@@ -153,7 +125,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 break;
 
             default:
-                Log.d("fail", "onActResult failed case failed.");
+                Log.d( TAG, "onActivityResult default case called.");
                 break;
         }
     }
@@ -169,7 +141,8 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         EditText eTextBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning);
 
         switch(v.getId()){
-            case R.id.klar:
+            case R.id.done:
+                Toast.makeText(getContext(), "Skickar annons...", Toast.LENGTH_LONG);
                 if(!isEmpty(eTextTitel)&& !isEmpty(eTextBeskrivning) && selectedImage != null) {
                     try {
                         EditText inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel);
@@ -204,18 +177,18 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 }
                 break;
 
-            case R.id.avbryt:
+            case R.id.cancel:
 
                 getFragmentManager().popBackStack();
                 fm.commit();
                 break;
 
-            case R.id.kamerasymbol:
+            case R.id.camera:
 
                 takePhoto(v);
                 break;
 
-            case R.id.gallerisymbol:
+            case R.id.gallery:
 
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//opens gallery
                 startActivityForResult(galleryIntent, SELECT_PICTURE); //allows to get back image
@@ -223,7 +196,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
             default:
 
-                Log.d("Default", "Default case running");
+                Log.d( TAG, "onClick's default case running");
                 break;
         }
     }
