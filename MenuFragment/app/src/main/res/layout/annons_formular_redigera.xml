@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentTop="true"
-    android:id="@+id/linearLayout"
+    android:id="@+id/linearLayout2"
     android:orientation="vertical"
     android:weightSum="1"
     android:background="#cbc7c4">
@@ -18,7 +18,7 @@
         android:textSize="20sp"
         android:text="Ny annons"
 
-        android:id="@+id/textView5"
+        android:id="@+id/textView52"
 
         android:layout_alignParentTop="true"
         android:textColor="#000000"
@@ -27,7 +27,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextTitel"
+        android:id="@+id/editTextTitel2"
         android:layout_marginTop="28dp"
         android:layout_below="@+id/textView5"
         android:layout_alignStart="@+id/textView5"
@@ -40,7 +40,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextBeskrivning"
+        android:id="@+id/editTextBeskrivning2"
         android:layout_below="@+id/editTextTitel"
         android:layout_alignStart="@+id/editTextTitel"
         android:hint="@string/Beskrivning"
@@ -50,7 +50,7 @@
         android:backgroundTint="#000000" />
 
     <ImageView
-        android:id="@+id/image_camera"
+        android:id="@+id/image_camera2"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp"
@@ -66,7 +66,7 @@
 
             android:layout_height="match_parent"
             android:text="AVBRYT"
-            android:id="@+id/avbryt"
+            android:id="@+id/avbryt2"
             android:layout_gravity="left"
             android:textSize="20dp"
             android:layout_alignTop="@+id/kamerasymbol"
@@ -76,7 +76,7 @@
 
         <Button
             android:text="TA KORT"
-            android:id="@+id/kamerasymbol"
+            android:id="@+id/kamerasymbol2"
             android:layout_weight="1"
             android:layout_width="80dp"
             android:layout_height="match_parent"
@@ -88,7 +88,7 @@
 
         <Button
             android:text="VÄLJ BILD"
-            android:id="@+id/gallerisymbol"
+            android:id="@+id/gallerisymbol2"
             android:layout_weight="1"
             android:textSize="20dp"
 
@@ -104,10 +104,13 @@
             android:textSize="20dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:id="@+id/klar"
+            android:id="@+id/klar2"
             android:text="Klar"
             android:textColor="#A9A9A9"
             android:background="#FFFFFF" />
 
     </LinearLayout>
+
+
+
 </LinearLayout>
