@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
 import com.example.magnus.menufragment.XML_Parsing.Transaction_Parse;
@@ -33,6 +34,7 @@ public class EkonomiFragment extends android.support.v4.app.Fragment implements 
         btnI.setOnClickListener(this);
         Button btnU = (Button)view.findViewById(R.id.Ekonomi_Button_Ny_Utgift);
         btnU.setOnClickListener(this);
+
 
 
         getEkonomi testEkonomi = new getEkonomi();
@@ -85,6 +87,9 @@ public class EkonomiFragment extends android.support.v4.app.Fragment implements 
 
     }
 
+   public void setTotalSum(String totalSumma){
+        //txtTotal.setText(totalSumma);
+    }
 
 }
 

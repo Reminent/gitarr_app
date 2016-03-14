@@ -33,6 +33,8 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
     private String showTotal = "";
     private String testInt = "";
     private int item_count = 0;
+    private EkonomiFragment ekonomis;
+
 
 
     public EkonomiAdapter(Context context, int layoutResourceId, List<Transaction> data) {
@@ -48,7 +50,7 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
         EkonomiHolder holder = null;
 
        // TextView totall = (TextView)row.findViewById(R.id.total_inkomst);
-
+        //txtTotal.setText(" kr");
 
         if(row == null)
         {
@@ -76,8 +78,10 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
 
         for(int i=0; i < data.size(); i++){
             arr_temp.add(data.get(data.size()-i-1));
+
         }
 
+        
         final Transaction transaction = arr_temp.get(position);
         holder.txtTitle.setText(transaction.getTransactionAmount()+" kr");
         holder.txtDate.setText(transaction.getTransactionDate().substring(0, 10));
@@ -142,6 +146,8 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
                    });
         return row;
     }
+
+
 
     @Override
     public void onClick(View v) {
