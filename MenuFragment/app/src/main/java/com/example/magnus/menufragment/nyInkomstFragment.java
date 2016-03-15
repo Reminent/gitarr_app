@@ -22,9 +22,13 @@ import com.example.magnus.menufragment.DB_Upload.XML_Generate;
  * Created by Albin and Martin on 2016-03-09.
  */
 
+/**
+ * nyInkomstFragment class for the "Ny inkomst" fragment.
+ */
 public class nyInkomstFragment extends android.support.v4.app.Fragment {
     @Nullable
     View view;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,15 +44,17 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment {
 
 
                 String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.transaction";
-
-
                 EditText eTextAmount= (EditText)view.findViewById(R.id.txtSetAmount);
 
+                //Used for setting the date on the transaction
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date cDate = new Date();
                 String transDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
 
+                /**
+                 * Checks if the text field is empty and if it contains the correct input
+                 */
                 if(!isEmpty(eTextAmount)&& Pattern.matches("[0-9]+", eTextAmount.getText().toString()) == true) {
 
                     String id, amount, date;
@@ -56,10 +62,15 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment {
                     date=transDate;
                     amount = eTextAmount.getText().toString();
 
+                    //Creates the XML_Generator for parsing the data.
                     XML_Generate generator = new XML_Generate();
+
                     String results = generator.transactionTable(amount, date, id);
+
+                    //sends the data to database
                     DB_Upload upload = new DB_Upload();
                     upload.execute(results, URL);
+
                     Toast.makeText(getContext(), "uppladdat", Toast.LENGTH_LONG).show();
 
                     Fragment fragment;
@@ -79,13 +90,14 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment {
             }
                 else {
                     Toast.makeText(getContext().getApplicationContext(),
-                            "Du måste välja Datum och summa" , Toast.LENGTH_LONG).show();
+                            "Du måste välja en giltig summa" , Toast.LENGTH_LONG).show();
                 }
             }
         });
-
+/**
+ * onClick method to go back when clicking "Avbryt"
+ */
         abort.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "abort", Toast.LENGTH_LONG).show();
@@ -109,7 +121,11 @@ public class nyInkomstFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-
+    /**
+     * IsEmpty methos to check is the textField is empty
+     * @param etText
+     * @return
+     */
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
     }

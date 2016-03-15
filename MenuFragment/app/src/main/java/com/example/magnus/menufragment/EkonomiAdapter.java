@@ -19,7 +19,12 @@ import java.util.List;
 /*
  * Created by Albin and Martin on 2016-03-09.
  */
-public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.OnClickListener {
+
+/**
+ * Class EkonomiAdapter, it is like a bridge between the data and the adapterview, and that's the view that is being reused
+ * multiple times
+ */
+public class EkonomiAdapter extends ArrayAdapter<Transaction>  {
 
     private int total = 0;
     private int temp=0;
@@ -30,6 +35,12 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
     private String showTotal = "";
     private String testInt = "";
 
+    /**
+     * Constructor thats calles in the class getEkonomi
+     * @param context
+     * @param layoutResourceId
+     * @param data
+     */
     public EkonomiAdapter(Context context, int layoutResourceId, List<Transaction> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
@@ -37,6 +48,14 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
         this.data = data;
     }
 
+    /**
+     * getView method that creates holders and connects to the XML icons and fills them with
+     * Transaction data depending on the position in the ArrayList
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
@@ -62,9 +81,16 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
             holder = (EkonomiHolder)row.getTag();
         }
 
+        /**
+         * For loop that flips the data in the output so the newest added goes to top
+         */
         for(int i=0; i < data.size(); i++) {
             arr_temp.add(data.get(data.size() - i - 1));
         }
+
+        /**
+         * Fix to make balance match the flipped data
+         */
         Transaction transactionTest;
         total =0;
         for(int i = 0; i < data.size()- position; i++){
@@ -78,16 +104,19 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
             total = total + temp;
         }
 
-
+        /**
+         * Sets the amount, date and balance.
+         */
         final Transaction transaction = arr_temp.get(position);
         holder.txtTitle.setText(transaction.getTransactionAmount()+" kr");
         holder.txtDate.setText(transaction.getTransactionDate().substring(0, 10));
 
-
         showTotal = Integer.toString(total);
         holder.txtTotal.setText(showTotal + " kr");
 
-
+        /**
+         * Function to remove the entry also creates popup
+         */
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,11 +129,10 @@ public class EkonomiAdapter extends ArrayAdapter<Transaction> implements View.On
         return row;
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
+    /**
+     * When this holder is eing used you can easily access each view
+     * without having to use look-up and that saves processor cycles
+     */
     static class EkonomiHolder
     {
         TextView txtTitle;
