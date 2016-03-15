@@ -64,10 +64,10 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
         Button doneButton = (Button)view.findViewById(R.id.done);
         doneButton.setOnClickListener(this);
-        
+
         Button cancelButton = (Button)view.findViewById(R.id.cancel);
         cancelButton.setOnClickListener(this);
-        
+
         Button cameraButton = (Button)view.findViewById(R.id.camera);
         cameraButton.setOnClickListener(this);
 
