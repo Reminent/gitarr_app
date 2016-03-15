@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -37,6 +38,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * Class AnnonsFormularFragment which handles the formular
+ * that pops up when you click on the "Skapa ny" button in the Advert page.
+ */
 public class AnnonsFormularFragment extends android.support.v4.app.Fragment implements View.OnClickListener{
     @Nullable
     private ContentResolver cr;
@@ -56,6 +62,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
 
     View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -76,6 +83,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
         myContext = getContext();
 
+        //Used for things that needs to be named unique (based on date on time)
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date cDate = new Date();
@@ -85,6 +93,10 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         return view;
     }
 
+    /**
+     * Takes a picture and stores it in the gallery.
+     * @param v: The view
+     */
     public void takePhoto(View v){
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), pictureName);
@@ -93,6 +105,12 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         startActivityForResult(intent, TAKE_PICTURE); //We are passing in number 1, which is a request code  == main camera.
     }
 
+    /**
+     * Covers what happens when you click on gallery or imagecapture
+     * @param requestCode
+     * @param resultCode
+     * @param intent
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
@@ -104,8 +122,8 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 selectedImage = imageUri;
 
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
-
-                try{
+                //Sets the previewImage to the image selected
+                    try{
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                     imageView.setImageBitmap(bitmap);
                     Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
@@ -115,6 +133,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 break;
 
             case SELECT_PICTURE:
+                //Sets the previewImage to the one in the gallery
                 try {
                     selectedImage = intent.getData();
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
@@ -130,10 +149,19 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         }
     }
 
+    /**
+     * Checks if an edittext is empty or not.
+     * @param etText:
+     * @return: True or false
+     */
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
     }
 
+    /**
+     * Handles what happens if you click on the buttons Avbryt, Galleri, Kamera och Klar;
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         FragmentTransaction fm = getFragmentManager().beginTransaction();
@@ -141,6 +169,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         EditText eTextBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning);
 
         switch(v.getId()){
+            //Send an advert to the database.
             case R.id.done:
                 Toast.makeText(getContext(), "Skickar annons...", Toast.LENGTH_LONG);
                 if(!isEmpty(eTextTitel)&& !isEmpty(eTextBeskrivning) && selectedImage != null) {
@@ -150,7 +179,6 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
                         EditText inputTxtBeskrivning = (EditText) view.findViewById(R.id.editTextBeskrivning);
                         beskrivningStr = inputTxtBeskrivning.getText().toString();
-
 
                         bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -195,13 +223,16 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 break;
 
             default:
-
                 Log.d( TAG, "onClick's default case running");
                 break;
         }
     }
 
+    /**
+     * Puts an advert to the database
+     */
     private class AnnonsPut extends DB_Connect {
+
         @Override
         protected void onPostExecute(String result) {
             try {
@@ -220,6 +251,11 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
                     }
                 }){
+                    /**
+                     * Builds a map with the data needed to build an advert
+                     * @return: map
+                     * @throws AuthFailureError
+                     */
                     @Override
                     protected Map<String,String> getParams() throws AuthFailureError {
 
@@ -235,24 +271,11 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                         return map;
                     }
                 };
+                //Sends the map to a script which manages it and sends it to the database.
                 requestQueue.add(request);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }
-    public static Bitmap getResizedBitmap(Bitmap image, int newHeight, int newWidth) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // create a matrix for the manipulation
-        Matrix matrix = new Matrix();
-        // resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight);
-        // recreate the new Bitmap
-        Bitmap resizedBitmap = Bitmap.createBitmap(image, 0, 0, width, height,
-                matrix, false);
-        return resizedBitmap;
     }
 }

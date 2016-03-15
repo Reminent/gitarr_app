@@ -98,6 +98,7 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
 
         String getFromURL = "http://spaaket.no-ip.org:1080/quercus-4.0.39/";
         String fullURL = getFromURL + advert.getImageUrl();
+
         new DownloadImageTask(holder.imgIcon).execute(fullURL);
 
         /**
@@ -106,6 +107,7 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
          */
         holder.txtTitle.setText(advert.getAdvertTitle());
         holder.txtTitle.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
@@ -128,6 +130,10 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
          * pleted.
          */
         final AnnonsHolder finalHolder = holder;
+
+        /**
+         * Holder change which is to change the current item in the ListView
+         */
         holder.change.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -138,6 +144,8 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
                 bundle.putString("beskrivning", advert.getAdvertDescription());
 
                 Bitmap myBm = null;
+
+                //Tries to set the Bitmap of the image to a bitmap myBm.
                 try {
                     View mv = finalHolder.imgIcon;
                     //Code preventing drawingcache from being null
@@ -197,7 +205,9 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
     }
 
     /**
-     * So the program doesnt crash and complain about too much work on main thread.
+     * Takes an imageView and an URL, applies the bitmap from the URL to the imageView.
+     * Encapsulates the creation of a background process and the synchronization with the main thread.
+     * It also supports reporting progress of the running tasks.
      */
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -206,6 +216,10 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
             this.bmImage = bmImage;
         }
 
+        /**
+         * @param urls: Takes the url sent as parameter.
+         * @return: The bitmap of the url
+         */
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
             Bitmap mIcon11 = null;
