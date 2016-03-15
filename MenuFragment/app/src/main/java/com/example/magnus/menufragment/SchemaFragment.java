@@ -15,7 +15,6 @@ import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.magnus.menufragment.DB_Connect.DB_Connect;
 import com.example.magnus.menufragment.Interface.ConsultationResultListener;
@@ -161,7 +160,6 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "skapa ny add", Toast.LENGTH_LONG).show();
                 Fragment fragment;
                 FragmentTransaction fm = getFragmentManager().beginTransaction();
 
@@ -181,8 +179,8 @@ public class SchemaFragment extends android.support.v4.app.Fragment implements C
         /*
         String url = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation";
         SchemaGet task = new SchemaGet();
-        task.execute(url);*/
-
+        task.execute(url);
+        */
         return view;
     }
 
