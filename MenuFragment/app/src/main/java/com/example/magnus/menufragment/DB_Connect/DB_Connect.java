@@ -5,6 +5,9 @@ import android.util.Log;
 
 import com.example.magnus.menufragment.Interface.ConsultationResultListener;
 
+import org.apache.commons.io.ByteOrderMark;
+import org.apache.commons.io.input.BOMInputStream;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,7 +62,7 @@ public class DB_Connect extends AsyncTask<String, Void, String> {
     }
 
     public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
-        BufferedReader r = new BufferedReader(new InputStreamReader(stream));
+        BufferedReader r = new BufferedReader(new InputStreamReader(new BOMInputStream(stream, false, ByteOrderMark.UTF_8)));
         StringBuilder total = new StringBuilder();
         String line;
         while ((line = r.readLine()) != null) {
