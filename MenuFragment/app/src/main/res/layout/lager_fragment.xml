@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="10dp"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    >
+    android:id="@+id/annons_layout_1">
 
-   <ListView
-       android:id="@+id/lagerListView"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent" />
 
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/lagerListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="top"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/new_product"
+            android:text="Ny produkt"/>
+    </LinearLayout>
 </LinearLayout>

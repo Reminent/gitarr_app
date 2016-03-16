@@ -1,8 +1,15 @@
 package com.example.magnus.menufragment;
+
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +19,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.magnus.menufragment.XML_Parsing.Advert;
+import com.example.magnus.menufragment.DB_Upload.DB_Delete;
 import com.example.magnus.menufragment.XML_Parsing.Product;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.List;
 
-/**
- * Created by Mattias on 3/8/2016.
- */
 public class LagerAdapter extends ArrayAdapter<Product>{
 
     Context context;
@@ -28,11 +34,14 @@ public class LagerAdapter extends ArrayAdapter<Product>{
 
     static class LagerHolder
     {
-        ImageView imgIcon;
-        TextView txtName;
-        TextView txtAmount;
+        ImageView productImage;
+        TextView productName;
+        TextView productManufacturer;
+        TextView productGenre;
+        TextView productSellingPrice;
+        TextView productBuyingPrice;
+        Button edit;
         Button remove;
-        Button change;
     }
 
     public LagerAdapter(Context context, int layoutResourceId, List<Product> data) {
@@ -53,10 +62,13 @@ public class LagerAdapter extends ArrayAdapter<Product>{
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new LagerHolder();
-            holder.imgIcon = (ImageView)row.findViewById(R.id.product_image);
-            holder.txtName = (TextView)row.findViewById(R.id.product_name);
-            holder.txtAmount = (TextView)row.findViewById(R.id.product_amount);
-            holder.change = (Button)row.findViewById(R.id.product_edit_button);
+            holder.productImage = (ImageView)row.findViewById(R.id.productImage);
+            holder.productName = (TextView)row.findViewById(R.id.productName);
+            holder.productManufacturer = (TextView)row.findViewById(R.id.productManufacturer);
+            holder.productGenre = (TextView)row.findViewById(R.id.productGenreName);
+            holder.productBuyingPrice = (TextView)row.findViewById(R.id.productBuyingPrice);
+            holder.productSellingPrice = (TextView)row.findViewById(R.id.productSellingPrice);
+            holder.edit = (Button)row.findViewById(R.id.product_edit_button);
             holder.remove = (Button)row.findViewById(R.id.product_delete_button);
 
             row.setTag(holder);
@@ -68,32 +80,70 @@ public class LagerAdapter extends ArrayAdapter<Product>{
 
         final Product product = data.get(position);
 
-        holder.txtName.setText(product.getProductName());
-        holder.txtName.setOnClickListener(new View.OnClickListener() {
+        String getFromURL = "http://spaaket.no-ip.org:1080/quercus-4.0.39/";
+        String fullURL = getFromURL + product.getImageURl();
+        new DownloadImageTask(holder.productImage).execute(fullURL);
+
+        holder.productName.setText(product.getProductName());
+        holder.productManufacturer.setText(product.getManufacturer());
+        holder.productGenre.setText(product.getGenre());
+        holder.productBuyingPrice.setText(product.getPurchasePrice());
+        holder.productSellingPrice.setText(product.getSellingPrice());
+
+        final LagerHolder finalHolder = holder;
+        holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-                alertDialog.setTitle("Om produkten");
-                alertDialog.setMessage(product.getGenre());
+                //Toast.makeText(getContext(), "Redigera annons nr." + position, Toast.LENGTH_LONG).show();
 
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
-            }
-        });
+                Bundle bundle = new Bundle();
+                bundle.putString("productName",product.getProductName());
+                bundle.putString("productManufacturer",product.getManufacturer());
+                bundle.putString("productGenre",product.getGenre());
+                bundle.putString("productPurchaserPrice",product.getPurchasePrice());
+                bundle.putString("productSellingPrice", product.getSellingPrice());
 
-        //holder.imgIcon.setImageResource(advert.icon);
-        //holder.imgIcon.setImageResource(advert.getImageid()); //TODO: fix this so we can fetch images from db
+                Bitmap myBm = null;
+                try {
+                    View mv = finalHolder.productImage;
+                    //Code preventing drawingcache from being null
+                    mv.setDrawingCacheEnabled(true);
+                    mv.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                    mv.layout(0, 0, mv.getMeasuredWidth(), mv.getMeasuredHeight());
+                    mv.buildDrawingCache(true);
+                    myBm = Bitmap.createBitmap(mv.getDrawingCache());
+                    mv.setDrawingCacheEnabled(false); // clear drawing cache
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
 
-        holder.change.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Redigera annons nr." + position, Toast.LENGTH_LONG).show();
-                //TODO: Change this so it changes the database instead.
+                //Convert to byte array
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                if (myBm != null) {
+                    myBm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                }
+                byte[] byteArray = stream.toByteArray();
+                bundle.putByteArray("productImage", byteArray);
+
+                AppCompatActivity a = (AppCompatActivity) context; //ful hax a la Stefan
+                Fragment fragment;
+                FragmentTransaction fm = a.getSupportFragmentManager().beginTransaction();
+                switch(v.getId()){
+                    case R.id.product_edit_button:
+
+                        DB_Delete delete = new DB_Delete();
+                        String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.product/" + product.getProductId();
+                        delete.execute(URL);
+
+                        fragment = new LagerFormularRedigera();
+                        fragment.setArguments(bundle);
+                        fm.replace(R.id.content, fragment);
+                        fm.addToBackStack(null);
+                        fm.commit();
+
+                        break;
+                }
             }
         });
 
@@ -101,11 +151,37 @@ public class LagerAdapter extends ArrayAdapter<Product>{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Ta bort annons nr." + position, Toast.LENGTH_LONG).show();
-                //TODO: Change this so it deletes an item in the database instead.
+                //TODO: Update site when an advert is deleted.
+                DB_Delete delete = new DB_Delete();
+                String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.product/" + product.getProductId();
+                delete.execute(URL);
             }
         });
-
         return row;
+    }
 
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }
