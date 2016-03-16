@@ -1,9 +1,14 @@
 package com.example.magnus.menufragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -38,6 +43,7 @@ public class SchemaAdapter extends ArrayAdapter<Consultation> {
         TextView time;
         TextView customer;
         TextView description;
+        TextView phone;
         Button remove;
         Button edit;
     }
@@ -56,21 +62,19 @@ public class SchemaAdapter extends ArrayAdapter<Consultation> {
 
         //ll = (LinearLayout) row.findViewById(R.id.schema_item);
 
-        if(row == null)
-        {
-            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+        if (row == null) {
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new SchemaHolder();
             holder.time = (TextView) row.findViewById(R.id.schema_time);
             holder.customer = (TextView) row.findViewById(R.id.schema_customer);
             holder.description = (TextView) row.findViewById(R.id.schema_description);
+            holder.phone = (TextView) row.findViewById(R.id.schema_phone);
             holder.remove = (Button) row.findViewById(R.id.schema_delete);
             holder.edit = (Button) row.findViewById(R.id.schema_edit);
             row.setTag(holder);
-        }
-        else
-        {
+        } else {
             holder = (SchemaHolder) row.getTag();
         }
 
@@ -94,11 +98,11 @@ public class SchemaAdapter extends ArrayAdapter<Consultation> {
         holder.time.setText(startHour + ":" + startMinute + " - " + endHour + ":" + endMinute);
         holder.customer.setText(consultation.getCustomerName());
         holder.description.setText(consultation.getConsultationDescription());
+        holder.phone.setText(consultation.getCustomerPhone());
 
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Ta bort tid nr." + position, Toast.LENGTH_LONG).show();
                 DB_Delete delete = new DB_Delete();
                 String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.consultation/" + consultation.getConsultationid();
                 delete.execute(URL);
@@ -108,8 +112,6 @@ public class SchemaAdapter extends ArrayAdapter<Consultation> {
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Redigera tid nr." + consultation.getConsultationid(), Toast.LENGTH_LONG).show();
-
                 AppCompatActivity a = (AppCompatActivity) context;
 
                 Fragment fragment;
@@ -132,6 +134,43 @@ public class SchemaAdapter extends ArrayAdapter<Consultation> {
                         fm.commit();
                         break;
                 }
+            }
+        });
+
+        holder.time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle(consultation.getCustomerName());
+                alertDialog.setMessage(consultation.getConsultationDescription() + "\n" + consultation.getCustomerPhone());
+
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+
+        holder.phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:" + consultation.getCustomerPhone()));
+                Log.d("phone", "fuck me");
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                context.startActivity(callIntent);
             }
         });
         return row;
