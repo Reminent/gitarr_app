@@ -223,6 +223,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 break;
 
             default:
+
                 Log.d( TAG, "onClick's default case running");
                 break;
         }

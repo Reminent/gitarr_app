@@ -3,9 +3,17 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Titel">Titel</string>
     <string name="Beskrivning">Beskrivning</string>
     <string name="VäljBild">Välj bild</string>
     <string name="TaKort">Ta kort</string>
+
+    <string name="hello">Hello World, Set_Text_TitleBar!</string>
+    <color name="titlebackgroundcolor">#3232CD</color>
+    <color name="titletextcolor">#FFFF00</color>
 
 </resources>
