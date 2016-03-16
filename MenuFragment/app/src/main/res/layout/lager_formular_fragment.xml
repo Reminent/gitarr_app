@@ -3,11 +3,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:layout_alignParentTop="true"
     android:id="@+id/linearLayout"
     android:orientation="vertical"
     android:weightSum="1"
-    android:background="#cbc7c4">
+    android:background="#FFFFFF">
 
 
     <TextView
@@ -16,9 +17,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_gravity="center"
         android:textSize="20sp"
-        android:text="Ny annons"
+        android:text="Ny produkt"
 
-        android:id="@+id/formularTitle"
+        android:id="@+id/lager_formular_fragment_title"
 
         android:layout_alignParentTop="true"
         android:textColor="#000000"
@@ -27,11 +28,9 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextTitel"
+        android:id="@+id/editProductName"
         android:layout_marginTop="28dp"
-        android:layout_below="@+id/formularTitle"
-        android:layout_alignStart="@+id/formularTitle"
-        android:hint="@string/Titel"
+        android:hint="Produktnamn"
         android:textIsSelectable="false"
         android:textColorHint="#A9A9A9"
         android:backgroundTint="#000000"
@@ -40,21 +39,49 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextBeskrivning"
-        android:layout_below="@+id/editTextTitel"
-        android:layout_alignStart="@+id/editTextTitel"
-        android:hint="@string/Beskrivning"
+        android:id="@+id/editManufacturer"
+        android:hint="Tillverkare"
+        android:selectAllOnFocus="false"
+        android:textColor="#000000"
+        android:textColorHint="#A9A9A9"
+        android:backgroundTint="#000000" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editGenre"
+        android:hint="Genre"
+        android:selectAllOnFocus="false"
+        android:textColor="#000000"
+        android:textColorHint="#A9A9A9"
+        android:backgroundTint="#000000" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editPurchaserPrice"
+        android:hint="Inköpspris"
+        android:selectAllOnFocus="false"
+        android:textColor="#000000"
+        android:textColorHint="#A9A9A9"
+        android:backgroundTint="#000000" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editSellingPrice"
+        android:hint="Försäljningspris"
         android:selectAllOnFocus="false"
         android:textColor="#000000"
         android:textColorHint="#A9A9A9"
         android:backgroundTint="#000000" />
 
     <ImageView
-        android:id="@+id/image_camera"
+        android:id="@+id/productImageView"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp"
-        />
+        android:background="#ececec" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,7 +93,7 @@
 
             android:layout_height="match_parent"
             android:text="AVBRYT"
-            android:id="@+id/cancel"
+            android:id="@+id/buttonCancel"
             android:layout_gravity="left"
             android:textSize="20dp"
             android:background="#FFFFFF"
@@ -74,25 +101,22 @@
 
         <Button
             android:text="TA KORT"
-            android:id="@+id/camera"
+            android:id="@+id/buttonTakePhoto"
             android:layout_weight="1"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:textSize="20dp"
-
-            android:src="@drawable/kamerasymbol"
             android:background="#FFFFFF"
             android:textColor="#A9A9A9" />
 
         <Button
             android:text="VÄLJ BILD"
-            android:id="@+id/gallery"
+            android:id="@+id/buttonEnterGallery"
             android:layout_weight="1"
             android:textSize="20dp"
 
             android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:src="@drawable/gallerisymbol"
             android:background="#FFFFFF"
             android:textColor="#A9A9A9" />
 
@@ -102,7 +126,7 @@
             android:textSize="20dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:id="@+id/done"
+            android:id="@+id/buttonDone"
             android:text="Klar"
             android:textColor="#A9A9A9"
             android:background="#FFFFFF" />

@@ -21,7 +21,7 @@
             android:layout_gravity="center"
             android:textSize="20sp"
             android:text="Skapa bokning"
-            android:id="@+id/textView5"
+            android:id="@+id/formularTitle"
             android:layout_alignParentTop="true" />
 
         <TextView
