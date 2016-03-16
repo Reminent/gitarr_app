@@ -1,10 +1,11 @@
 package com.example.magnus.menufragment;
 
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,8 +20,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,18 +33,19 @@ import com.example.magnus.menufragment.DB_Connect.DB_Connect;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
- * Class AnnonsFormularFragment which handles the formular
- * that pops up when you click on the "Skapa ny" button in the Advert page.
+ * Class AnnonsFormularRedigera which handles the formular
+ * that pops up when you click on the "Redigera" button in the Advert page.
  */
-public class AnnonsFormularFragment extends android.support.v4.app.Fragment implements View.OnClickListener{
+public class AnnonsFormularRedigera extends android.support.v4.app.Fragment implements View.OnClickListener{
     @Nullable
     private ContentResolver cr;
     private static final int TAKE_PICTURE = 1;
@@ -62,10 +64,8 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
 
     View view;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 
         view = inflater.inflate(R.layout.annons_formular_fragment, container, false);
 
@@ -81,6 +81,9 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         Button galleryButton = (Button)view.findViewById(R.id.gallery);
         galleryButton.setOnClickListener(this);
 
+        TextView formularTitle = (TextView)view.findViewById(R.id.formularTitle);
+        formularTitle.setText("Redigera annons");
+
         myContext = getContext();
 
         //Used for things that needs to be named unique (based on date on time)
@@ -90,6 +93,37 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
         fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
         formattedDate = df.format(c.getTime()).replace(" ", ""); //Now formattedDate has current date/time
         pictureName = formattedDate + ".jpg";
+
+        //Fetches the bundle which is filled in the AnnonsAdapter class.
+        Bundle bundle = this.getArguments();
+
+        //Fixes the set title
+        String changedTitel = bundle.getString("titel");
+        EditText changeTxtTitel = (EditText) view.findViewById(R.id.editTextTitel);
+        changeTxtTitel.setText(changedTitel);
+
+        //Fixes the set description
+        String changedBeskrivning = bundle.getString("beskrivning");
+        EditText changeTxtBeskrivning= (EditText) view.findViewById(R.id.editTextBeskrivning);
+        changeTxtBeskrivning.setText(changedBeskrivning);
+
+        cr = getActivity().getContentResolver();
+
+        //Fixes the set image
+        byte[] byteArray = bundle.getByteArray("bild");
+        Bitmap bmp = null;
+        if (byteArray != null) {
+            bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        }
+        ImageView changeImgView= (ImageView) view.findViewById(R.id.image_camera);
+        changeImgView.setImageBitmap(bmp);
+
+        //Tries to save the bitmap of the image to a variable selectedImage which is used later.
+        File changedPhoto = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), pictureName);
+        if(saveBitmapToFile(bmp, changedPhoto)) {
+            Uri tmpImage = Uri.fromFile(changedPhoto);
+            selectedImage = tmpImage;
+        }
         return view;
     }
 
@@ -114,26 +148,25 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
-        cr = getActivity().getContentResolver();
         ImageView imageView = (ImageView)view.findViewById(R.id.image_camera);
 
         switch (requestCode) {
             case TAKE_PICTURE:
                 selectedImage = imageUri;
-
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
+
                 //Sets the previewImage to the image selected
-                    try{
+                try{
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                     imageView.setImageBitmap(bitmap);
-                    Toast.makeText(getContext().getApplicationContext(), selectedImage.toString(), Toast.LENGTH_LONG).show();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
                 break;
 
             case SELECT_PICTURE:
-                //Sets the previewImage to the one in the gallery
+
+                //Sets the previewImage to the image selected
                 try {
                     selectedImage = intent.getData();
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
@@ -165,19 +198,15 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
     @Override
     public void onClick(View v) {
         FragmentTransaction fm = getFragmentManager().beginTransaction();
-        EditText eTextTitel = (EditText)view.findViewById(R.id.editTextTitel);
-        EditText eTextBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning);
+        EditText inputTxtTitel = (EditText)view.findViewById(R.id.editTextTitel);
+        EditText inputTxtBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning);
 
         switch(v.getId()){
             //Send an advert to the database.
             case R.id.done:
-                Toast.makeText(getContext(), "Skickar annons...", Toast.LENGTH_LONG);
-                if(!isEmpty(eTextTitel)&& !isEmpty(eTextBeskrivning) && selectedImage != null) {
+                if(!isEmpty(inputTxtTitel)&& !isEmpty(inputTxtBeskrivning) && selectedImage != null) {
                     try {
-                        EditText inputTxtTitel = (EditText) view.findViewById(R.id.editTextTitel);
                         titelStr = inputTxtTitel.getText().toString();
-
-                        EditText inputTxtBeskrivning = (EditText) view.findViewById(R.id.editTextBeskrivning);
                         beskrivningStr = inputTxtBeskrivning.getText().toString();
 
                         bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
@@ -191,12 +220,13 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                         ap.execute(url);
 
                         Toast.makeText(getContext().getApplicationContext(),
-                                "Annons skickad till databasen"
+                                "Annons ändrad i databasen"
                                 , Toast.LENGTH_LONG).show();
 
                     }catch (Exception e){
                         e.printStackTrace();
                     }
+
                     getFragmentManager().popBackStack();
                     fm.commit();
                 } else {
@@ -224,7 +254,7 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
 
             default:
 
-                Log.d( TAG, "onClick's default case running");
+                Log.d("Default", "Default case running");
                 break;
         }
     }
@@ -233,7 +263,6 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
      * Puts an advert to the database
      */
     private class AnnonsPut extends DB_Connect {
-
         @Override
         protected void onPostExecute(String result) {
             try {
@@ -261,7 +290,6 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                     protected Map<String,String> getParams() throws AuthFailureError {
 
                         HashMap<String,String> map = new HashMap<>();
-                        //Set as nothing
                         map.put("encoded_string", encoded);
                         map.put("image_name", pictureName);
                         map.put("product_name", formattedDate);
@@ -278,5 +306,39 @@ public class AnnonsFormularFragment extends android.support.v4.app.Fragment impl
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Saves a bitmap to file and returns true if it worked,
+     * this makes it so the variable selectedImage only get set if
+     * it worked and thus the if-statements which checks if every attribute in
+     * the formular was filled works correctly.
+     * @param bmp
+     * @param filename
+     * @return
+     */
+    private boolean saveBitmapToFile(Bitmap bmp, File filename){
+        FileOutputStream out = null;
+        boolean returnedCorrectly = true;
+
+        try {
+            out = new FileOutputStream(filename);
+
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+            // PNG is a lossless format, the compression factor (100) is ignored
+        } catch (Exception e) {
+            returnedCorrectly = false;
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                returnedCorrectly = false;
+                e.printStackTrace();
+            }
+        }
+        return returnedCorrectly;
     }
 }

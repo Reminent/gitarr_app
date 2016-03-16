@@ -3,9 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:background="#40404f"
-
+    android:background="#cbc7c4"
     android:layout_alignParentTop="true"
     android:id="@+id/linearLayout"
     android:orientation="vertical"
@@ -23,7 +21,7 @@
             android:layout_gravity="center"
             android:textSize="20sp"
             android:text="Skapa bokning"
-            android:id="@+id/textView5"
+            android:id="@+id/formularTitle"
             android:layout_alignParentTop="true" />
 
         <TextView

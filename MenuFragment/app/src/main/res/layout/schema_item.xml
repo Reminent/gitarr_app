@@ -30,6 +30,14 @@
             android:id="@+id/schema_description"
             android:text="description" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/schema_phone"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Phone" />
+
     </LinearLayout>
 
     <LinearLayout

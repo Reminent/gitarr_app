@@ -7,9 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.magnus.menufragment.DB_Upload.DB_Upload;
 import com.example.magnus.menufragment.DB_Upload.XML_Generate;
@@ -21,11 +21,13 @@ public class SchemaNewTimeFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.schema_new_time_fragment, container, false);
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         Button done = (Button) view.findViewById(R.id.schema_newTime_done);
         Button abort = (Button) view.findViewById(R.id.schema_newTime_abort);
         EditText startDate = (EditText) view.findViewById(R.id.schema_newTime_startTime);
-        EditText endDate = (EditText) view.findViewById(R.id.schema_newTime_endTime);
+        final EditText endDate = (EditText) view.findViewById(R.id.schema_newTime_endTime);
 
         done.setOnClickListener(new View.OnClickListener() {
 
@@ -40,21 +42,21 @@ public class SchemaNewTimeFragment extends android.support.v4.app.Fragment {
 
                 String id, name, phone, enddate, startdate, description;
                 id = "0";
-                enddate = "2016-03-15T14:00:00+01:00";
-                startdate = "2016-03-15T14:30:00+01:00";
-
                 name = nameText.getText().toString();
                 phone = phoneText.getText().toString();
-                //enddate = endDateText.getText().toString();
-                //startdate = startDateText.getText().toString();
+                enddate = endDateText.getText().toString();
+                startdate = startDateText.getText().toString();
                 description = descriptionText.getText().toString();
 
+                String[] endSplit = enddate.split(" ");
+                String[] startSplit = startdate.split(" ");
+                String finalStart = startSplit[0] + "T" + startSplit[1] + ":00+01:00";
+                String finalEnd = endSplit[0] + "T" + endSplit[1] + ":00+01:00";
 
                 XML_Generate generator = new XML_Generate();
-                String results = generator.consultationTable(id,name,phone,enddate,startdate,description);
+                String results = generator.consultationTable(id,name,phone,finalEnd,finalStart,description);
                 DB_Upload upload = new DB_Upload();
                 upload.execute(results, URL);
-                Toast.makeText(getContext(), "uppladdat", Toast.LENGTH_LONG).show();
 
                 Fragment fragment;
                 FragmentTransaction fm = getFragmentManager().beginTransaction();
@@ -76,7 +78,6 @@ public class SchemaNewTimeFragment extends android.support.v4.app.Fragment {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "abort", Toast.LENGTH_LONG).show();
                 Fragment fragment;
                 FragmentTransaction fm = getFragmentManager().beginTransaction();
 
@@ -92,23 +93,6 @@ public class SchemaNewTimeFragment extends android.support.v4.app.Fragment {
                 }
             }
         });
-
-        startDate.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "start", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        endDate.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "end", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         return view;
     }
 
