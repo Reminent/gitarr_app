@@ -126,7 +126,7 @@ public class LagerFormularRedigera extends android.support.v4.app.Fragment imple
         if (byteArray != null) {
             bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         }
-        ImageView changeImgView= (ImageView) view.findViewById(R.id.image_camera);
+        ImageView changeImgView= (ImageView) view.findViewById(R.id.productImageView);
         changeImgView.setImageBitmap(bmp);
 
         File changedPhoto = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), pictureName);
