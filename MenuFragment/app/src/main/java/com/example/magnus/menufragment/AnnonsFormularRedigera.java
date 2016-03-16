@@ -41,6 +41,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class AnnonsFormularRedigera which handles the formular
+ * that pops up when you click on the "Redigera" button in the Advert page.
+ */
 public class AnnonsFormularRedigera extends android.support.v4.app.Fragment implements View.OnClickListener{
     @Nullable
     private ContentResolver cr;
@@ -90,7 +94,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         formattedDate = df.format(c.getTime()).replace(" ", ""); //Now formattedDate has current date/time
         pictureName = formattedDate + ".jpg";
 
-
+        //Fetches the bundle which is filled in the AnnonsAdapter class.
         Bundle bundle = this.getArguments();
 
         //Fixes the set title
@@ -114,6 +118,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         ImageView changeImgView= (ImageView) view.findViewById(R.id.image_camera);
         changeImgView.setImageBitmap(bmp);
 
+        //Tries to save the bitmap of the image to a variable selectedImage which is used later.
         File changedPhoto = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), pictureName);
         if(saveBitmapToFile(bmp, changedPhoto)) {
             Uri tmpImage = Uri.fromFile(changedPhoto);
@@ -122,6 +127,10 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         return view;
     }
 
+    /**
+     * Takes a picture and stores it in the gallery.
+     * @param v: The view
+     */
     public void takePhoto(View v){
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), pictureName);
@@ -130,6 +139,12 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         startActivityForResult(intent, TAKE_PICTURE); //We are passing in number 1, which is a request code  == main camera.
     }
 
+    /**
+     * Covers what happens when you click on gallery or imagecapture
+     * @param requestCode
+     * @param resultCode
+     * @param intent
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
@@ -140,6 +155,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                 selectedImage = imageUri;
                 getActivity().getContentResolver().notifyChange(selectedImage, null);
 
+                //Sets the previewImage to the image selected
                 try{
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
                     imageView.setImageBitmap(bitmap);
@@ -150,6 +166,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
 
             case SELECT_PICTURE:
 
+                //Sets the previewImage to the image selected
                 try {
                     selectedImage = intent.getData();
                     bitmap = MediaStore.Images.Media.getBitmap(cr, selectedImage);
@@ -165,10 +182,19 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         }
     }
 
+    /**
+     * Checks if an edittext is empty or not.
+     * @param etText:
+     * @return: True or false
+     */
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
     }
 
+    /**
+     * Handles what happens if you click on the buttons Avbryt, Galleri, Kamera och Klar;
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         FragmentTransaction fm = getFragmentManager().beginTransaction();
@@ -176,6 +202,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         EditText inputTxtBeskrivning= (EditText)view.findViewById(R.id.editTextBeskrivning);
 
         switch(v.getId()){
+            //Send an advert to the database.
             case R.id.done:
                 if(!isEmpty(inputTxtTitel)&& !isEmpty(inputTxtBeskrivning) && selectedImage != null) {
                     try {
@@ -232,6 +259,9 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         }
     }
 
+    /**
+     * Puts an advert to the database
+     */
     private class AnnonsPut extends DB_Connect {
         @Override
         protected void onPostExecute(String result) {
@@ -251,6 +281,11 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
 
                     }
                 }){
+                    /**
+                     * Builds a map with the data needed to build an advert
+                     * @return: map
+                     * @throws AuthFailureError
+                     */
                     @Override
                     protected Map<String,String> getParams() throws AuthFailureError {
 
@@ -265,6 +300,7 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
                         return map;
                     }
                 };
+                //Sends the map to a script which manages it and sends it to the database.
                 requestQueue.add(request);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -272,6 +308,15 @@ public class AnnonsFormularRedigera extends android.support.v4.app.Fragment impl
         }
     }
 
+    /**
+     * Saves a bitmap to file and returns true if it worked,
+     * this makes it so the variable selectedImage only get set if
+     * it worked and thus the if-statements which checks if every attribute in
+     * the formular was filled works correctly.
+     * @param bmp
+     * @param filename
+     * @return
+     */
     private boolean saveBitmapToFile(Bitmap bmp, File filename){
         FileOutputStream out = null;
         boolean returnedCorrectly = true;

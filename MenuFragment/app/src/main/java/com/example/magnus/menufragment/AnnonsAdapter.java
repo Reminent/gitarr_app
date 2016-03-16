@@ -19,18 +19,29 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.magnus.menufragment.DB_Upload.DB_Delete;
 import com.example.magnus.menufragment.XML_Parsing.Advert;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * Class AnnonsAdapter, It works like a bridge between the data
+ * and the adapterview, which is the view that is being reused multiple times.
+ */
 public class AnnonsAdapter extends ArrayAdapter<Advert>{
 
     Context context;
     int layoutResourceId;
     private List<Advert> data;
 
+    /**
+     * when you are using this holder,
+     * then you can easily access each view
+     * without the need for the look-up which saving valuable processor cycles.
+     */
     static class AnnonsHolder
     {
         ImageView imgIcon;
@@ -39,6 +50,12 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
         Button change;
     }
 
+    /**
+     * Constructor which is called in AnnonsGet
+     * @param context
+     * @param layoutResourceId
+     * @param data
+     */
     public AnnonsAdapter(Context context, int layoutResourceId, List<Advert> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
@@ -46,10 +63,18 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
         this.data = data;
     }
 
+    /**
+     * getView method which makes holders and connects it to the XML icons and fills them with
+     * Advert data depending on its position in the ArrayList
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        AnnonsHolder holder = null;
+        AnnonsHolder holder;
 
         if(row == null)
         {
@@ -73,11 +98,16 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
 
         String getFromURL = "http://spaaket.no-ip.org:1080/quercus-4.0.39/";
         String fullURL = getFromURL + advert.getImageUrl();
+
         new DownloadImageTask(holder.imgIcon).execute(fullURL);
 
+        /**
+         * Sets Title and adds a popup when clicked to show Description to save space in the List-
+         * View
+         */
         holder.txtTitle.setText(advert.getAdvertTitle());
-
         holder.txtTitle.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
@@ -94,21 +124,28 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
             }
         });
 
+        /**
+         * Sets the holder value change to bundle current data of the item and send to a new
+         * Fragment and to Delete the current item. Which is created with a new item id after com-
+         * pleted.
+         */
         final AnnonsHolder finalHolder = holder;
-        holder.change.setOnClickListener(new View.OnClickListener() {
 
+        /**
+         * Holder change which is to change the current item in the ListView
+         */
+        holder.change.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                //TODO: Change this so it changes the database instead.
 
                 Bundle bundle = new Bundle();
                 bundle.putString("titel", advert.getAdvertTitle());
                 bundle.putString("beskrivning", advert.getAdvertDescription());
-                //bundle.put("BILD);
-
 
                 Bitmap myBm = null;
+
+                //Tries to set the Bitmap of the image to a bitmap myBm.
                 try {
                     View mv = finalHolder.imgIcon;
                     //Code preventing drawingcache from being null
@@ -131,14 +168,12 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
                 byte[] byteArray = stream.toByteArray();
                 bundle.putByteArray("bild", byteArray);
 
-                //TODO:: fixa så man kan redigera bilden.
-
                 AppCompatActivity a = (AppCompatActivity) context; //ful hax a la Stefan
                 Fragment fragment;
                 FragmentTransaction fm = a.getSupportFragmentManager().beginTransaction();
+
                 switch(v.getId()){
                     case R.id.redigera:
-                        //TODO: Update site when an advert is edited. Change from remove+add to edit.
                         DB_Delete delete = new DB_Delete();
                         String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert/" + advert.getAdvertid();
                         delete.execute(URL);
@@ -155,10 +190,12 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
             }
         });
 
+        /**
+         * Holder remove which is to delete the current item in the ListView
+         */
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 //TODO: Update site when an advert is deleted.
                 DB_Delete delete = new DB_Delete();
                 String URL = "http://spaaket.no-ip.org:1080/GitarrAppAPI/webresources/rest.advert/" + advert.getAdvertid();
                 delete.execute(URL);
@@ -167,6 +204,11 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
         return row;
     }
 
+    /**
+     * Takes an imageView and an URL, applies the bitmap from the URL to the imageView.
+     * Encapsulates the creation of a background process and the synchronization with the main thread.
+     * It also supports reporting progress of the running tasks.
+     */
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -174,6 +216,10 @@ public class AnnonsAdapter extends ArrayAdapter<Advert>{
             this.bmImage = bmImage;
         }
 
+        /**
+         * @param urls: Takes the url sent as parameter.
+         * @return: The bitmap of the url
+         */
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
             Bitmap mIcon11 = null;
